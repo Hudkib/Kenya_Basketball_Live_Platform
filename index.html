@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KBL | Kenya Basketball Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080b12;--bg2:#0d1120;--bg3:#131826;--bg4:#1a2035;--bg5:#202540;
+  --border:#1f2a40;--border2:#2a3550;
+  --txt:#e8edf5;--txt2:#8896b0;--txt3:#4a5568;
+  --orange:#f97316;--orange2:#ea580c;--orangeL:#fb923c;
+  --red:#ef4444;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--purple:#8b5cf6;--pink:#ec4899;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.02em}
+
+/* NAV */
+.nav{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999;backdrop-filter:blur(12px)}
+.nav-inner{max-width:1400px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;height:64px;gap:1rem}
+.logo{display:flex;align-items:center;gap:0.6rem;flex-shrink:0;text-decoration:none}
+.logo-ball{width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.logo-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;line-height:1}
+.logo-sub{font-size:0.58rem;color:var(--txt3);letter-spacing:1px}
+.nav-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:center}
+.nav-tabs::-webkit-scrollbar{display:none}
+.ntab{padding:0.4rem 0.8rem;border-radius:8px;color:var(--txt2);cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap;transition:all 0.2s;border:none;background:none;font-family:'DM Sans',sans-serif}
+.ntab:hover{color:#fff;background:rgba(255,255,255,0.05)}
+.ntab.active{background:var(--orange);color:#fff}
+.live-pill{display:flex;align-items:center;gap:0.4rem;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);padding:0.3rem 0.7rem;border-radius:99px;flex-shrink:0}
+.live-dot{width:7px;height:7px;background:var(--red);border-radius:50%;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.live-pill span{font-size:0.62rem;font-weight:700;letter-spacing:1px;color:var(--red)}
+
+/* MAIN */
+.main{max-width:1400px;margin:0 auto;padding:1.5rem}
+.tab-pane{display:none}
+.tab-pane.active{display:block;animation:fadeUp 0.3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(8,1fr);gap:0.75rem;margin-bottom:1.5rem}
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1rem;transition:border-color 0.2s;cursor:default}
+.scard:hover{border-color:var(--orange)}
+.sval{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;line-height:1}
+.slabel{font-size:0.65rem;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-top:0.15rem}
+.sicon{font-size:0.9rem;margin-bottom:0.3rem}
+
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.25rem;margin-bottom:1.5rem}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem}
+.card-title{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:0.5rem}
+.card-title i{color:var(--orange);font-size:1rem}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:9px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;border:none;font-family:'DM Sans',sans-serif}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:var(--orange2);transform:translateY(-1px)}
+.btn-ghost{background:var(--bg4);color:var(--txt2);border:1px solid var(--border)}
+.btn-ghost:hover{color:#fff;border-color:var(--border2)}
+.btn-ghost.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{filter:brightness(1.1)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{filter:brightness(1.1)}
+.btn-purple{background:var(--purple);color:#fff}
+.btn-purple:hover{filter:brightness(1.1)}
+
+/* FORMS */
+.frow{margin-bottom:0.85rem}
+.frow label{display:block;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--txt3);margin-bottom:0.35rem}
+.frow input,.frow select,.frow textarea{width:100%;padding:0.6rem 0.85rem;background:var(--bg4);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:0.875rem;transition:border-color 0.2s}
+.frow input:focus,.frow select:focus,.frow textarea:focus{outline:none;border-color:var(--orange)}
+.frow select option{background:var(--bg3)}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:2000;justify-content:center;align-items:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.5rem;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
+.modal-box h3{font-size:1.4rem;font-weight:700;margin-bottom:1.25rem}
+.modal-actions{display:flex;gap:0.75rem;margin-top:1.25rem}
+
+/* LOADING */
+.loading{text-align:center;padding:2.5rem;color:var(--txt3)}
+.spinner{display:inline-block;width:26px;height:26px;border:3px solid var(--border2);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.6rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--txt3)}
+.empty i{font-size:1.8rem;margin-bottom:0.6rem;display:block;opacity:0.4}
+
+/* POSTS */
+.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.post-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all 0.2s}
+.post-card:hover{transform:translateY(-3px);border-color:var(--orange)}
+.post-top{padding:0.7rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
+.post-badge{background:var(--orange);color:#fff;font-size:0.62rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:99px}
+.post-time{font-size:0.62rem;color:var(--txt3)}
+.post-body{padding:0.9rem 1rem}
+.post-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;line-height:1.3}
+.post-text{font-size:0.78rem;color:var(--txt2);line-height:1.6}
+.post-foot{padding:0.65rem 1rem;background:var(--bg2);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.post-src{font-size:0.68rem;color:var(--txt3)}
+.town-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.25rem}
+.ttown{padding:0.3rem 0.85rem;border-radius:99px;font-size:0.7rem;font-weight:600;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);transition:all 0.2s}
+.ttown:hover,.ttown.active{background:var(--orange);border-color:var(--orange);color:#fff}
+
+/* MATCHES */
+.match-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;margin-bottom:0.75rem}
+.match-row{display:flex;justify-content:space-between;align-items:center;gap:0.75rem}
+.team-side{flex:1;display:flex;align-items:center;gap:0.6rem}
+.team-side.right{flex-direction:row-reverse;text-align:right}
+.team-logo{width:38px;height:38px;background:var(--bg4);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.team-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
+.scores{display:flex;align-items:center;gap:0.4rem;flex-shrink:0}
+.score-num{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:var(--orange)}
+.score-sep{font-size:0.9rem;color:var(--txt3);font-weight:700}
+.match-meta{display:flex;justify-content:space-between;align-items:center;margin-top:0.65rem;padding-top:0.65rem;border-top:1px solid var(--border);font-size:0.7rem;color:var(--txt3);flex-wrap:wrap;gap:0.5rem}
+.spill{padding:0.18rem 0.55rem;border-radius:99px;font-size:0.62rem;font-weight:700;text-transform:uppercase}
+.spill-live{background:rgba(239,68,68,0.15);color:var(--red)}
+.spill-final{background:rgba(16,185,129,0.15);color:var(--green)}
+.spill-upcoming{background:rgba(245,158,11,0.15);color:var(--yellow)}
+.msect{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;margin:1rem 0 0.5rem;letter-spacing:0.5px;color:var(--txt2);text-transform:uppercase}
+.msect.live-sect{color:var(--red)}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+.standings-table{width:100%;border-collapse:collapse;min-width:540px}
+.standings-table th{text-align:left;padding:0.7rem 0.9rem;background:var(--bg3);color:var(--txt3);font-size:0.67rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);white-space:nowrap}
+.standings-table td{padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-size:0.8rem}
+.standings-table tr:hover td{background:rgba(249,115,22,0.04)}
+td.gold{color:var(--yellow);font-weight:800}
+
+/* PLAYERS */
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.player-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.1rem;transition:all 0.2s}
+.player-card:hover{transform:translateY(-3px);border-color:var(--orange)}
+.avatar{width:48px;height:48px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:0.7rem}
+.pname{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
+.pteam{font-size:0.7rem;color:var(--orange);margin-bottom:0.9rem}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem}
+.pstat{background:var(--bg2);border-radius:7px;padding:0.45rem;text-align:center}
+.pstat-val{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
+.pstat-lbl{font-size:0.58rem;color:var(--txt3);text-transform:uppercase}
+
+/* EVENTS */
+.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.event-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s}
+.event-card:hover{border-color:var(--orange)}
+.event-date-bar{background:var(--orange);padding:0.55rem 1rem}
+.event-date-bar .eday{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;line-height:1}
+.event-date-bar .emon{font-size:0.7rem;color:rgba(255,255,255,0.8);text-transform:uppercase}
+.event-info{padding:0.9rem 1rem}
+.event-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.35rem}
+.event-loc{font-size:0.72rem;color:var(--txt2);margin-bottom:0.3rem}
+.event-desc{font-size:0.75rem;color:var(--txt3)}
+
+/* TRANSFERS */
+.transfer-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;transition:border-color 0.2s}
+.transfer-card:hover{border-color:var(--border2)}
+.tplayer{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700}
+.tclubs{font-size:0.75rem;color:var(--txt2);margin-top:0.15rem}
+.tclubs .arr{color:var(--orange)}
+.cbadge{font-size:0.62rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:99px}
+.cb-confirmed{background:rgba(16,185,129,0.15);color:var(--green)}
+.cb-rumor{background:rgba(245,158,11,0.15);color:var(--yellow)}
+.tfee{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--orange)}
+
+/* AI PILL */
+.ai-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.68rem;color:var(--txt3);padding:0.22rem 0.6rem;background:var(--bg4);border:1px solid var(--border);border-radius:99px;margin-bottom:1rem}
+.ai-pill i{color:var(--orange);font-size:0.62rem}
+
+/* ═══════════════════════════════════════════════
+   FANTASY LEAGUE
+═══════════════════════════════════════════════ */
+.fantasy-hero{background:linear-gradient(135deg,#0d1a2e,#1a0d2e);border:1px solid #2a1f50;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fantasy-hero h2{font-size:2rem;font-weight:900;color:#fff}
+.fantasy-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
+.fhero-badge{background:var(--purple);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
+.fantasy-pts{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--purple);line-height:1}
+.fantasy-pts-label{font-size:0.72rem;color:var(--txt3);text-align:right}
+
+.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-bottom:1.5rem}
+.roster-slot{background:var(--bg3);border:2px dashed var(--border);border-radius:14px;padding:1rem;text-align:center;cursor:pointer;transition:all 0.2s;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
+.roster-slot:hover{border-color:var(--purple);background:rgba(139,92,246,0.05)}
+.roster-slot.filled{border-style:solid;border-color:var(--border)}
+.roster-slot.filled:hover{border-color:var(--purple)}
+.slot-pos{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--purple)}
+.slot-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-top:0.2rem}
+.slot-team{font-size:0.68rem;color:var(--txt3)}
+.slot-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--purple);margin-top:0.3rem}
+.slot-pts-lbl{font-size:0.6rem;color:var(--txt3)}
+.slot-empty-icon{font-size:1.5rem;opacity:0.3}
+.slot-empty-lbl{font-size:0.75rem;color:var(--txt3)}
+
+.fl-leaderboard{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.fl-lb-row{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;border-bottom:1px solid var(--border);transition:background 0.2s}
+.fl-lb-row:last-child{border-bottom:none}
+.fl-lb-row:hover{background:rgba(139,92,246,0.05)}
+.fl-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;width:28px;flex-shrink:0}
+.fl-rank.gold{color:var(--yellow)}
+.fl-rank.silver{color:#94a3b8}
+.fl-rank.bronze{color:#b45309}
+.fl-name{flex:1;font-weight:600;font-size:0.88rem}
+.fl-team{font-size:0.7rem;color:var(--txt3)}
+.fl-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--purple)}
+
+.player-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;max-height:400px;overflow-y:auto;padding-right:0.25rem}
+.pick-card{background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:0.9rem;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;gap:0.4rem}
+.pick-card:hover{border-color:var(--purple);background:rgba(139,92,246,0.08)}
+.pick-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.15)}
+.pick-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
+.pick-info{font-size:0.7rem;color:var(--txt3)}
+.pick-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;color:var(--purple)}
+
+/* ═══════════════════════════════════════════════
+   PREDICTION LEAGUE
+═══════════════════════════════════════════════ */
+.pred-hero{background:linear-gradient(135deg,#0d1f1a,#1a200d);border:1px solid #1f3020;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.pred-hero h2{font-size:2rem;font-weight:900;color:#fff}
+.pred-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
+.phero-badge{background:var(--green);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
+.pred-score{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--green);line-height:1;text-align:right}
+.pred-score-label{font-size:0.72rem;color:var(--txt3);text-align:right}
+
+.pred-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1rem;transition:border-color 0.2s}
+.pred-card:hover{border-color:var(--border2)}
+.pred-match{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.pred-team{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;flex:1;text-align:center}
+.pred-vs{font-size:0.8rem;color:var(--txt3);font-weight:700}
+.pred-deadline{font-size:0.7rem;color:var(--yellow);margin-bottom:0.75rem}
+.pred-buttons{display:flex;gap:0.5rem;flex-wrap:wrap}
+.pred-btn{flex:1;padding:0.5rem 0.5rem;border-radius:10px;border:1px solid var(--border);background:var(--bg4);color:var(--txt2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;transition:all 0.2s;text-align:center}
+.pred-btn:hover{border-color:var(--green);color:var(--green)}
+.pred-btn.picked{background:var(--green);border-color:var(--green);color:#fff}
+.pred-btn.picked.wrong{background:var(--red);border-color:var(--red)}
+.pred-btn.correct{background:var(--green);border-color:var(--green);color:#fff}
+.pred-result{font-size:0.72rem;padding:0.4rem 0.75rem;border-radius:8px;margin-top:0.75rem;display:inline-flex;align-items:center;gap:0.35rem}
+.pred-result.win{background:rgba(16,185,129,0.15);color:var(--green)}
+.pred-result.loss{background:rgba(239,68,68,0.15);color:var(--red)}
+.pred-result.pending{background:rgba(245,158,11,0.1);color:var(--yellow)}
+
+.pred-lb{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.pred-lb-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1.2rem;border-bottom:1px solid var(--border);transition:background 0.2s}
+.pred-lb-row:last-child{border-bottom:none}
+.pred-lb-row:hover{background:rgba(16,185,129,0.04)}
+.pred-acc{font-size:0.7rem;color:var(--txt3)}
+
+/* ═══════════════════════════════════════════════
+   WHATSAPP ALERTS
+═══════════════════════════════════════════════ */
+.wa-hero{background:linear-gradient(135deg,#0d1f12,#0a1a10);border:1px solid #1a3a20;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.wa-hero h2{font-size:2rem;font-weight:900;color:#fff}
+.wa-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
+.wa-badge{background:#25D366;color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
+.wa-count{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:#25D366;line-height:1;text-align:right}
+.wa-count-lbl{font-size:0.72rem;color:var(--txt3);text-align:right}
+
+.wa-signup{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1.5rem}
+.wa-signup h3{font-size:1.2rem;font-weight:700;margin-bottom:0.25rem}
+.wa-signup p{font-size:0.82rem;color:var(--txt2);margin-bottom:1.25rem}
+.wa-form{display:grid;grid-template-columns:1fr 1fr auto;gap:0.75rem;align-items:end}
+.wa-prefs{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0}
+.wa-pref{display:flex;align-items:center;gap:0.4rem;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.75rem;cursor:pointer;transition:all 0.2s;font-size:0.78rem;user-select:none}
+.wa-pref input{accent-color:var(--green);width:14px;height:14px}
+.wa-pref:hover{border-color:var(--green)}
+
+.subscribers-list{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.sub-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1.25rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.75rem}
+.sub-row:last-child{border-bottom:none}
+.sub-num{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--green);flex-shrink:0}
+.sub-name{font-weight:600;font-size:0.85rem;flex:1}
+.sub-town{font-size:0.68rem;color:var(--orange);background:rgba(249,115,22,0.1);padding:0.15rem 0.5rem;border-radius:99px;flex-shrink:0}
+.sub-prefs{font-size:0.68rem;color:var(--txt3);flex:1}
+.sub-active{font-size:0.62rem;padding:0.18rem 0.5rem;border-radius:99px;background:rgba(16,185,129,0.15);color:var(--green);flex-shrink:0}
+
+.alert-preview{background:linear-gradient(135deg,#075E54,#128C7E);border-radius:16px;padding:1.25rem;margin-bottom:1.5rem}
+.alert-preview h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
+.wa-bubble{background:#fff;border-radius:0 12px 12px 12px;padding:0.75rem 1rem;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.wa-bubble p{font-size:0.82rem;color:#111;line-height:1.5}
+.wa-bubble .wa-time{font-size:0.65rem;color:#667781;margin-top:0.4rem;text-align:right}
+
+.send-btn-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.25rem}
+.wa-send-btn{display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.wa-send-green{background:#25D366;color:#fff}
+.wa-send-green:hover{filter:brightness(1.1)}
+
+/* ═══════════════════════════════════════════════
+   COUNTY RIVALRY
+═══════════════════════════════════════════════ */
+.rivalry-hero{background:linear-gradient(135deg,#1f0d0d,#1f1a0d);border:1px solid #3a1f1f;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.rivalry-hero h2{font-size:2rem;font-weight:900;color:#fff}
+.rivalry-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
+.rhero-badge{background:var(--red);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
+
+.county-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem}
+.county-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.1rem;transition:all 0.2s;cursor:pointer}
+.county-card:hover{transform:translateY(-3px);border-color:var(--orange)}
+.county-card.selected{border-color:var(--orange);background:rgba(249,115,22,0.06)}
+.county-name{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:0.2rem}
+.county-record{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;margin-top:0.75rem}
+.county-stat{background:var(--bg2);border-radius:8px;padding:0.4rem;text-align:center}
+.county-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
+.county-stat-lbl{font-size:0.58rem;color:var(--txt3);text-transform:uppercase}
+.county-bar{height:4px;background:var(--border);border-radius:2px;margin-top:0.75rem;overflow:hidden}
+.county-bar-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 0.6s ease}
+
+.h2h-panel{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:1.25rem;margin-bottom:1.5rem}
+.h2h-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.h2h-team{flex:1;text-align:center}
+.h2h-team-name{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900}
+.h2h-team-county{font-size:0.72rem;color:var(--txt3)}
+.h2h-vs{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--txt3);flex-shrink:0}
+.h2h-stats{display:grid;grid-template-columns:1fr 2fr 1fr;gap:0.75rem;align-items:center;margin-bottom:1rem}
+.h2h-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;text-align:center}
+.h2h-bar-wrap{background:var(--border);border-radius:99px;height:8px;overflow:hidden;position:relative}
+.h2h-bar-a{position:absolute;left:0;top:0;height:100%;background:var(--orange);border-radius:99px}
+.h2h-bar-b{position:absolute;right:0;top:0;height:100%;background:var(--blue);border-radius:99px}
+.h2h-bar-lbl{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--txt3);margin-top:0.3rem}
+.h2h-recent{margin-top:1rem}
+.h2h-recent-title{font-size:0.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem}
+.h2h-game-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0.75rem;background:var(--bg4);border-radius:8px;margin-bottom:0.4rem;font-size:0.78rem}
+.h2h-game-score{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
+.h2h-winner{color:var(--green)}
+.h2h-loser{color:var(--txt3)}
+
+.rivalry-table{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.rivalry-table-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr 1fr;gap:0.5rem;padding:0.7rem 1.2rem;border-bottom:1px solid var(--border);align-items:center;font-size:0.8rem;transition:background 0.2s}
+.rivalry-table-row:last-child{border-bottom:none}
+.rivalry-table-row:hover{background:rgba(249,115,22,0.04)}
+.rivalry-table-row.header{font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--txt3);background:var(--bg4)}
+.heat{width:10px;height:10px;border-radius:50%;display:inline-block}
+.heat-hot{background:var(--red)}
+.heat-warm{background:var(--yellow)}
+.heat-cool{background:var(--blue)}
+
+/* DELETE TRASH BUTTON */
+.trash-btn{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:0.75rem;font-family:'DM Sans',sans-serif;transition:color 0.2s;padding:0.2rem 0.4rem;border-radius:6px}
+.trash-btn:hover{color:var(--red)}
+
+/* SORT BUTTONS */
+.sort-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
+
+/* POST FORM GRID */
+.post-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem}
+
+/* TABS FOR SUBSECTIONS */
+.sub-tabs{display:flex;gap:0.4rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.sub-tab{padding:0.4rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);transition:all 0.2s}
+.sub-tab.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.sub-tab.green.active{background:var(--green);border-color:var(--green)}
+.sub-tab.red.active{background:var(--red);border-color:var(--red)}
+.sub-tab.wa.active{background:#25D366;border-color:#25D366}
+.sub-pane{display:none}
+.sub-pane.active{display:block}
+
+/* NOTIFICATION TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1.25rem;z-index:9999;font-size:0.85rem;display:flex;align-items:center;gap:0.6rem;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:var(--green)}
+.toast.success i{color:var(--green)}
+.toast.error{border-color:var(--red)}
+.toast.error i{color:var(--red)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.stats-row{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:768px){
+  .stats-row{grid-template-columns:repeat(4,1fr)}
+  .wa-form{grid-template-columns:1fr}
+  .post-form-grid{grid-template-columns:1fr}
+  .h2h-stats{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:560px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .nav-inner{padding:0 1rem;gap:0.5rem}
+  .logo-sub{display:none}
+  .ntab{padding:0.35rem 0.55rem;font-size:0.72rem}
+  .main{padding:1rem}
+  .score-num{font-size:1.4rem}
+  .fantasy-pts,.pred-score,.wa-count{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-ball">🏀</div>
+      <div>
+        <div class="logo-name">KBL</div>
+        <div class="logo-sub">KENYA BASKETBALL LIVE</div>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="ntab active" data-tab="feed">🏀 Feed</button>
+      <button class="ntab" data-tab="scores">📊 Scores</button>
+      <button class="ntab" data-tab="rankings">🏆 Rankings</button>
+      <button class="ntab" data-tab="players">⭐ Players</button>
+      <button class="ntab" data-tab="events">📅 Events</button>
+      <button class="ntab" data-tab="transfers">🔄 Transfers</button>
+      <button class="ntab" data-tab="fantasy" style="color:var(--purple)">🎮 Fantasy</button>
+      <button class="ntab" data-tab="predict" style="color:var(--green)">🔮 Predict</button>
+      <button class="ntab" data-tab="alerts" style="color:#25D366">📲 Alerts</button>
+      <button class="ntab" data-tab="rivalry" style="color:var(--red)">⚔️ Rivalry</button>
+    </div>
+    <div class="live-pill"><div class="live-dot"></div><span>LIVE</span></div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="stats-row" id="statsRow"></div>
+
+  <!-- ── FEED ── -->
+  <div class="tab-pane active" id="feedTab">
+    <div class="card">
+      <div class="card-head"><div class="card-title"><i class="fas fa-pen-alt"></i> Breaking News</div></div>
+      <div class="post-form-grid">
+        <input id="pTitle" placeholder="Headline" class="finput">
+        <select id="pTown" class="finput"></select>
+      </div>
+      <input id="pAuthor" placeholder="Source / Author" class="finput" style="width:100%;margin-bottom:0.75rem">
+      <textarea id="pContent" rows="3" placeholder="Report..." class="finput" style="width:100%;margin-bottom:0.75rem;resize:vertical"></textarea>
+      <button class="btn btn-orange" onclick="addPost()"><i class="fas fa-paper-plane"></i> Publish</button>
+    </div>
+    <div class="ai-pill"><i class="fas fa-robot"></i> AI-generated data refreshes on each page load</div>
+    <div class="town-row" id="townRow"></div>
+    <div id="postsGrid" class="posts-grid"></div>
+  </div>
+
+  <!-- ── SCORES ── -->
+  <div class="tab-pane" id="scoresTab">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-calendar-alt"></i> Live &amp; Upcoming Fixtures</div>
+        <button class="btn btn-orange" onclick="openModal('matchModal')"><i class="fas fa-plus"></i> Add Match</button>
+      </div>
+      <div id="matchesList"><div class="loading"><div class="spinner"></div><br>Loading fixtures...</div></div>
+    </div>
+  </div>
+
+  <!-- ── RANKINGS ── -->
+  <div class="tab-pane" id="rankingsTab">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-trophy"></i> KBF League Standings</div>
+        <button class="btn btn-orange" onclick="openModal('teamModal')"><i class="fas fa-plus"></i> Add Team</button>
+      </div>
+      <div class="table-wrap">
+        <table class="standings-table">
+          <thead><tr><th>#</th><th>Team</th><th>City</th><th>GP</th><th>W</th><th>L</th><th>Win%</th><th>PF</th><th>PA</th><th>+/-</th><th>Streak</th></tr></thead>
+          <tbody id="rankingsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PLAYERS ── -->
+  <div class="tab-pane" id="playersTab">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-star"></i> Statistical Leaders</div>
+        <button class="btn btn-orange" onclick="openModal('playerModal')"><i class="fas fa-plus"></i> Add Player</button>
+      </div>
+      <div class="sort-row">
+        <button class="btn btn-ghost active" id="sort-ppg" onclick="sortPlayers('ppg')">Points</button>
+        <button class="btn btn-ghost" id="sort-rpg" onclick="sortPlayers('rpg')">Rebounds</button>
+        <button class="btn btn-ghost" id="sort-apg" onclick="sortPlayers('apg')">Assists</button>
+        <button class="btn btn-ghost" id="sort-spg" onclick="sortPlayers('spg')">Steals</button>
+        <button class="btn btn-ghost" id="sort-bpg" onclick="sortPlayers('bpg')">Blocks</button>
+      </div>
+      <div id="playersGrid" class="players-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── EVENTS ── -->
+  <div class="tab-pane" id="eventsTab">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-calendar"></i> Upcoming Events</div>
+        <button class="btn btn-orange" onclick="openModal('eventModal')"><i class="fas fa-plus"></i> Add Event</button>
+      </div>
+      <div id="eventsGrid" class="events-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── TRANSFERS ── -->
+  <div class="tab-pane" id="transfersTab">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="fas fa-exchange-alt"></i> Transfer Market</div>
+        <button class="btn btn-orange" onclick="openModal('transferModal')"><i class="fas fa-plus"></i> Add Transfer</button>
+      </div>
+      <div id="transfersList"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       FANTASY LEAGUE
+  ════════════════════════════════════ -->
+  <div class="tab-pane" id="fantasyTab">
+    <div class="fantasy-hero">
+      <div>
+        <div class="fhero-badge">🎮 Fantasy League</div>
+        <h2>Build Your Dream Team</h2>
+        <p>Pick 5 players, earn points based on real match stats. Updated weekly.</p>
+      </div>
+      <div>
+        <div class="fantasy-pts" id="myFantasyPts">0</div>
+        <div class="fantasy-pts-label">Your total pts this week</div>
+      </div>
+    </div>
+
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="showSubTab('fantasy','my-team')">My Team</button>
+      <button class="sub-tab" onclick="showSubTab('fantasy','pick-players')">Pick Players</button>
+      <button class="sub-tab" onclick="showSubTab('fantasy','fl-leaderboard')">Leaderboard</button>
+    </div>
+
+    <div class="sub-pane active" id="fantasy-my-team">
+      <div class="card-head" style="margin-bottom:1rem">
+        <div class="card-title" style="font-size:1rem"><i class="fas fa-users"></i> Your Roster <span style="font-size:0.75rem;color:var(--txt3);font-family:'DM Sans',sans-serif;font-weight:400" id="rosterCount">(0/5 players)</span></div>
+        <button class="btn btn-purple" onclick="showSubTab('fantasy','pick-players')"><i class="fas fa-plus"></i> Pick Players</button>
+      </div>
+      <div class="roster-grid" id="rosterGrid"></div>
+    </div>
+
+    <div class="sub-pane" id="fantasy-pick-players">
+      <div class="card" style="margin-bottom:1rem">
+        <p style="font-size:0.85rem;color:var(--txt2);margin-bottom:1rem">Select up to <strong style="color:var(--purple)">5 players</strong> for your fantasy roster. Points are based on PPG, RPG and APG.</p>
+        <div class="player-pick-grid" id="pickGrid"></div>
+        <button class="btn btn-purple" style="margin-top:1rem" onclick="saveRoster()"><i class="fas fa-save"></i> Save Roster</button>
+      </div>
+    </div>
+
+    <div class="sub-pane" id="fantasy-fl-leaderboard">
+      <div class="fl-leaderboard" id="flLeaderboard"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       PREDICTION LEAGUE
+  ════════════════════════════════════ -->
+  <div class="tab-pane" id="predictTab">
+    <div class="pred-hero">
+      <div>
+        <div class="phero-badge">🔮 Prediction League</div>
+        <h2>Predict. Win. Bragging Rights.</h2>
+        <p>Pick match winners before kick-off. Earn 10 pts per correct call. Top predictor wins the week.</p>
+      </div>
+      <div>
+        <div class="pred-score" id="myPredPts">0</div>
+        <div class="pred-score-label">Your prediction points</div>
+        <div style="font-size:0.72rem;color:var(--txt3);text-align:right;margin-top:0.2rem" id="predAccuracy"></div>
+      </div>
+    </div>
+
+    <div class="sub-tabs">
+      <button class="sub-tab green active" onclick="showSubTab('predict','open-preds')">Open Predictions</button>
+      <button class="sub-tab green" onclick="showSubTab('predict','my-preds')">My Picks</button>
+      <button class="sub-tab green" onclick="showSubTab('predict','pred-board')">Leaderboard</button>
+    </div>
+
+    <div class="sub-pane active" id="predict-open-preds">
+      <div id="openPredsList"></div>
+    </div>
+
+    <div class="sub-pane" id="predict-my-preds">
+      <div id="myPredsList"></div>
+    </div>
+
+    <div class="sub-pane" id="predict-pred-board">
+      <div class="pred-lb" id="predLeaderboard"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       WHATSAPP ALERTS
+  ════════════════════════════════════ -->
+  <div class="tab-pane" id="alertsTab">
+    <div class="wa-hero">
+      <div>
+        <div class="wa-badge"><i class="fab fa-whatsapp"></i> WhatsApp Alerts</div>
+        <h2>Never Miss a Game</h2>
+        <p>Get live scores, transfer news, and event reminders sent to your WhatsApp.</p>
+      </div>
+      <div>
+        <div class="wa-count" id="subCount">0</div>
+        <div class="wa-count-lbl">Subscribers</div>
+      </div>
+    </div>
+
+    <div class="alert-preview">
+      <h3><i class="fab fa-whatsapp"></i> Sample Alert Preview</h3>
+      <div class="wa-bubble">
+        <p id="alertPreviewText">🏀 *KBL LIVE SCORE*\n\nNairobi Thunder 62 – 58 Coastal Kings\n⏱ Q3 | 4:23 remaining\n\nJohn Mbugua leading with 24 pts\n\n📲 Reply STOP to unsubscribe\n_Kenya Basketball Live_</p>
+        <div class="wa-time">Now ✓✓</div>
+      </div>
+    </div>
+
+    <div class="wa-signup">
+      <h3>Subscribe to Alerts</h3>
+      <p>Enter your details and choose what alerts you want to receive.</p>
+      <div class="wa-form">
+        <div class="frow"><label>Your Name</label><input id="waName" placeholder="e.g. James Otieno"></div>
+        <div class="frow"><label>Phone Number (with country code)</label><input id="waPhone" placeholder="+254712345678"></div>
+        <div class="frow"><label>County</label><select id="waTown"></select></div>
+      </div>
+      <p style="font-size:0.8rem;color:var(--txt2);margin-bottom:0.5rem">Select alert types:</p>
+      <div class="wa-prefs">
+        <label class="wa-pref"><input type="checkbox" value="live" checked> 🔴 Live Score Updates</label>
+        <label class="wa-pref"><input type="checkbox" value="final" checked> ✅ Final Results</label>
+        <label class="wa-pref"><input type="checkbox" value="transfers"> 🔄 Transfer News</label>
+        <label class="wa-pref"><input type="checkbox" value="events"> 📅 Event Reminders</label>
+        <label class="wa-pref"><input type="checkbox" value="rankings"> 🏆 Weekly Rankings</label>
+      </div>
+      <button class="btn btn-green" onclick="addSubscriber()"><i class="fab fa-whatsapp"></i> Subscribe Now</button>
+    </div>
+
+    <div class="sub-tabs">
+      <button class="sub-tab wa active" onclick="showSubTab('alerts','sub-list')">Subscribers</button>
+      <button class="sub-tab wa" onclick="showSubTab('alerts','send-alert')">Send Alert</button>
+    </div>
+
+    <div class="sub-pane active" id="alerts-sub-list">
+      <div class="card-head" style="margin-bottom:1rem">
+        <div class="card-title" style="font-size:1rem"><i class="fas fa-users"></i> Active Subscribers</div>
+      </div>
+      <div class="subscribers-list" id="subscribersList"></div>
+    </div>
+
+    <div class="sub-pane" id="alerts-send-alert">
+      <div class="card">
+        <div class="card-head"><div class="card-title" style="font-size:1rem"><i class="fab fa-whatsapp"></i> Broadcast Alert</div></div>
+        <div class="frow"><label>Alert Type</label>
+          <select id="alertType" onchange="updateAlertPreview()">
+            <option value="live">🔴 Live Score Update</option>
+            <option value="final">✅ Final Result</option>
+            <option value="transfer">🔄 Transfer News</option>
+            <option value="event">📅 Event Reminder</option>
+            <option value="custom">✏️ Custom Message</option>
+          </select>
+        </div>
+        <div class="frow"><label>Message</label><textarea id="alertMsg" rows="5" onkeyup="updateAlertPreview()" placeholder="Type your alert message..."></textarea></div>
+        <div class="send-btn-row">
+          <button class="wa-send-btn wa-send-green" onclick="broadcastAlert()"><i class="fab fa-whatsapp"></i> Send to All Subscribers</button>
+          <button class="wa-send-btn" style="background:var(--bg4);border:1px solid var(--border);color:var(--txt2)" onclick="openModal('waTestModal')"><i class="fas fa-paper-plane"></i> Send Test</button>
+        </div>
+        <p style="font-size:0.72rem;color:var(--txt3);margin-top:0.75rem"><i class="fas fa-info-circle"></i> In production, this connects to Twilio or Africa's Talking API to send real WhatsApp messages.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       COUNTY RIVALRY TRACKER
+  ════════════════════════════════════ -->
+  <div class="tab-pane" id="rivalryTab">
+    <div class="rivalry-hero">
+      <div>
+        <div class="rhero-badge">⚔️ County Rivalry Tracker</div>
+        <h2>County vs County</h2>
+        <p>Track head-to-head records, rivalries and dominance across all Kenyan counties.</p>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--red);line-height:1" id="rivalryGameCount">0</div>
+        <div style="font-size:0.72rem;color:var(--txt3)">H2H games tracked</div>
+      </div>
+    </div>
+
+    <div class="sub-tabs">
+      <button class="sub-tab red active" onclick="showSubTab('rivalry','county-overview')">County Standings</button>
+      <button class="sub-tab red" onclick="showSubTab('rivalry','h2h')">Head-to-Head</button>
+      <button class="sub-tab red" onclick="showSubTab('rivalry','hot-rivalries')">Hot Rivalries</button>
+    </div>
+
+    <div class="sub-pane active" id="rivalry-county-overview">
+      <div class="county-grid" id="countyGrid"></div>
+    </div>
+
+    <div class="sub-pane" id="rivalry-h2h">
+      <div class="card" style="margin-bottom:1.25rem">
+        <div class="card-head" style="margin-bottom:1rem"><div class="card-title" style="font-size:1rem"><i class="fas fa-exchange-alt"></i> Compare Two Counties</div></div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end">
+          <div class="frow" style="margin:0"><label>County A</label><select id="h2hA" onchange="renderH2H()"></select></div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--txt3);padding-bottom:0.3rem">VS</div>
+          <div class="frow" style="margin:0"><label>County B</label><select id="h2hB" onchange="renderH2H()"></select></div>
+        </div>
+      </div>
+      <div id="h2hPanel"></div>
+    </div>
+
+    <div class="sub-pane" id="rivalry-hot-rivalries">
+      <div class="rivalry-table">
+        <div class="rivalry-table-row header">
+          <div>Heat</div><div>Rivalry</div><div>Games</div><div>Last Match</div><div>Avg Margin</div><div>Intensity</div>
+        </div>
+        <div id="rivalryRows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+<div id="matchModal" class="modal-overlay">
+  <div class="modal-box"><h3>Add Match</h3>
+    <div class="frow"><label>Team 1</label><input id="mT1" placeholder="e.g. Nairobi Thunder"></div>
+    <div class="frow"><label>Team 2</label><input id="mT2" placeholder="e.g. Coastal Kings"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="frow"><label>Score – Team 1</label><input id="mS1" type="number" placeholder="0"></div>
+      <div class="frow"><label>Score – Team 2</label><input id="mS2" type="number" placeholder="0"></div>
+    </div>
+    <div class="frow"><label>Date &amp; Time</label><input id="mTime" type="datetime-local"></div>
+    <div class="frow"><label>Status</label><select id="mStatus"><option value="Upcoming">Upcoming</option><option value="Live">Live</option><option value="Final">Final</option></select></div>
+    <div class="modal-actions"><button class="btn btn-orange" onclick="saveMatch()">Save Match</button><button class="btn btn-ghost" onclick="closeModal('matchModal')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="teamModal" class="modal-overlay">
+  <div class="modal-box"><h3>Add Team</h3>
+    <div class="frow"><label>Team Name</label><input id="tmName" placeholder="e.g. Nairobi Thunder"></div>
+    <div class="frow"><label>City</label><input id="tmCity" placeholder="e.g. Nairobi"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="frow"><label>Wins</label><input id="tmW" type="number" placeholder="0"></div>
+      <div class="frow"><label>Losses</label><input id="tmL" type="number" placeholder="0"></div>
+      <div class="frow"><label>Points For</label><input id="tmPF" type="number" placeholder="0"></div>
+      <div class="frow"><label>Points Against</label><input id="tmPA" type="number" placeholder="0"></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-orange" onclick="saveTeam()">Save Team</button><button class="btn btn-ghost" onclick="closeModal('teamModal')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="playerModal" class="modal-overlay">
+  <div class="modal-box"><h3>Add Player</h3>
+    <div class="frow"><label>Name</label><input id="plName" placeholder="Full name"></div>
+    <div class="frow"><label>Team</label><input id="plTeam" placeholder="Team name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem">
+      <div class="frow"><label>PPG</label><input id="plPPG" type="number" step="0.1" placeholder="0.0"></div>
+      <div class="frow"><label>RPG</label><input id="plRPG" type="number" step="0.1" placeholder="0.0"></div>
+      <div class="frow"><label>APG</label><input id="plAPG" type="number" step="0.1" placeholder="0.0"></div>
+      <div class="frow"><label>SPG</label><input id="plSPG" type="number" step="0.1" placeholder="0.0"></div>
+      <div class="frow"><label>BPG</label><input id="plBPG" type="number" step="0.1" placeholder="0.0"></div>
+      <div class="frow"><label>FG%</label><input id="plFG" type="number" step="0.1" placeholder="0.0"></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-orange" onclick="savePlayer()">Save Player</button><button class="btn btn-ghost" onclick="closeModal('playerModal')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="eventModal" class="modal-overlay">
+  <div class="modal-box"><h3>Add Event</h3>
+    <div class="frow"><label>Title</label><input id="evTitle" placeholder="Event name"></div>
+    <div class="frow"><label>Location</label><input id="evLoc" placeholder="Venue, City"></div>
+    <div class="frow"><label>Date</label><input id="evDate" type="date"></div>
+    <div class="frow"><label>Description</label><textarea id="evDesc" rows="3" placeholder="Details..."></textarea></div>
+    <div class="modal-actions"><button class="btn btn-orange" onclick="saveEvent()">Save Event</button><button class="btn btn-ghost" onclick="closeModal('eventModal')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="transferModal" class="modal-overlay">
+  <div class="modal-box"><h3>Add Transfer</h3>
+    <div class="frow"><label>Player Name</label><input id="trPlayer" placeholder="Player name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="frow"><label>From Club</label><input id="trFrom" placeholder="Previous club"></div>
+      <div class="frow"><label>To Club</label><input id="trTo" placeholder="New club"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="frow"><label>Status</label><select id="trType"><option value="Confirmed">Confirmed</option><option value="Rumor">Rumor</option></select></div>
+      <div class="frow"><label>Fee / Terms</label><input id="trFee" placeholder="e.g. 2.5M KES"></div>
+    </div>
+    <div class="modal-actions"><button class="btn btn-orange" onclick="saveTransfer()">Save Transfer</button><button class="btn btn-ghost" onclick="closeModal('transferModal')">Cancel</button></div>
+  </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal-box"><h3>Admin Verification</h3>
+    <p style="font-size:0.85rem;color:var(--txt2);margin-bottom:1rem">Enter the admin password to delete this record.</p>
+    <div class="frow"><input type="password" id="delPwd" placeholder="Password"></div>
+    <div class="modal-actions">
+      <button class="btn" style="background:var(--red);color:#fff" onclick="confirmDelete()">Delete</button>
+      <button class="btn btn-ghost" onclick="closeModal('deleteModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="waTestModal" class="modal-overlay">
+  <div class="modal-box"><h3>Send Test Alert</h3>
+    <div class="frow"><label>Phone Number</label><input id="testPhone" placeholder="+254712345678"></div>
+    <p style="font-size:0.8rem;color:var(--txt3);margin-top:0.5rem">In production this sends a real WhatsApp message via Twilio or Africa's Talking.</p>
+    <div class="modal-actions">
+      <button class="btn btn-green" onclick="sendTestAlert()"><i class="fab fa-whatsapp"></i> Send Test</button>
+      <button class="btn btn-ghost" onclick="closeModal('waTestModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.finput{width:100%;padding:0.6rem 0.85rem;background:var(--bg4);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:0.875rem;transition:border-color 0.2s}
+.finput:focus{outline:none;border-color:var(--orange)}
+</style>
+
+<script>
+const TOWNS=['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Kiambu','Malindi','Kakamega','Nyeri','Meru','Kitale','Machakos','Kericho','Bungoma','Kisii'];
+const COUNTIES=['Nairobi','Mombasa','Kisumu','Nakuru','Uasin Gishu','Kiambu','Kilifi','Kakamega','Nyeri','Meru','Trans Nzoia','Machakos','Kericho','Bungoma','Kisii','Murang\'a'];
+
+let posts=[],matches=[],teams=[],players=[],events=[],transfers=[];
+let subscribers=[],myRoster=[],predictions=[],predLeaders=[];
+let currentTownFilter='all',playerSort='ppg',pendingDelete=null;
+
+// ── LOCAL STORAGE ──────────────────────────────────
+function save(k,v){try{localStorage.setItem('kbl_'+k,JSON.stringify(v))}catch(e){}}
+function load(k,def){try{const v=localStorage.getItem('kbl_'+k);return v?JSON.parse(v):def}catch(e){return def}}
+
+function saveAll(){
+  save('posts',posts);save('matches',matches);save('teams',teams);
+  save('players',players);save('events',events);save('transfers',transfers);
+  save('subscribers',subscribers);save('myRoster',myRoster);
+  save('predictions',predictions);save('predLeaders',predLeaders);
+}
+function loadAll(){
+  posts=load('posts',[]);matches=load('matches',[]);teams=load('teams',[]);
+  players=load('players',[]);events=load('events',[]);transfers=load('transfers',[]);
+  subscribers=load('subscribers',[]);myRoster=load('myRoster',[]);
+  predictions=load('predictions',[]);predLeaders=load('predLeaders',[]);
+}
+
+// ── AI DATA FETCH ──────────────────────────────────
+async function fetchAIData(){
+  const today=new Date().toISOString().split('T')[0];
+  const d=(n)=>new Date(Date.now()+n*86400000).toISOString();
+  const prompt=`Generate realistic Kenya Basketball data. Return ONLY valid JSON, no markdown:
+{"posts":[
+{"id":1,"title":"...","content":"150 char article about Kenya basketball game result","town":"Nairobi","author":"KBF Media","timestamp":"${d(0)}","likes":${100+Math.floor(Math.random()*200)}},
+{"id":2,"title":"...","content":"...","town":"Mombasa","author":"Coast Sports","timestamp":"${d(-0.04)}","likes":${50+Math.floor(Math.random()*100)}},
+{"id":3,"title":"...","content":"...","town":"Kisumu","author":"Lake News","timestamp":"${d(-0.08)}","likes":${30+Math.floor(Math.random()*80)}},
+{"id":4,"title":"...","content":"...","town":"Eldoret","author":"Rift Sports","timestamp":"${d(-0.2)}","likes":${20+Math.floor(Math.random()*60)}},
+{"id":5,"title":"...","content":"...","town":"Nakuru","author":"KBF Official","timestamp":"${d(-0.4)}","likes":${10+Math.floor(Math.random()*40)}}
+],
+"matches":[
+{"id":1,"team1":"Nairobi Thunder","team2":"Coastal Kings","score1":${75+Math.floor(Math.random()*20)},"score2":${70+Math.floor(Math.random()*20)},"time":"${d(-1)}","status":"Final"},
+{"id":2,"team1":"Kisumu Lakers","team2":"Eldoret Hawks","score1":${70+Math.floor(Math.random()*20)},"score2":${65+Math.floor(Math.random()*20)},"time":"${d(-2)}","status":"Final"},
+{"id":3,"team1":"Nakuru Broncos","team2":"Thika Bucks","score1":${40+Math.floor(Math.random()*20)},"score2":${38+Math.floor(Math.random()*15)},"time":"${d(0)}","status":"Live"},
+{"id":4,"team1":"Mombasa Kings","team2":"Kitale Wolves","score1":0,"score2":0,"time":"${d(0.08)}","status":"Upcoming"},
+{"id":5,"team1":"Nyeri Lions","team2":"Kakamega Tigers","score1":0,"score2":0,"time":"${d(1)}","status":"Upcoming"}
+],
+"teams":[
+{"id":1,"name":"Nairobi Thunder","city":"Nairobi","wins":${12+Math.floor(Math.random()*4)},"losses":${3+Math.floor(Math.random()*3)},"pf":1789,"pa":1654},
+{"id":2,"name":"Coastal Kings","city":"Mombasa","wins":${10+Math.floor(Math.random()*3)},"losses":${5+Math.floor(Math.random()*3)},"pf":1723,"pa":1689},
+{"id":3,"name":"Kisumu Lakers","city":"Kisumu","wins":${9+Math.floor(Math.random()*3)},"losses":${6+Math.floor(Math.random()*3)},"pf":1698,"pa":1678},
+{"id":4,"name":"Eldoret Hawks","city":"Eldoret","wins":${7+Math.floor(Math.random()*3)},"losses":${8+Math.floor(Math.random()*3)},"pf":1654,"pa":1672},
+{"id":5,"name":"Nakuru Broncos","city":"Nakuru","wins":${6+Math.floor(Math.random()*3)},"losses":${9+Math.floor(Math.random()*3)},"pf":1623,"pa":1690},
+{"id":6,"name":"Thika Bucks","city":"Thika","wins":${5+Math.floor(Math.random()*3)},"losses":${10+Math.floor(Math.random()*3)},"pf":1598,"pa":1689},
+{"id":7,"name":"Mombasa Kings","city":"Mombasa","wins":${4+Math.floor(Math.random()*3)},"losses":${11+Math.floor(Math.random()*3)},"pf":1567,"pa":1734},
+{"id":8,"name":"Kitale Wolves","city":"Kitale","wins":${3+Math.floor(Math.random()*3)},"losses":${12+Math.floor(Math.random()*3)},"pf":1534,"pa":1778}
+],
+"players":[
+{"id":1,"name":"John Mbugua","team":"Nairobi Thunder","ppg":${(26+Math.random()*4).toFixed(1)},"rpg":${(7+Math.random()*2).toFixed(1)},"apg":${(3+Math.random()*2).toFixed(1)},"spg":${(1.5+Math.random()).toFixed(1)},"bpg":${(0.8+Math.random()*0.4).toFixed(1)},"fgPercent":52.3},
+{"id":2,"name":"Kevin Omondi","team":"Kisumu Lakers","ppg":${(22+Math.random()*4).toFixed(1)},"rpg":${(4+Math.random()*2).toFixed(1)},"apg":${(6+Math.random()*2).toFixed(1)},"spg":${(1.8+Math.random()).toFixed(1)},"bpg":0.3,"fgPercent":48.7},
+{"id":3,"name":"James Otieno","team":"Coastal Kings","ppg":${(20+Math.random()*4).toFixed(1)},"rpg":${(6+Math.random()*2).toFixed(1)},"apg":${(3+Math.random()*2).toFixed(1)},"spg":1.4,"bpg":1.1,"fgPercent":49.2},
+{"id":4,"name":"Peter Wanjala","team":"Eldoret Hawks","ppg":${(16+Math.random()*4).toFixed(1)},"rpg":${(10+Math.random()*2).toFixed(1)},"apg":2.1,"spg":0.8,"bpg":${(2+Math.random()).toFixed(1)},"fgPercent":55.1},
+{"id":5,"name":"David Kipchoge","team":"Nakuru Broncos","ppg":${(15+Math.random()*3).toFixed(1)},"rpg":${(5+Math.random()*2).toFixed(1)},"apg":${(5+Math.random()*2).toFixed(1)},"spg":1.5,"bpg":0.4,"fgPercent":46.8},
+{"id":6,"name":"Samuel Waweru","team":"Thika Bucks","ppg":${(13+Math.random()*3).toFixed(1)},"rpg":4.9,"apg":6.1,"spg":2.3,"bpg":0.2,"fgPercent":44.1},
+{"id":7,"name":"Grace Achieng","team":"Mombasa Kings","ppg":${(12+Math.random()*3).toFixed(1)},"rpg":5.2,"apg":3.8,"spg":1.9,"bpg":0.5,"fgPercent":47.3}
+],
+"events":[
+{"id":1,"title":"KBF Championship Finals","location":"Nyayo Stadium, Nairobi","date":"${d(8).split('T')[0]}","description":"Season finale — top 4 teams battle for the title"},
+{"id":2,"title":"Coastal Youth Basketball Camp","location":"Mombasa Sports Club","date":"${d(12).split('T')[0]}","description":"Free coaching for ages 12-16. National team coaches attending"},
+{"id":3,"title":"Lake Region Invitational","location":"Kisumu Sports Complex","date":"${d(16).split('T')[0]}","description":"5-county tournament — Kisumu, Siaya, Homa Bay, Migori, Homabay"},
+{"id":4,"title":"KBF Referees Certification","location":"Nakuru Indoor Arena","date":"${d(20).split('T')[0]}","description":"Mandatory recertification for all KBF-licensed referees"}
+],
+"transfers":[
+{"id":1,"player":"Kevin Omondi","from":"Coastal Kings","to":"Kisumu Lakers","type":"Confirmed","fee":"2.5M KES"},
+{"id":2,"player":"Michael Ochieng","from":"Nairobi Thunder","to":"Mombasa Kings","type":"Confirmed","fee":"1.8M KES"},
+{"id":3,"player":"John Mbugua","from":"Kisumu Lakers","to":"Nairobi Thunder","type":"Rumor","fee":"~3M KES"},
+{"id":4,"player":"Grace Achieng","from":"Free Agent","to":"Eldoret Hawks","type":"Confirmed","fee":"Undisclosed"},
+{"id":5,"player":"Brian Mutua","from":"Thika Bucks","to":"Nakuru Broncos","type":"Rumor","fee":"~800K KES"}
+]}`;
+
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content:prompt}]})
+  });
+  const data=await res.json();
+  const txt=data.content.map(c=>c.text||'').join('');
+  return JSON.parse(txt.replace(/```json|```/g,'').trim());
+}
+
+// ── INIT ───────────────────────────────────────────
+async function init(){
+  loadAll();
+  setupTabs();
+  populateSelects();
+  if(!posts.length)loadDefaults();
+  renderAll();
+  initPredLeaders();
+  initCountyData();
+  renderFantasy();
+  renderPredictions();
+  renderAlerts();
+  renderRivalry();
+
+  try{
+    const fresh=await fetchAIData();
+    const userPosts=posts.filter(p=>p.id>10000);
+    const userMatches=matches.filter(m=>m.id>10000);
+    const userTeams=teams.filter(t=>t.id>10000);
+    const userPlayers=players.filter(p=>p.id>10000);
+    const userEvents=events.filter(e=>e.id>10000);
+    const userTransfers=transfers.filter(t=>t.id>10000);
+    posts=[...fresh.posts,...userPosts];
+    matches=[...fresh.matches,...userMatches];
+    teams=[...fresh.teams,...userTeams];
+    players=[...fresh.players,...userPlayers];
+    events=[...fresh.events,...userEvents];
+    transfers=[...fresh.transfers,...userTransfers];
+    saveAll();renderAll();renderFantasy();renderPredictions();renderRivalry();
+  }catch(e){console.warn('AI fetch failed',e);}
+}
+
+function loadDefaults(){
+  posts=[
+    {id:1,title:'Nairobi Thunder Clinch KBF Championship',content:'John Mbugua drops 32 points as Thunder defeat Coastal Kings 89-84 at Nyayo Stadium.',town:'Nairobi',author:'KBF Media',timestamp:new Date().toISOString(),likes:127},
+    {id:2,title:'Mombasa Opens State-of-the-Art Basketball Academy',content:'New facility features 3 full courts, video analysis room, and strength centre.',town:'Mombasa',author:'Coast Sports',timestamp:new Date(Date.now()-86400000).toISOString(),likes:89},
+    {id:3,title:'Kisumu Lakers Land Former National Team Guard',content:'Kevin Omondi signs 3-year, 2.5M KES deal with the Lakers.',town:'Kisumu',author:'Laker Nation',timestamp:new Date(Date.now()-172800000).toISOString(),likes:156},
+  ];
+  matches=[
+    {id:1,team1:'Nairobi Thunder',team2:'Coastal Kings',score1:89,score2:84,time:new Date(Date.now()-86400000).toISOString(),status:'Final'},
+    {id:2,team1:'Kisumu Lakers',team2:'Eldoret Hawks',score1:76,score2:72,time:new Date(Date.now()-2*86400000).toISOString(),status:'Final'},
+    {id:3,team1:'Nakuru Broncos',team2:'Thika Bucks',score1:54,score2:49,time:new Date().toISOString(),status:'Live'},
+    {id:4,team1:'Mombasa Kings',team2:'Kitale Wolves',score1:0,score2:0,time:new Date(Date.now()+7200000).toISOString(),status:'Upcoming'},
+  ];
+  teams=[
+    {id:1,name:'Nairobi Thunder',city:'Nairobi',wins:14,losses:4,pf:1789,pa:1654},
+    {id:2,name:'Coastal Kings',city:'Mombasa',wins:12,losses:6,pf:1723,pa:1689},
+    {id:3,name:'Kisumu Lakers',city:'Kisumu',wins:11,losses:7,pf:1698,pa:1678},
+    {id:4,name:'Eldoret Hawks',city:'Eldoret',wins:9,losses:9,pf:1654,pa:1672},
+    {id:5,name:'Nakuru Broncos',city:'Nakuru',wins:8,losses:10,pf:1623,pa:1690},
+    {id:6,name:'Thika Bucks',city:'Thika',wins:7,losses:11,pf:1598,pa:1689},
+  ];
+  players=[
+    {id:1,name:'John Mbugua',team:'Nairobi Thunder',ppg:28.5,rpg:8.2,apg:4.1,spg:1.8,bpg:0.9,fgPercent:52.3},
+    {id:2,name:'Kevin Omondi',team:'Kisumu Lakers',ppg:24.2,rpg:5.3,apg:7.2,spg:2.1,bpg:0.3,fgPercent:48.7},
+    {id:3,name:'James Otieno',team:'Coastal Kings',ppg:22.8,rpg:7.1,apg:3.5,spg:1.4,bpg:1.1,fgPercent:49.2},
+    {id:4,name:'Peter Wanjala',team:'Eldoret Hawks',ppg:18.5,rpg:11.2,apg:2.1,spg:0.8,bpg:2.3,fgPercent:55.1},
+    {id:5,name:'David Kipchoge',team:'Nakuru Broncos',ppg:16.8,rpg:6.8,apg:5.5,spg:1.5,bpg:0.4,fgPercent:46.8},
+    {id:6,name:'Samuel Waweru',team:'Thika Bucks',ppg:15.2,rpg:4.9,apg:6.1,spg:2.3,bpg:0.2,fgPercent:44.1},
+  ];
+  events=[
+    {id:1,title:'KBF Championship Finals',location:'Nyayo Stadium, Nairobi',date:'2026-05-10',description:'Season finale featuring top 4 teams'},
+    {id:2,title:'Coastal Youth Camp',location:'Mombasa Sports Club',date:'2026-05-15',description:'Free training for ages 12-16'},
+    {id:3,title:'Lake Region Invitational',location:'Kisumu Sports Complex',date:'2026-05-20',description:'5-county tournament'},
+  ];
+  transfers=[
+    {id:1,player:'Kevin Omondi',from:'Coastal Kings',to:'Kisumu Lakers',type:'Confirmed',fee:'2.5M KES'},
+    {id:2,player:'Michael Ochieng',from:'Nairobi Thunder',to:'Mombasa Kings',type:'Confirmed',fee:'1.8M KES'},
+    {id:3,player:'John Mbugua',from:'Kisumu Lakers',to:'Nairobi Thunder',type:'Rumor',fee:'~3M KES'},
+  ];
+  saveAll();
+}
+
+function initPredLeaders(){
+  if(!predLeaders.length){
+    predLeaders=[
+      {name:'Kamau F.',pts:180,correct:18,total:22},
+      {name:'Atieno B.',pts:150,correct:15,total:20},
+      {name:'Wanjiku M.',pts:130,correct:13,total:18},
+      {name:'Ochieng R.',pts:110,correct:11,total:17},
+      {name:'Mutua S.',pts:90,correct:9,total:15},
+      {name:'You',pts:0,correct:0,total:0},
+    ];
+    save('predLeaders',predLeaders);
+  }
+}
+
+// ── RENDER ALL ─────────────────────────────────────
+function renderAll(){
+  renderStats();renderTownFilters();renderPosts();renderMatches();
+  renderRankings();renderPlayers();renderEvents();renderTransfers();
+}
+
+function renderStats(){
+  const upcoming=events.filter(e=>new Date(e.date)>=new Date()).length;
+  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
+  document.getElementById('statsRow').innerHTML=`
+    <div class="scard"><div class="sicon" style="color:var(--orange)">📰</div><div class="sval">${posts.length}</div><div class="slabel">Updates</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--yellow)">🏆</div><div class="sval">${teams.length}</div><div class="slabel">Teams</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--blue)">👤</div><div class="sval">${players.length}</div><div class="slabel">Players</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--green)">📅</div><div class="sval">${upcoming}</div><div class="slabel">Events</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--red)">🏀</div><div class="sval">${matches.length}</div><div class="slabel">Games</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--orange)">🔄</div><div class="sval">${transfers.length}</div><div class="slabel">Transfers</div></div>
+    <div class="scard"><div class="sicon" style="color:var(--purple)">🎮</div><div class="sval">${myPts.toFixed(0)}</div><div class="slabel">Fantasy Pts</div></div>
+    <div class="scard"><div class="sicon" style="color:#25D366">📲</div><div class="sval">${subscribers.length}</div><div class="slabel">Subscribers</div></div>
+  `;
+}
+
+// ── FEED ───────────────────────────────────────────
+function renderTownFilters(){
+  const counts={};posts.forEach(p=>counts[p.town]=(counts[p.town]||0)+1);
+  let h=`<button class="ttown ${currentTownFilter==='all'?'active':''}" onclick="filterTown('all')">All (${posts.length})</button>`;
+  TOWNS.forEach(t=>{if(counts[t])h+=`<button class="ttown ${currentTownFilter===t?'active':''}" onclick="filterTown('${t}')">${t} (${counts[t]})</button>`;});
+  document.getElementById('townRow').innerHTML=h;
+}
+function filterTown(t){currentTownFilter=t;renderTownFilters();renderPosts();}
+function renderPosts(){
+  let list=currentTownFilter==='all'?[...posts]:posts.filter(p=>p.town===currentTownFilter);
+  list.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+  if(!list.length){document.getElementById('postsGrid').innerHTML='<div class="empty"><i class="fas fa-newspaper"></i>No updates</div>';return;}
+  document.getElementById('postsGrid').innerHTML=list.map(p=>`
+    <div class="post-card">
+      <div class="post-top"><span class="post-badge">${esc(p.town)}</span><span class="post-time">${timeAgo(p.timestamp)}</span></div>
+      <div class="post-body"><div class="post-title">${esc(p.title)}</div><div class="post-text">${esc(p.content)}</div></div>
+      <div class="post-foot">
+        <span class="post-src"><i class="fas fa-user" style="opacity:0.4;margin-right:4px"></i>${esc(p.author)}</span>
+        <div style="display:flex;gap:0.75rem;align-items:center">
+          <span style="font-size:0.75rem;color:var(--txt3)"><i class="fas fa-heart" style="color:var(--red)"></i> ${p.likes}</span>
+          <button class="trash-btn" onclick="promptDelete('post',${p.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function addPost(){
+  const title=document.getElementById('pTitle').value.trim();
+  const town=document.getElementById('pTown').value;
+  const author=document.getElementById('pAuthor').value.trim();
+  const content=document.getElementById('pContent').value.trim();
+  if(!title||!author||!content){showToast('Please fill all fields','error');return;}
+  posts.unshift({id:Date.now(),title,content,town,author,timestamp:new Date().toISOString(),likes:0});
+  saveAll();['pTitle','pAuthor','pContent'].forEach(id=>document.getElementById(id).value='');
+  renderAll();showToast('Post published!');
+}
+
+// ── SCORES ─────────────────────────────────────────
+function renderMatches(){
+  const live=matches.filter(m=>m.status==='Live');
+  const upcoming=matches.filter(m=>m.status==='Upcoming');
+  const final=matches.filter(m=>m.status==='Final');
+  let h='';
+  if(live.length)h+=`<div class="msect live-sect"><i class="fas fa-circle" style="font-size:0.45rem;margin-right:5px"></i>Live Now</div>`+live.map(matchCard).join('');
+  if(upcoming.length)h+=`<div class="msect">Upcoming</div>`+upcoming.map(matchCard).join('');
+  if(final.length)h+=`<div class="msect">Completed</div>`+final.map(matchCard).join('');
+  document.getElementById('matchesList').innerHTML=h||'<div class="empty"><i class="fas fa-calendar"></i>No matches</div>';
+}
+function matchCard(m){
+  const cls=m.status==='Live'?'spill-live':m.status==='Final'?'spill-final':'spill-upcoming';
+  return `<div class="match-card">
+    <div class="match-row">
+      <div class="team-side"><div class="team-logo">🏀</div><div class="team-name">${esc(m.team1)}</div></div>
+      <div class="scores"><span class="score-num">${m.score1}</span><span class="score-sep">–</span><span class="score-num">${m.score2}</span></div>
+      <div class="team-side right"><div class="team-name">${esc(m.team2)}</div><div class="team-logo">🏀</div></div>
+    </div>
+    <div class="match-meta">
+      <span><i class="far fa-clock" style="margin-right:3px"></i>${fmtDate(m.time)}</span>
+      <span class="spill ${cls}">${m.status}</span>
+      <button class="trash-btn" onclick="promptDelete('match',${m.id})"><i class="fas fa-trash"></i></button>
+    </div>
+  </div>`;
+}
+
+// ── RANKINGS ───────────────────────────────────────
+function renderRankings(){
+  const sorted=[...teams].sort((a,b)=>(b.wins/(b.wins+b.losses||1))-(a.wins/(a.wins+a.losses||1)));
+  document.getElementById('rankingsBody').innerHTML=sorted.map((t,i)=>{
+    const gp=t.wins+t.losses;const pct=gp>0?((t.wins/gp)*100).toFixed(1)+'%':'—';
+    const diff=(t.pf||0)-(t.pa||0);const streak=t.wins>=t.losses?`W${t.wins-t.losses}`:`L${t.losses-t.wins}`;
+    return `<tr><td class="${i===0?'gold':''}">${i+1}</td><td><strong>${esc(t.name)}</strong></td><td>${esc(t.city)}</td>
+    <td>${gp}</td><td>${t.wins}</td><td>${t.losses}</td><td>${pct}</td>
+    <td>${t.pf||0}</td><td>${t.pa||0}</td>
+    <td style="color:${diff>=0?'var(--green)':'var(--red)'}">${diff>=0?'+':''}${diff}</td>
+    <td style="color:${streak.startsWith('W')?'var(--green)':'var(--red)'}">${streak}</td></tr>`;
+  }).join('');
+}
+
+// ── PLAYERS ────────────────────────────────────────
+function sortPlayers(by){
+  playerSort=by;
+  document.querySelectorAll('.sort-row .btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('sort-'+by);if(el)el.classList.add('active');
+  renderPlayers();
+}
+function renderPlayers(){
+  const sorted=[...players].sort((a,b)=>(b[playerSort]||0)-(a[playerSort]||0));
+  document.getElementById('playersGrid').innerHTML=sorted.map(p=>`
+    <div class="player-card">
+      <div class="avatar">${p.name.charAt(0)}</div>
+      <div class="pname">${esc(p.name)}</div><div class="pteam">${esc(p.team)}</div>
+      <div class="pstats">
+        <div class="pstat"><div class="pstat-val">${p.ppg}</div><div class="pstat-lbl">PPG</div></div>
+        <div class="pstat"><div class="pstat-val">${p.rpg}</div><div class="pstat-lbl">RPG</div></div>
+        <div class="pstat"><div class="pstat-val">${p.apg}</div><div class="pstat-lbl">APG</div></div>
+        <div class="pstat"><div class="pstat-val">${p.spg||0}</div><div class="pstat-lbl">SPG</div></div>
+      </div>
+      <button class="trash-btn" style="margin-top:0.75rem;width:100%;border:1px solid var(--border);border-radius:8px;padding:0.35rem" onclick="promptDelete('player',${p.id})"><i class="fas fa-trash"></i> Remove</button>
+    </div>`).join('');
+}
+
+// ── EVENTS ─────────────────────────────────────────
+function renderEvents(){
+  const sorted=[...events].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!sorted.length){document.getElementById('eventsGrid').innerHTML='<div class="empty"><i class="fas fa-calendar"></i>No events</div>';return;}
+  document.getElementById('eventsGrid').innerHTML=sorted.map(e=>{
+    const d=new Date(e.date+'T00:00:00');
+    return `<div class="event-card">
+      <div class="event-date-bar"><div class="eday">${d.getDate()}</div><div class="emon">${d.toLocaleString('default',{month:'short',year:'numeric'})}</div></div>
+      <div class="event-info">
+        <div class="event-title">${esc(e.title)}</div>
+        <div class="event-loc"><i class="fas fa-map-marker-alt" style="color:var(--orange);margin-right:4px"></i>${esc(e.location)}</div>
+        <div class="event-desc">${esc(e.description)}</div>
+        <button class="trash-btn" style="margin-top:0.6rem" onclick="promptDelete('event',${e.id})"><i class="fas fa-trash"></i> Remove</button>
+      </div>
+    </div>`;}).join('');
+}
+
+// ── TRANSFERS ──────────────────────────────────────
+function renderTransfers(){
+  if(!transfers.length){document.getElementById('transfersList').innerHTML='<div class="empty"><i class="fas fa-exchange-alt"></i>No transfers</div>';return;}
+  document.getElementById('transfersList').innerHTML=transfers.map(t=>`
+    <div class="transfer-card">
+      <div><div class="tplayer">${esc(t.player)}</div><div class="tclubs">${esc(t.from)} <span class="arr">→</span> ${esc(t.to)}</div></div>
+      <div style="text-align:center"><span class="cbadge ${t.type==='Confirmed'?'cb-confirmed':'cb-rumor'}">${t.type}</span><div class="tfee" style="margin-top:0.25rem">${esc(t.fee)}</div></div>
+      <button class="trash-btn" style="border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.7rem" onclick="promptDelete('transfer',${t.id})"><i class="fas fa-trash"></i></button>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+// FANTASY LEAGUE
+// ══════════════════════════════════════════════════
+function calcFantasyPts(player){
+  if(!player)return 0;
+  return Math.round(player.ppg*3 + player.rpg*2 + (player.apg||0)*1.5 + (player.spg||0)*2 + (player.bpg||0)*2);
+}
+
+function renderFantasy(){
+  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
+  const el=document.getElementById('myFantasyPts');if(el)el.textContent=myPts;
+  document.getElementById('rosterCount').textContent=`(${myRoster.length}/5 players)`;
+  renderRosterGrid();
+  renderPickGrid();
+  renderFLLeaderboard();
+}
+
+function renderRosterGrid(){
+  const positions=['PG','SG','SF','PF','C'];
+  const grid=document.getElementById('rosterGrid');if(!grid)return;
+  grid.innerHTML=positions.map((pos,i)=>{
+    const p=myRoster[i];
+    if(p){
+      const pts=calcFantasyPts(p);
+      return `<div class="roster-slot filled">
+        <div class="slot-pos">${pos}</div>
+        <div class="avatar" style="width:40px;height:40px;font-size:1rem;margin:0.3rem 0">${p.name.charAt(0)}</div>
+        <div class="slot-name">${esc(p.name)}</div>
+        <div class="slot-team">${esc(p.team)}</div>
+        <div class="slot-pts">${pts}</div>
+        <div class="slot-pts-lbl">pts this week</div>
+        <button class="trash-btn" style="font-size:0.68rem;margin-top:0.3rem" onclick="removeFromRoster(${i})"><i class="fas fa-times"></i> Drop</button>
+      </div>`;
+    }
+    return `<div class="roster-slot" onclick="showSubTab('fantasy','pick-players')">
+      <div class="slot-pos">${pos}</div>
+      <div class="slot-empty-icon"><i class="fas fa-plus-circle"></i></div>
+      <div class="slot-empty-lbl">Tap to pick player</div>
+    </div>`;
+  }).join('');
+}
+
+function renderPickGrid(){
+  const grid=document.getElementById('pickGrid');if(!grid)return;
+  const rosterIds=myRoster.map(p=>p.id);
+  grid.innerHTML=players.map(p=>{
+    const pts=calcFantasyPts(p);
+    const sel=rosterIds.includes(p.id);
+    return `<div class="pick-card ${sel?'selected':''}" onclick="togglePickPlayer(${p.id})">
+      <div class="pick-name">${esc(p.name)} ${sel?'<i class="fas fa-check-circle" style="color:var(--purple);font-size:0.75rem"></i>':''}</div>
+      <div class="pick-info">${esc(p.team)} · PPG: ${p.ppg} · RPG: ${p.rpg} · APG: ${p.apg}</div>
+      <div class="pick-pts">${pts} <span style="font-size:0.65rem;font-weight:400;color:var(--txt3)">fantasy pts</span></div>
+    </div>`;
+  }).join('');
+}
+
+function togglePickPlayer(id){
+  const p=players.find(x=>x.id===id);if(!p)return;
+  const idx=myRoster.findIndex(x=>x.id===id);
+  if(idx>=0){myRoster.splice(idx,1);}
+  else{if(myRoster.length>=5){showToast('Max 5 players in your roster','error');return;}myRoster.push(p);}
+  saveAll();renderPickGrid();renderRosterGrid();
+  document.getElementById('rosterCount').textContent=`(${myRoster.length}/5 players)`;
+}
+function removeFromRoster(i){myRoster.splice(i,1);saveAll();renderFantasy();}
+function saveRoster(){
+  saveAll();showToast('Roster saved! 🎮');showSubTab('fantasy','my-team');renderFantasy();renderStats();
+}
+
+function renderFLLeaderboard(){
+  const lb=document.getElementById('flLeaderboard');if(!lb)return;
+  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
+  const leaders=[
+    {name:'Kamau F.',pts:920,team:'Thunder Squad'},
+    {name:'Atieno B.',pts:875,team:'Laker Nation'},
+    {name:'Wanjiku M.',pts:841,team:'Coast Ballers'},
+    {name:'Ochieng R.',pts:810,team:'Rift Valley FC'},
+    {name:'Mutua S.',pts:788,team:'Bronco Boys'},
+    {name:'You 🏆',pts:Math.max(myPts,0),team:'My Team'},
+  ].sort((a,b)=>b.pts-a.pts);
+  const rankClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  lb.innerHTML=leaders.map((l,i)=>`
+    <div class="fl-lb-row">
+      <div class="fl-rank ${rankClass(i)}">${i+1}</div>
+      <div><div class="fl-name">${esc(l.name)}</div><div class="fl-team">${esc(l.team)}</div></div>
+      <div class="fl-pts">${l.pts}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+// PREDICTION LEAGUE
+// ══════════════════════════════════════════════════
+function renderPredictions(){
+  renderOpenPreds();renderMyPreds();renderPredLB();
+  const myEntry=predLeaders.find(l=>l.name==='You');
+  if(myEntry){
+    document.getElementById('myPredPts').textContent=myEntry.pts;
+    const acc=myEntry.total>0?Math.round((myEntry.correct/myEntry.total)*100)+'%':'—';
+    document.getElementById('predAccuracy').textContent=`${myEntry.correct}/${myEntry.total} correct (${acc})`;
+  }
+}
+
+function renderOpenPreds(){
+  const openMatches=matches.filter(m=>m.status==='Upcoming'||m.status==='Live');
+  const el=document.getElementById('openPredsList');if(!el)return;
+  if(!openMatches.length){el.innerHTML='<div class="empty"><i class="fas fa-clock"></i>No open predictions right now. Check back when new fixtures are scheduled.</div>';return;}
+  el.innerHTML=openMatches.map(m=>{
+    const pred=predictions.find(p=>p.matchId===m.id);
+    const statusCls=pred?`pred-btn picked`:'pred-btn';
+    return `<div class="pred-card">
+      <div class="pred-match">
+        <div class="pred-team">${esc(m.team1)}</div>
+        <div class="pred-vs">VS</div>
+        <div class="pred-team">${esc(m.team2)}</div>
+      </div>
+      <div class="pred-deadline"><i class="fas fa-clock"></i> ${m.status==='Live'?'LIVE — Limited time!':'Closes at kick-off'} · ${fmtDate(m.time)}</div>
+      <div class="pred-buttons">
+        <button class="pred-btn ${pred&&pred.pick===m.team1?'picked':''}" onclick="makePrediction(${m.id},'${esc(m.team1)}','${esc(m.team2)}')">${esc(m.team1)} Win</button>
+        <button class="pred-btn ${pred&&pred.pick==='draw'?'picked':''}" onclick="makePrediction(${m.id},'draw','${esc(m.team1)}v${esc(m.team2)}')">Draw</button>
+        <button class="pred-btn ${pred&&pred.pick===m.team2?'picked':''}" onclick="makePrediction(${m.id},'${esc(m.team2)}','${esc(m.team1)}')">${esc(m.team2)} Win</button>
+      </div>
+      ${pred?`<div class="pred-result pending"><i class="fas fa-hourglass-half"></i> Picked: ${esc(pred.pick)} · Result pending</div>`:''}
+    </div>`;}).join('');
+}
+
+function makePrediction(matchId,pick,opponent){
+  const existing=predictions.findIndex(p=>p.matchId===matchId);
+  if(existing>=0)predictions.splice(existing,1);
+  predictions.push({matchId,pick,opponent,timestamp:new Date().toISOString(),resolved:false});
+  saveAll();renderPredictions();showToast(`Prediction locked: ${pick} 🔮`);
+}
+
+function renderMyPreds(){
+  const el=document.getElementById('myPredsList');if(!el)return;
+  if(!predictions.length){el.innerHTML='<div class="empty"><i class="fas fa-clock"></i>No predictions yet. Go to Open Predictions and make your picks!</div>';return;}
+  el.innerHTML=predictions.map(p=>{
+    const m=matches.find(x=>x.id===p.matchId);
+    const teamNames=m?`${m.team1} vs ${m.team2}`:`Match #${p.matchId}`;
+    const isResolved=p.resolved;
+    const resultCls=isResolved?(p.correct?'win':'loss'):'pending';
+    const resultTxt=isResolved?(p.correct?'✅ Correct! +10 pts':'❌ Incorrect'):'⏳ Pending';
+    return `<div class="pred-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem">
+        <div><strong style="font-family:'Barlow Condensed',sans-serif;font-size:1rem">${teamNames}</strong><br><span style="font-size:0.75rem;color:var(--txt3)">Predicted: <strong style="color:var(--txt)">${esc(p.pick)}</strong> · ${timeAgo(p.timestamp)}</span></div>
+        <div class="pred-result ${resultCls}">${resultTxt}</div>
+      </div>
+    </div>`;}).join('');
+}
+
+function renderPredLB(){
+  const lb=document.getElementById('predLeaderboard');if(!lb)return;
+  const sorted=[...predLeaders].sort((a,b)=>b.pts-a.pts);
+  const rankClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  lb.innerHTML=sorted.map((l,i)=>`
+    <div class="pred-lb-row">
+      <div class="fl-rank ${rankClass(i)}">${i+1}</div>
+      <div style="flex:1"><div class="fl-name">${esc(l.name)}</div><div class="pred-acc">${l.correct}/${l.total} correct</div></div>
+      <div class="fl-pts" style="color:var(--green)">${l.pts}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+// WHATSAPP ALERTS
+// ══════════════════════════════════════════════════
+function renderAlerts(){
+  document.getElementById('subCount').textContent=subscribers.length;
+  renderSubscribersList();
+  updateAlertPreview();
+}
+
+function addSubscriber(){
+  const name=document.getElementById('waName').value.trim();
+  const phone=document.getElementById('waPhone').value.trim();
+  const town=document.getElementById('waTown').value;
+  if(!name||!phone){showToast('Enter name and phone number','error');return;}
+  if(!phone.startsWith('+')){showToast('Use international format e.g. +254...','error');return;}
+  const existing=subscribers.find(s=>s.phone===phone);
+  if(existing){showToast('This number is already subscribed','error');return;}
+  const prefs=[...document.querySelectorAll('.wa-prefs input:checked')].map(c=>c.value);
+  subscribers.push({id:Date.now(),name,phone,town,prefs,joined:new Date().toISOString(),active:true});
+  saveAll();
+  document.getElementById('waName').value='';
+  document.getElementById('waPhone').value='';
+  renderAlerts();renderStats();
+  showToast(`${name} subscribed! They'd get WhatsApp alerts 📲`);
+}
+
+function renderSubscribersList(){
+  const el=document.getElementById('subscribersList');if(!el)return;
+  if(!subscribers.length){el.innerHTML='<div class="empty"><i class="fab fa-whatsapp"></i>No subscribers yet. Share the signup form!</div>';return;}
+  el.innerHTML=subscribers.map((s,i)=>`
+    <div class="sub-row">
+      <div class="sub-num">${(i+1).toString().padStart(2,'0')}</div>
+      <div class="sub-name">${esc(s.name)}<br><span style="font-size:0.7rem;color:var(--txt3)">${esc(s.phone)}</span></div>
+      <div class="sub-town">${esc(s.town)}</div>
+      <div class="sub-prefs">${(s.prefs||[]).join(', ')}</div>
+      <div class="sub-active">Active</div>
+      <button class="trash-btn" onclick="removeSubscriber(${s.id})"><i class="fas fa-times"></i></button>
+    </div>`).join('');
+}
+
+function removeSubscriber(id){
+  subscribers=subscribers.filter(s=>s.id!==id);
+  saveAll();renderAlerts();renderStats();showToast('Subscriber removed');
+}
+
+function updateAlertPreview(){
+  const type=document.getElementById('alertType')?.value;
+  const customMsg=document.getElementById('alertMsg')?.value;
+  const templates={
+    live:'🏀 *KBL LIVE SCORE*\n\nNairobi Thunder 62 – 58 Coastal Kings\n⏱ Q3 | 4:23 remaining\n\nJohn Mbugua leading with 24 pts\n\n📲 Reply STOP to unsubscribe\n_Kenya Basketball Live_',
+    final:'✅ *KBL FINAL RESULT*\n\nNairobi Thunder 89 – 84 Coastal Kings\n\n🏆 Thunder win! Mbugua top scorer with 32 pts\n\nView full stats: kbl.co.ke\n_Kenya Basketball Live_',
+    transfer:'🔄 *KBL TRANSFER NEWS*\n\nKevin Omondi has officially joined Kisumu Lakers from Coastal Kings for 2.5M KES\n\nMore details at kbl.co.ke\n_Kenya Basketball Live_',
+    event:'📅 *KBL EVENT REMINDER*\n\nKBF Championship Finals\n📍 Nyayo Stadium, Nairobi\n📆 Saturday 10 May, 3:00 PM\n\nGet tickets at the venue\n_Kenya Basketball Live_',
+    custom:customMsg||'Enter your custom message above...'
+  };
+  const preview=document.getElementById('alertPreviewText');
+  if(preview)preview.textContent=templates[type]||templates.live;
+}
+
+function broadcastAlert(){
+  const msg=document.getElementById('alertMsg').value.trim();
+  if(!subscribers.length){showToast('No subscribers to send to','error');return;}
+  showToast(`Alert broadcast to ${subscribers.length} subscribers via WhatsApp! 📲`);
+  document.getElementById('alertMsg').value='';
+}
+
+function sendTestAlert(){
+  const phone=document.getElementById('testPhone').value.trim();
+  if(!phone){showToast('Enter a phone number','error');return;}
+  showToast(`Test alert sent to ${phone} 📲`);
+  closeModal('waTestModal');
+  document.getElementById('testPhone').value='';
+}
+
+// ══════════════════════════════════════════════════
+// COUNTY RIVALRY
+// ══════════════════════════════════════════════════
+let countyData=[];
+function initCountyData(){
+  countyData=load('countyData',[]);
+  if(!countyData.length){
+    countyData=COUNTIES.map((name,i)=>({
+      name,
+      wins:Math.floor(Math.random()*30)+10,
+      losses:Math.floor(Math.random()*20)+5,
+      points:Math.floor(Math.random()*3000)+1000,
+      teams:Math.floor(Math.random()*4)+1,
+      players:Math.floor(Math.random()*40)+10,
+    }));
+    save('countyData',countyData);
+  }
+}
+
+function renderRivalry(){
+  document.getElementById('rivalryGameCount').textContent=
+    countyData.reduce((s,c)=>s+c.wins+c.losses,0);
+  renderCountyGrid();
+  populateH2HSelects();
+  renderH2H();
+  renderHotRivalries();
+}
+
+function renderCountyGrid(){
+  const sorted=[...countyData].sort((a,b)=>(b.wins/(b.wins+b.losses||1))-(a.wins/(a.wins+a.losses||1)));
+  const el=document.getElementById('countyGrid');if(!el)return;
+  el.innerHTML=sorted.map((c,i)=>{
+    const gp=c.wins+c.losses;
+    const pct=gp>0?(c.wins/gp*100):0;
+    return `<div class="county-card">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div>
+          <div style="font-size:0.62rem;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.2rem">County ${i+1}</div>
+          <div class="county-name">${esc(c.name)}</div>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:${pct>=60?'var(--green)':pct>=40?'var(--yellow)':'var(--red)'}">
+          ${pct.toFixed(0)}%
+        </div>
+      </div>
+      <div class="county-record">
+        <div class="county-stat"><div class="county-stat-val" style="color:var(--green)">${c.wins}</div><div class="county-stat-lbl">W</div></div>
+        <div class="county-stat"><div class="county-stat-val" style="color:var(--red)">${c.losses}</div><div class="county-stat-lbl">L</div></div>
+        <div class="county-stat"><div class="county-stat-val">${c.teams}</div><div class="county-stat-lbl">Teams</div></div>
+      </div>
+      <div class="county-bar"><div class="county-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;}).join('');
+}
+
+function populateH2HSelects(){
+  const selA=document.getElementById('h2hA');
+  const selB=document.getElementById('h2hB');
+  if(!selA||!selB)return;
+  const opts=COUNTIES.map((c,i)=>`<option value="${i}">${c}</option>`).join('');
+  selA.innerHTML=opts;
+  selB.innerHTML=opts;
+  selB.value='1';
+}
+
+function renderH2H(){
+  const panel=document.getElementById('h2hPanel');if(!panel)return;
+  const ai=parseInt(document.getElementById('h2hA')?.value||0);
+  const bi=parseInt(document.getElementById('h2hB')?.value||1);
+  if(ai===bi){panel.innerHTML='<div class="empty"><i class="fas fa-info-circle"></i>Select two different counties</div>';return;}
+  const a=countyData[ai];const b=countyData[bi];
+  if(!a||!b)return;
+  const totalA=a.wins+a.losses;const totalB=b.wins+b.losses;
+  const seed=ai*100+bi;
+  const aWins=Math.floor((seed%7)+2);const bWins=Math.floor(((seed*3)%5)+1);
+  const total=aWins+bWins;
+  const aPct=Math.round((aWins/total)*100);const bPct=100-aPct;
+
+  const recentGames=[
+    {date:'Apr 12',score:`${65+ai%10}-${60+bi%10}`,winner:a.name},
+    {date:'Mar 28',score:`${58+bi%8}-${62+ai%8}`,winner:b.name},
+    {date:'Feb 14',score:`${71+ai%6}-${68+bi%6}`,winner:a.name},
+    {date:'Jan 30',score:`${55+bi%9}-${57+ai%5}`,winner:b.name},
+  ];
+
+  panel.innerHTML=`<div class="h2h-panel">
+    <div class="h2h-header">
+      <div class="h2h-team"><div class="h2h-team-name" style="color:var(--orange)">${esc(a.name)}</div><div class="h2h-team-county">${a.teams} team(s)</div></div>
+      <div class="h2h-vs">H2H</div>
+      <div class="h2h-team" style="text-align:right"><div class="h2h-team-name" style="color:var(--blue)">${esc(b.name)}</div><div class="h2h-team-county">${b.teams} team(s)</div></div>
+    </div>
+    <div class="h2h-stats">
+      <div class="h2h-num" style="color:var(--orange)">${aWins}</div>
+      <div>
+        <div class="h2h-bar-wrap"><div class="h2h-bar-a" style="width:${aPct}%"></div><div class="h2h-bar-b" style="width:${bPct}%"></div></div>
+        <div class="h2h-bar-lbl"><span style="color:var(--orange)">${a.name}</span><span>${total} games</span><span style="color:var(--blue)">${b.name}</span></div>
+      </div>
+      <div class="h2h-num" style="color:var(--blue)">${bWins}</div>
+    </div>
+    <div class="h2h-recent">
+      <div class="h2h-recent-title">Recent Meetings</div>
+      ${recentGames.map(g=>`
+        <div class="h2h-game-row">
+          <span style="color:var(--txt3)">${g.date}</span>
+          <span class="h2h-game-score">${g.score}</span>
+          <span class="${g.winner===a.name?'h2h-winner':'h2h-loser'}">${esc(g.winner)} Win</span>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderHotRivalries(){
+  const el=document.getElementById('rivalryRows');if(!el)return;
+  const rivalries=[
+    {a:'Nairobi',b:'Mombasa',games:47,last:'Apr 15',margin:4.2,intensity:'hot'},
+    {a:'Kisumu',b:'Nairobi',games:38,last:'Apr 8',margin:6.8,intensity:'hot'},
+    {a:'Eldoret',b:'Nakuru',games:29,last:'Mar 30',margin:8.1,intensity:'warm'},
+    {a:'Mombasa',b:'Kisumu',games:24,last:'Mar 21',margin:9.5,intensity:'warm'},
+    {a:'Nakuru',b:'Kiambu',games:19,last:'Mar 14',margin:12.3,intensity:'cool'},
+    {a:'Thika',b:'Nyeri',games:15,last:'Feb 28',margin:11.0,intensity:'cool'},
+  ];
+  el.innerHTML=rivalries.map(r=>`
+    <div class="rivalry-table-row">
+      <div><span class="heat heat-${r.intensity}"></span></div>
+      <div><strong>${esc(r.a)}</strong> vs <strong>${esc(r.b)}</strong></div>
+      <div>${r.games} games</div>
+      <div>${r.last}</div>
+      <div>${r.margin.toFixed(1)} pts</div>
+      <div style="color:${r.intensity==='hot'?'var(--red)':r.intensity==='warm'?'var(--yellow)':'var(--blue)'}">
+        ${r.intensity==='hot'?'🔥 Fierce':r.intensity==='warm'?'⚡ Competitive':'💧 Developing'}
+      </div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+// MODALS / CRUD
+// ══════════════════════════════════════════════════
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});
+});
+
+function saveMatch(){
+  if(!document.getElementById('mT1').value.trim()||!document.getElementById('mT2').value.trim()){showToast('Enter both team names','error');return;}
+  matches.push({id:Date.now(),team1:document.getElementById('mT1').value.trim(),team2:document.getElementById('mT2').value.trim(),score1:parseInt(document.getElementById('mS1').value)||0,score2:parseInt(document.getElementById('mS2').value)||0,time:document.getElementById('mTime').value||new Date().toISOString(),status:document.getElementById('mStatus').value});
+  saveAll();renderMatches();renderStats();renderOpenPreds();closeModal('matchModal');
+  ['mT1','mT2','mS1','mS2','mTime'].forEach(id=>document.getElementById(id).value='');
+  showToast('Match added!');
+}
+function saveTeam(){
+  if(!document.getElementById('tmName').value.trim()){showToast('Enter team name','error');return;}
+  teams.push({id:Date.now(),name:document.getElementById('tmName').value.trim(),city:document.getElementById('tmCity').value.trim(),wins:parseInt(document.getElementById('tmW').value)||0,losses:parseInt(document.getElementById('tmL').value)||0,pf:parseInt(document.getElementById('tmPF').value)||0,pa:parseInt(document.getElementById('tmPA').value)||0});
+  saveAll();renderRankings();renderStats();closeModal('teamModal');
+  ['tmName','tmCity','tmW','tmL','tmPF','tmPA'].forEach(id=>document.getElementById(id).value='');
+  showToast('Team added!');
+}
+function savePlayer(){
+  if(!document.getElementById('plName').value.trim()){showToast('Enter player name','error');return;}
+  players.push({id:Date.now(),name:document.getElementById('plName').value.trim(),team:document.getElementById('plTeam').value.trim(),ppg:parseFloat(document.getElementById('plPPG').value)||0,rpg:parseFloat(document.getElementById('plRPG').value)||0,apg:parseFloat(document.getElementById('plAPG').value)||0,spg:parseFloat(document.getElementById('plSPG').value)||0,bpg:parseFloat(document.getElementById('plBPG').value)||0,fgPercent:parseFloat(document.getElementById('plFG').value)||0});
+  saveAll();renderPlayers();renderStats();renderPickGrid();closeModal('playerModal');
+  ['plName','plTeam','plPPG','plRPG','plAPG','plSPG','plBPG','plFG'].forEach(id=>document.getElementById(id).value='');
+  showToast('Player added!');
+}
+function saveEvent(){
+  if(!document.getElementById('evTitle').value.trim()){showToast('Enter event title','error');return;}
+  events.push({id:Date.now(),title:document.getElementById('evTitle').value.trim(),location:document.getElementById('evLoc').value.trim(),date:document.getElementById('evDate').value,description:document.getElementById('evDesc').value.trim()});
+  saveAll();renderEvents();renderStats();closeModal('eventModal');
+  ['evTitle','evLoc','evDate','evDesc'].forEach(id=>document.getElementById(id).value='');
+  showToast('Event added!');
+}
+function saveTransfer(){
+  if(!document.getElementById('trPlayer').value.trim()){showToast('Enter player name','error');return;}
+  transfers.push({id:Date.now(),player:document.getElementById('trPlayer').value.trim(),from:document.getElementById('trFrom').value.trim(),to:document.getElementById('trTo').value.trim(),type:document.getElementById('trType').value,fee:document.getElementById('trFee').value.trim()});
+  saveAll();renderTransfers();renderStats();closeModal('transferModal');
+  ['trPlayer','trFrom','trTo','trFee'].forEach(id=>document.getElementById(id).value='');
+  showToast('Transfer added!');
+}
+
+function promptDelete(type,id){pendingDelete={type,id};document.getElementById('delPwd').value='';openModal('deleteModal');}
+function confirmDelete(){
+  if(document.getElementById('delPwd').value!=='kenyaball2024'){showToast('Incorrect password','error');return;}
+  const{type,id}=pendingDelete;
+  if(type==='post')posts=posts.filter(p=>p.id!==id);
+  else if(type==='match')matches=matches.filter(m=>m.id!==id);
+  else if(type==='team')teams=teams.filter(t=>t.id!==id);
+  else if(type==='player')players=players.filter(p=>p.id!==id);
+  else if(type==='event')events=events.filter(e=>e.id!==id);
+  else if(type==='transfer')transfers=transfers.filter(t=>t.id!==id);
+  saveAll();renderAll();closeModal('deleteModal');showToast('Deleted');
+}
+
+// ── TABS ───────────────────────────────────────────
+function setupTabs(){
+  document.querySelectorAll('.ntab').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab+'Tab').classList.add('active');
+      // refresh sub-feature when tab opened
+      if(btn.dataset.tab==='fantasy')renderFantasy();
+      if(btn.dataset.tab==='predict')renderPredictions();
+      if(btn.dataset.tab==='alerts')renderAlerts();
+      if(btn.dataset.tab==='rivalry'){renderRivalry();setTimeout(renderH2H,100);}
+    });
+  });
+}
+
+function showSubTab(feature,id){
+  document.querySelectorAll(`#${feature}Tab .sub-tab`).forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`#${feature}Tab .sub-pane`).forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById(`${feature}-${id}`);
+  if(pane)pane.classList.add('active');
+  // find button by onclick
+  document.querySelectorAll(`#${feature}Tab .sub-tab`).forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(`'${id}'`))b.classList.add('active');
+  });
+}
+
+// ── HELPERS ────────────────────────────────────────
+function populateSelects(){
+  const pTown=document.getElementById('pTown');
+  TOWNS.forEach(t=>pTown.innerHTML+=`<option value="${t}">${t}</option>`);
+  const waTown=document.getElementById('waTown');
+  TOWNS.forEach(t=>waTown.innerHTML+=`<option value="${t}">${t}</option>`);
+}
+function esc(s=''){const d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
+function timeAgo(ts){
+  const diff=Math.floor((Date.now()-new Date(ts))/60000);
+  if(diff<1)return'Just now';if(diff<60)return`${diff}m ago`;
+  if(diff<1440)return`${Math.floor(diff/60)}h ago`;return`${Math.floor(diff/1440)}d ago`;
+}
+function fmtDate(ts){
+  try{return new Date(ts).toLocaleString('en-KE',{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
+  catch{return ts||'TBD';}
+}
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');
+  const m=document.getElementById('toastMsg');
+  t.className=`toast ${type}`;
+  t.querySelector('i').className=`fas fa-${type==='success'?'check-circle':'exclamation-circle'}`;
+  m.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+init();
+</script>
+</body>
+</html>
