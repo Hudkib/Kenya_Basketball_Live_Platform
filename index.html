@@ -363,6 +363,54 @@ td.gold{color:var(--yellow);font-weight:800}
 .toast.error{border-color:var(--red)}
 .toast.error i{color:var(--red)}
 
+
+
+
+/* POLISHED LANDING HERO */
+.site-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(249,115,22,.30),transparent 32%),radial-gradient(circle at 85% 10%,rgba(239,68,68,.18),transparent 28%),linear-gradient(135deg,#101522,#080b12 70%);border:1px solid rgba(249,115,22,.22);border-radius:26px;padding:1.45rem 1.55rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1.25rem;box-shadow:0 24px 80px rgba(0,0,0,.35)}
+.site-hero:after{content:'';position:absolute;right:-80px;bottom:-120px;width:280px;height:280px;border:35px solid rgba(255,255,255,.035);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(249,115,22,.06)}
+.site-hero-copy{position:relative;z-index:1}.hero-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.28);color:var(--red);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;border-radius:99px;padding:.28rem .72rem;margin-bottom:.55rem}.site-hero h1{font-size:3rem;font-weight:900;line-height:.95;color:#fff;text-transform:uppercase}.site-hero p{font-size:.92rem;color:var(--txt2);margin-top:.55rem;max-width:620px;line-height:1.6}.hero-score-tile{position:relative;z-index:1;background:rgba(8,11,18,.72);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:1rem 1.2rem;min-width:160px;text-align:right;backdrop-filter:blur(14px)}.hero-score-label{font-size:.68rem;color:var(--txt3);font-weight:800;text-transform:uppercase;letter-spacing:.7px}.hero-score-value{font-family:'Barlow Condensed',sans-serif;font-size:3.4rem;line-height:.9;font-weight:900;color:var(--red)}.hero-score-sub{font-size:.7rem;color:var(--txt2);margin-top:.35rem}.card,.scard,.match-card,.post-card,.player-card,.event-card,.transfer-card{box-shadow:0 14px 45px rgba(0,0,0,.16)}
+@media(max-width:720px){.site-hero{align-items:flex-start}.site-hero h1{font-size:2.15rem}.hero-score-tile{width:100%;text-align:left}.site-hero{flex-direction:column}}
+
+/* LIVE GAME CENTER */
+.live-hero{background:linear-gradient(135deg,rgba(239,68,68,.18),rgba(249,115,22,.10));border:1px solid rgba(239,68,68,.28);border-radius:20px;padding:1.4rem;margin-bottom:1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.live-hero h2{font-size:2rem;font-weight:900;color:#fff;line-height:1}
+.live-hero p{font-size:.86rem;color:var(--txt2);margin-top:.45rem;max-width:680px;line-height:1.55}
+.live-kicker{display:inline-flex;align-items:center;gap:.45rem;color:var(--red);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:.45rem}
+.live-hero-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+
+.live-api-panel{background:linear-gradient(135deg,rgba(59,130,246,.10),rgba(249,115,22,.06));border:1px solid rgba(59,130,246,.22);border-radius:18px;padding:1rem;margin-bottom:1rem;display:grid;grid-template-columns:1.1fr 2fr;gap:1rem;align-items:center}.live-api-copy strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;color:#fff;margin-bottom:.25rem}.live-api-copy i{color:var(--blue);margin-right:.4rem}.live-api-copy span,.live-api-note{font-size:.75rem;color:var(--txt2);line-height:1.45}.live-api-form{display:grid;grid-template-columns:1fr 1fr 1fr auto auto auto;gap:.55rem;align-items:center}.live-api-form input,.live-api-form select{width:100%;padding:.55rem .7rem;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:.8rem}.live-api-note{grid-column:1/-1;color:var(--txt3);padding-top:.15rem}.live-api-note.ok{color:var(--green)}.live-api-note.warn{color:var(--yellow)}.live-api-note.err{color:var(--red)}
+@media(max-width:980px){.live-api-panel{grid-template-columns:1fr}.live-api-form{grid-template-columns:1fr 1fr}.live-api-note{grid-column:1/-1}}@media(max-width:560px){.live-api-form{grid-template-columns:1fr}}
+
+.live-toolbar{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.live-sync{font-size:.72rem;color:var(--txt3);margin-left:auto}
+.live-games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1rem}
+.live-game-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;overflow:hidden;position:relative;box-shadow:0 14px 40px rgba(0,0,0,.18)}
+.live-game-card.is-live{border-color:rgba(239,68,68,.55)}
+.live-game-top{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:var(--bg3);border-bottom:1px solid var(--border);gap:.75rem}
+.live-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;padding:.22rem .62rem;border-radius:99px;background:rgba(239,68,68,.14);color:var(--red)}
+.live-status.final{background:rgba(16,185,129,.13);color:var(--green)}
+.live-status.upcoming{background:rgba(245,158,11,.13);color:var(--yellow)}
+.live-clock{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;color:#fff;white-space:nowrap}
+.live-arena{font-size:.68rem;color:var(--txt3);padding:.65rem 1rem 0;display:flex;gap:.35rem;align-items:center}
+.live-scoreboard{padding:1rem;display:grid;grid-template-columns:1fr auto 1fr;gap:.85rem;align-items:center}
+.live-team{text-align:left;min-width:0}.live-team.right{text-align:right}
+.live-team-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--bg4),var(--bg5));display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.45rem}
+.live-team.right .live-team-logo{margin-left:auto}
+.live-team-name{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:900;color:#fff;line-height:1.1;word-break:break-word}
+.live-team-record{font-size:.66rem;color:var(--txt3);margin-top:.18rem}
+.live-scorebox{text-align:center;min-width:104px}
+.live-score-main{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:900;color:var(--orange);line-height:1;letter-spacing:.02em}
+.live-scorebox small{display:block;margin-top:.25rem;color:var(--txt3);font-size:.66rem;text-transform:uppercase;font-weight:700}
+.live-progress{height:5px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 1rem 1rem}.live-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:99px;transition:width .5s ease}
+.live-details{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;padding:0 1rem 1rem}
+.live-panel{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.75rem;min-height:112px}
+.live-panel-title{font-size:.68rem;color:var(--txt3);font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:.55rem}
+.live-leader-row,.play-row{display:flex;justify-content:space-between;gap:.6rem;font-size:.74rem;color:var(--txt2);padding:.24rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.live-leader-row:last-child,.play-row:last-child{border-bottom:none}.live-leader-row strong{color:#fff}.play-row span:first-child{color:var(--orange);font-weight:800;white-space:nowrap}.play-row span:last-child{text-align:right}
+.live-controls{display:flex;gap:.5rem;flex-wrap:wrap;padding:0 1rem 1rem}.live-mini-btn{flex:1;min-width:120px;border:1px solid var(--border);background:var(--bg4);color:var(--txt2);border-radius:9px;padding:.45rem .55rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}.live-mini-btn:hover{border-color:var(--orange);color:#fff}.live-mini-btn.red:hover{border-color:var(--red);color:var(--red)}
+@media(max-width:720px){.live-details{grid-template-columns:1fr}.live-games-grid{grid-template-columns:1fr}.live-sync{margin-left:0;width:100%}.live-score-main{font-size:2rem}.live-scoreboard{gap:.45rem}.live-team-name{font-size:1rem}}
+
 /* RESPONSIVE */
 @media(max-width:1100px){.stats-row{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:768px){
@@ -397,7 +445,8 @@ td.gold{color:var(--yellow);font-weight:800}
       </div>
     </div>
     <div class="nav-tabs">
-      <button class="ntab active" data-tab="feed">🏀 Feed</button>
+      <button class="ntab" data-tab="feed">🏀 Feed</button>
+      <button class="ntab active" data-tab="live">🔴 Live</button>
       <button class="ntab" data-tab="scores">📊 Scores</button>
       <button class="ntab" data-tab="rankings">🏆 Rankings</button>
       <button class="ntab" data-tab="players">⭐ Players</button>
@@ -413,10 +462,23 @@ td.gold{color:var(--yellow);font-weight:800}
 </nav>
 
 <div class="main">
+  <section class="site-hero">
+    <div class="site-hero-copy">
+      <div class="hero-badge"><span class="live-dot"></span> Online-ready basketball hub</div>
+      <h1>Kenya Basketball Live</h1>
+      <p>Scores, standings, players, events, alerts and a live game center built for Kenyan basketball fans.</p>
+    </div>
+    <div class="hero-score-tile">
+      <div class="hero-score-label">Live Games</div>
+      <div class="hero-score-value" id="heroLiveCount">0</div>
+      <div class="hero-score-sub" id="heroOnlineStatus">Local demo active</div>
+    </div>
+  </section>
+
   <div class="stats-row" id="statsRow"></div>
 
   <!-- ── FEED ── -->
-  <div class="tab-pane active" id="feedTab">
+  <div class="tab-pane" id="feedTab">
     <div class="card">
       <div class="card-head"><div class="card-title"><i class="fas fa-pen-alt"></i> Breaking News</div></div>
       <div class="post-form-grid">
@@ -427,10 +489,57 @@ td.gold{color:var(--yellow);font-weight:800}
       <textarea id="pContent" rows="3" placeholder="Report..." class="finput" style="width:100%;margin-bottom:0.75rem;resize:vertical"></textarea>
       <button class="btn btn-orange" onclick="addPost()"><i class="fas fa-paper-plane"></i> Publish</button>
     </div>
-    <div class="ai-pill"><i class="fas fa-robot"></i> AI-generated data refreshes on each page load</div>
+    <div class="ai-pill"><i class="fas fa-robot"></i> Offline-ready demo data saves in your browser</div>
     <div class="town-row" id="townRow"></div>
     <div id="postsGrid" class="posts-grid"></div>
   </div>
+
+
+  <!-- ── LIVE CENTER ── -->
+  <div class="tab-pane active" id="liveTab">
+    <div class="live-hero">
+      <div>
+        <div class="live-kicker"><span class="live-dot"></span> Live Game Center</div>
+        <h2>Real-Time Kenya Basketball Scores</h2>
+        <p>Follow live games with auto-updating scores, game clock, quarter, leaders and play-by-play. Works offline using local browser storage.</p>
+      </div>
+      <div class="live-hero-actions">
+        <button class="btn btn-orange" onclick="openModal('matchModal')"><i class="fas fa-plus"></i> Add Live Game</button>
+        <button class="btn btn-ghost" id="livePauseBtn" onclick="toggleLiveSimulation()"><i class="fas fa-pause"></i> Pause Updates</button>
+      </div>
+    </div>
+
+    <div class="live-api-panel" id="liveApiPanel">
+      <div class="live-api-copy">
+        <strong><i class="fas fa-cloud-arrow-down"></i> Online live game source</strong>
+        <span>Enter an API key to pull real ongoing basketball games. Without a key, the app can try a public NBA scoreboard or use the local KBL live demo.</span>
+      </div>
+      <div class="live-api-form">
+        <select id="liveProvider">
+          <option value="apisports">API-SPORTS Basketball</option>
+          <option value="rapidapi">RapidAPI API-Basketball</option>
+          <option value="nba">Public NBA scoreboard, no key</option>
+        </select>
+        <input id="liveApiKey" type="password" placeholder="API key, optional for NBA">
+        <input id="liveCountry" placeholder="Country filter, e.g. Kenya">
+        <button class="btn btn-blue" onclick="saveLiveApiSettings()"><i class="fas fa-save"></i> Save</button>
+        <button class="btn btn-orange" onclick="syncOnlineGames()"><i class="fas fa-rotate"></i> Sync Now</button>
+        <button class="btn btn-green" onclick="autoGenerateGames()"><i class="fas fa-wand-magic-sparkles"></i> Auto Generate</button>
+      </div>
+      <div class="live-api-note" id="liveApiStatus">Online sync is optional. Browser preview may block external network; downloaded file works in a normal browser.</div>
+    </div>
+
+    <div class="live-toolbar">
+      <button class="btn btn-ghost active" id="liveFilter-live" onclick="setLiveFilter('live')">Live Now</button>
+      <button class="btn btn-ghost" id="liveFilter-all" onclick="setLiveFilter('all')">All Games</button>
+      <button class="btn btn-ghost" id="liveFilter-upcoming" onclick="setLiveFilter('upcoming')">Upcoming</button>
+      <button class="btn btn-ghost" id="liveFilter-final" onclick="setLiveFilter('final')">Finals</button>
+      <span class="live-sync" id="liveSyncText">Auto-updates every 5s</span>
+    </div>
+
+    <div id="liveGamesGrid" class="live-games-grid"></div>
+  </div>
+
 
   <!-- ── SCORES ── -->
   <div class="tab-pane" id="scoresTab">
@@ -893,6 +1002,8 @@ async function init(){
   setupTabs();
   populateSelects();
   if(!posts.length)loadDefaults();
+  normalizeLiveMatches();
+  ensureLiveGameNow();
   renderAll();
   initPredLeaders();
   initCountyData();
@@ -900,23 +1011,12 @@ async function init(){
   renderPredictions();
   renderAlerts();
   renderRivalry();
-
-  try{
-    const fresh=await fetchAIData();
-    const userPosts=posts.filter(p=>p.id>10000);
-    const userMatches=matches.filter(m=>m.id>10000);
-    const userTeams=teams.filter(t=>t.id>10000);
-    const userPlayers=players.filter(p=>p.id>10000);
-    const userEvents=events.filter(e=>e.id>10000);
-    const userTransfers=transfers.filter(t=>t.id>10000);
-    posts=[...fresh.posts,...userPosts];
-    matches=[...fresh.matches,...userMatches];
-    teams=[...fresh.teams,...userTeams];
-    players=[...fresh.players,...userPlayers];
-    events=[...fresh.events,...userEvents];
-    transfers=[...fresh.transfers,...userTransfers];
-    saveAll();renderAll();renderFantasy();renderPredictions();renderRivalry();
-  }catch(e){console.warn('AI fetch failed',e);}
+  setupLiveApiControls();
+  renderLiveHub();
+  updateLivePill();
+  startLiveEngine();
+  startOnlineAutoSync();
+  autoGenerateGames(true);
 }
 
 function loadDefaults(){
@@ -928,7 +1028,7 @@ function loadDefaults(){
   matches=[
     {id:1,team1:'Nairobi Thunder',team2:'Coastal Kings',score1:89,score2:84,time:new Date(Date.now()-86400000).toISOString(),status:'Final'},
     {id:2,team1:'Kisumu Lakers',team2:'Eldoret Hawks',score1:76,score2:72,time:new Date(Date.now()-2*86400000).toISOString(),status:'Final'},
-    {id:3,team1:'Nakuru Broncos',team2:'Thika Bucks',score1:54,score2:49,time:new Date().toISOString(),status:'Live'},
+    {id:3,team1:'Nakuru Broncos',team2:'Thika Bucks',score1:54,score2:49,time:new Date().toISOString(),status:'Live',quarter:'Q3',clock:'06:42',venue:'Nakuru Indoor Arena'},
     {id:4,team1:'Mombasa Kings',team2:'Kitale Wolves',score1:0,score2:0,time:new Date(Date.now()+7200000).toISOString(),status:'Upcoming'},
   ];
   teams=[
@@ -948,9 +1048,9 @@ function loadDefaults(){
     {id:6,name:'Samuel Waweru',team:'Thika Bucks',ppg:15.2,rpg:4.9,apg:6.1,spg:2.3,bpg:0.2,fgPercent:44.1},
   ];
   events=[
-    {id:1,title:'KBF Championship Finals',location:'Nyayo Stadium, Nairobi',date:'2026-05-10',description:'Season finale featuring top 4 teams'},
-    {id:2,title:'Coastal Youth Camp',location:'Mombasa Sports Club',date:'2026-05-15',description:'Free training for ages 12-16'},
-    {id:3,title:'Lake Region Invitational',location:'Kisumu Sports Complex',date:'2026-05-20',description:'5-county tournament'},
+    {id:1,title:'KBF Championship Finals',location:'Nyayo Stadium, Nairobi',date:new Date(Date.now()+8*86400000).toISOString().split('T')[0],description:'Season finale featuring top 4 teams'},
+    {id:2,title:'Coastal Youth Camp',location:'Mombasa Sports Club',date:new Date(Date.now()+14*86400000).toISOString().split('T')[0],description:'Free training for ages 12-16'},
+    {id:3,title:'Lake Region Invitational',location:'Kisumu Sports Complex',date:new Date(Date.now()+21*86400000).toISOString().split('T')[0],description:'5-county tournament'},
   ];
   transfers=[
     {id:1,player:'Kevin Omondi',from:'Coastal Kings',to:'Kisumu Lakers',type:'Confirmed',fee:'2.5M KES'},
@@ -977,7 +1077,7 @@ function initPredLeaders(){
 // ── RENDER ALL ─────────────────────────────────────
 function renderAll(){
   renderStats();renderTownFilters();renderPosts();renderMatches();
-  renderRankings();renderPlayers();renderEvents();renderTransfers();
+  renderRankings();renderPlayers();renderEvents();renderTransfers();renderLiveHub();updateLivePill();
 }
 
 function renderStats(){
@@ -1056,6 +1156,371 @@ function matchCard(m){
       <button class="trash-btn" onclick="promptDelete('match',${m.id})"><i class="fas fa-trash"></i></button>
     </div>
   </div>`;
+}
+
+
+// ── LIVE GAME CENTER ───────────────────────────────
+let liveTimer=null, livePaused=false, liveFilter='live', liveAutoSyncTimer=null;
+const PLAY_VERBS=['drains a corner three','finishes through contact','hits a mid-range jumper','scores on the fast break','splits two free throws','throws down a put-back','buries a pull-up jumper','converts a layup'];
+
+function normalizeLiveMatches(){
+  matches.forEach((m,i)=>{
+    if(!m.venue)m.venue=guessVenue(m.team1,m.team2);
+    if(!m.quarter)m.quarter=m.status==='Live'?'Q2':m.status==='Final'?'FT':'Pre-game';
+    if(!m.clock)m.clock=m.status==='Live'?`${String(8-(i%4)).padStart(2,'0')}:${String((35+i*7)%60).padStart(2,'0')}`:(m.status==='Final'?'00:00':'—');
+    if(!m.leaders)m.leaders=makeLeaders(m);
+    if(!m.playByPlay)m.playByPlay=seedPlays(m);
+  });
+  save('matches',matches);
+}
+function guessVenue(a,b){
+  const t=(a+' '+b).toLowerCase();
+  if(t.includes('nairobi'))return 'Nyayo Gymnasium, Nairobi';
+  if(t.includes('mombasa')||t.includes('coastal'))return 'Mombasa Sports Club';
+  if(t.includes('kisumu'))return 'Kisumu Sports Complex';
+  if(t.includes('eldoret'))return 'Eldoret Sports Club';
+  if(t.includes('nakuru'))return 'Nakuru Indoor Arena';
+  return 'KBF Arena';
+}
+function makeLeaders(m){
+  const names=players.length?players:[{name:'Team Captain',team:m.team1,ppg:18,rpg:6,apg:4},{name:'Lead Guard',team:m.team2,ppg:16,rpg:4,apg:5}];
+  const p1=names.find(p=>p.team===m.team1)||names[0];
+  const p2=names.find(p=>p.team===m.team2)||names[1]||names[0];
+  return [
+    {name:p1.name,stat:`${Math.max(8,Math.round((p1.ppg||15)*0.75))} pts`,team:m.team1},
+    {name:p2.name,stat:`${Math.max(6,Math.round((p2.rpg||6)*1.1))} reb`,team:m.team2},
+    {name:p1.name,stat:`${Math.max(3,Math.round(p1.apg||4))} ast`,team:m.team1}
+  ];
+}
+function seedPlays(m){
+  if(m.status==='Upcoming')return [{time:'—',text:'Game has not tipped off yet.'}];
+  if(m.status==='Final')return [{time:'FT',text:`Final buzzer: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`}];
+  return [
+    {time:m.clock||'08:00',text:`${m.team1} forces a turnover and runs the break.`},
+    {time:'07:31',text:`${m.team2} answers with strong half-court defense.`},
+    {time:'06:58',text:'Timeout on the floor as coaches reset matchups.'}
+  ];
+}
+
+
+function setupLiveApiControls(){
+  const provider=document.getElementById('liveProvider');
+  const key=document.getElementById('liveApiKey');
+  const country=document.getElementById('liveCountry');
+  if(provider)provider.value=load('liveProvider','apisports');
+  if(key)key.value=load('liveApiKey','');
+  if(country)country.value=load('liveCountry','Kenya');
+  setLiveApiStatus('Ready. Click Sync Now to pull ongoing games from the selected online source.','warn');
+}
+function saveLiveApiSettings(){
+  save('liveProvider',document.getElementById('liveProvider')?.value||'apisports');
+  save('liveApiKey',document.getElementById('liveApiKey')?.value.trim()||'');
+  save('liveCountry',document.getElementById('liveCountry')?.value.trim()||'');
+  setLiveApiStatus('Live source saved in this browser.','ok');
+  showToast('Online live source saved');
+}
+function setLiveApiStatus(msg,type=''){
+  const el=document.getElementById('liveApiStatus');
+  if(el){el.className='live-api-note '+type;el.textContent=msg;}
+  const hero=document.getElementById('heroOnlineStatus');
+  if(hero)hero.textContent=msg.length>42?msg.slice(0,42)+'…':msg;
+}
+async function syncOnlineGames(silent=false){
+  const provider=document.getElementById('liveProvider')?.value||load('liveProvider','apisports');
+  const key=document.getElementById('liveApiKey')?.value.trim()||load('liveApiKey','');
+  const country=(document.getElementById('liveCountry')?.value.trim()||load('liveCountry','Kenya')).toLowerCase();
+  save('liveProvider',provider);save('liveApiKey',key);save('liveCountry',country||'');
+  if(!silent)setLiveApiStatus('Syncing online live games…','warn');
+  try{
+    let online=[];
+    if(provider==='nba')online=await fetchNbaLiveGames();
+    else online=await fetchApiBasketballLiveGames(provider,key);
+    if(country&&provider!=='nba'){
+      const filtered=online.filter(m=>(m.country||'').toLowerCase().includes(country));
+      if(filtered.length)online=filtered;
+    }
+    if(!online.length){
+      setLiveApiStatus('No ongoing online games found for that source/filter right now. Showing local live demo.','warn');
+      ensureLiveGameNow();renderLiveHub();updateLivePill();return;
+    }
+    matches=[...online,...matches.filter(m=>m.source!=='online')];
+    liveFilter='live';saveAll();renderAll();renderLiveHub();renderPredictions();updateLivePill();
+    setLiveApiStatus(`Synced ${online.length} ongoing online game${online.length===1?'':'s'} at ${new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'})}.`,'ok');
+    if(!silent)showToast(`Synced ${online.length} live online game${online.length===1?'':'s'}`);
+  }catch(e){
+    console.warn(e);
+    setLiveApiStatus('Online sync failed. Check your key, provider, CORS/network access, then try again. Local live demo remains available.','err');
+    ensureLiveGameNow();renderLiveHub();updateLivePill();if(!silent)showToast('Online sync failed; showing demo live game','error');
+  }
+}
+
+async function autoGenerateGames(silent=false){
+  if(!silent)setLiveApiStatus('Auto-generating games: online first, local KBL fallback if needed…','warn');
+  const savedProvider=load('liveProvider','apisports');
+  const savedKey=load('liveApiKey','');
+  try{
+    if(savedProvider==='nba'||savedKey){
+      await syncOnlineGames(true);
+      if(matches.some(m=>m.status==='Live'&&m.source==='online')){
+        if(!silent){setLiveApiStatus('Auto-generated live games from your online API source.','ok');showToast('Online games generated automatically');}
+        return;
+      }
+    }else{
+      // No paid key yet: try the no-key NBA public scoreboard as an online smoke test.
+      const nba=await fetchNbaLiveGames();
+      if(nba.length){
+        matches=[...nba,...matches.filter(m=>m.source!=='online')];
+        saveAll();renderAll();renderLiveHub();updateLivePill();
+        if(!silent){setLiveApiStatus(`Auto-generated ${nba.length} live game(s) from the public NBA scoreboard.`, 'ok');showToast('Online NBA live games generated');}
+        return;
+      }
+    }
+  }catch(e){console.warn('Auto online generation failed',e);}
+  generateKenyaFixturePack();
+  liveFilter='live';
+  saveAll();renderAll();renderFantasy();renderPredictions();renderRivalry();renderLiveHub();updateLivePill();
+  const msg='No online live feed was available, so realistic KBL demo games were generated automatically. Add an API key for real live games.';
+  setLiveApiStatus(msg,'warn');
+  if(!silent)showToast('KBL demo games generated automatically');
+}
+function generateKenyaFixturePack(){
+  const now=Date.now();
+  const teamPool=[
+    ['Nairobi Thunder','Kisumu Lakers','Nyayo Gymnasium, Nairobi'],
+    ['Nakuru Broncos','Coastal Kings','Nakuru Indoor Arena'],
+    ['Eldoret Hawks','Thika Bucks','Eldoret Sports Club'],
+    ['Mombasa Kings','Kakamega Tigers','Mombasa Sports Club'],
+    ['Kitale Wolves','Nyeri Lions','Kitale Club Arena']
+  ];
+  const generated=[];
+  teamPool.forEach((g,i)=>{
+    const status=i<2?'Live':i<4?'Upcoming':'Final';
+    const base1=38+i*7+Math.floor(Math.random()*12), base2=35+i*6+Math.floor(Math.random()*12);
+    generated.push({
+      id:3000000+i,source:'auto-kbl',provider:'Local generator',country:'Kenya',team1:g[0],team2:g[1],
+      score1:status==='Upcoming'?0:base1,score2:status==='Upcoming'?0:base2,
+      time:new Date(now+(i-2)*3600000).toISOString(),status,
+      quarter:status==='Live'?(i===0?'Q3':'Q2'):(status==='Final'?'FT':'Pre-game'),
+      clock:status==='Live'?(i===0?'04:18':'08:52'):(status==='Final'?'00:00':'—'),venue:g[2],
+      leaders:[
+        {name:['John Mbugua','Kevin Omondi','James Otieno','Grace Achieng','Samuel Waweru'][i],stat:`${14+i*2} pts`,team:g[0]},
+        {name:['Peter Wanjala','David Kipchoge','Brian Mutua','Michael Ochieng','Allan Odhiambo'][i],stat:`${6+i} reb`,team:g[1]},
+        {name:['Kevin Omondi','Samuel Waweru','John Mbugua','David Kipchoge','Grace Achieng'][i],stat:`${4+i} ast`,team:g[i%2]}
+      ],
+      playByPlay:status==='Upcoming'?[{time:'—',text:'Generated fixture awaiting tip-off.'}]:status==='Final'?[{time:'FT',text:`Final: ${g[0]} ${base1} – ${base2} ${g[1]}.`}]:[
+        {time:`${i===0?'Q3 04:18':'Q2 08:52'}`,text:`${g[0]} pushes the ball in transition.`},
+        {time:`${i===0?'Q3 03:59':'Q2 08:25'}`,text:`${g[1]} answers with a defensive stop.`},
+        {time:`${i===0?'Q3 03:40':'Q2 08:02'}`,text:'Timeout on the floor as both benches reset.'}
+      ]
+    });
+  });
+  matches=[...generated,...matches.filter(m=>m.source!=='auto-kbl'&&m.source!=='online')];
+}
+
+async function fetchApiBasketballLiveGames(provider,key){
+  if(!key)throw new Error('API key required for API-Basketball providers');
+  const url=provider==='rapidapi'?'https://api-basketball.p.rapidapi.com/games?live=all':'https://v1.basketball.api-sports.io/games?live=all';
+  const headers=provider==='rapidapi'?{'x-rapidapi-key':key,'x-rapidapi-host':'api-basketball.p.rapidapi.com'}:{'x-apisports-key':key};
+  const res=await fetch(url,{headers});
+  if(!res.ok)throw new Error('Live API returned '+res.status);
+  const json=await res.json();
+  const rows=json.response||[];
+  return rows.map(mapApiBasketballGame).filter(Boolean);
+}
+function mapApiBasketballGame(g){
+  const home=g.teams?.home?.name||g.teams?.home||'Home Team';
+  const away=g.teams?.away?.name||g.teams?.away||'Away Team';
+  const scoreHome=g.scores?.home?.total??sumScore(g.scores?.home);
+  const scoreAway=g.scores?.away?.total??sumScore(g.scores?.away);
+  const short=g.status?.short||g.status?.long||'Live';
+  const timer=g.status?.timer||'';
+  return {id:1000000+(g.id||Date.now()+Math.floor(Math.random()*999)),onlineId:g.id,source:'online',provider:'API-Basketball',country:g.country?.name||'',team1:home,team2:away,score1:Number(scoreHome)||0,score2:Number(scoreAway)||0,time:g.date||new Date().toISOString(),status:'Live',quarter:String(short).toUpperCase().includes('Q')?String(short).toUpperCase():'Live',clock:timer||'Live',venue:`${g.league?.name||'Basketball'}${g.country?.name?' · '+g.country.name:''}`,leaders:[],playByPlay:[{time:timer||'Live',text:'Pulled from online live basketball feed.'}]};
+}
+function sumScore(o){if(!o)return 0;return ['quarter_1','quarter_2','quarter_3','quarter_4','over_time'].reduce((s,k)=>s+(Number(o[k])||0),0)}
+async function fetchNbaLiveGames(){
+  const res=await fetch('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json',{cache:'no-store'});
+  if(!res.ok)throw new Error('NBA scoreboard returned '+res.status);
+  const json=await res.json();
+  const games=json.scoreboard?.games||[];
+  return games.filter(g=>Number(g.gameStatus)===2).map(g=>({
+    id:2000000+Number(g.gameId||Date.now()),onlineId:g.gameId,source:'online',provider:'NBA public scoreboard',country:'United States',
+    team1:g.homeTeam?.teamName||g.homeTeam?.teamCity||'Home',team2:g.awayTeam?.teamName||g.awayTeam?.teamCity||'Away',
+    score1:Number(g.homeTeam?.score)||0,score2:Number(g.awayTeam?.score)||0,time:g.gameTimeUTC||new Date().toISOString(),status:'Live',quarter:g.period?`Q${g.period}`:'Live',clock:g.gameClock||g.gameStatusText||'Live',venue:'NBA live scoreboard',leaders:[],playByPlay:[{time:g.gameStatusText||'Live',text:'Pulled from the public NBA online scoreboard.'}]
+  }));
+}
+function startOnlineAutoSync(){
+  if(liveAutoSyncTimer)clearInterval(liveAutoSyncTimer);
+  liveAutoSyncTimer=setInterval(()=>{
+    const provider=load('liveProvider','apisports');
+    const key=load('liveApiKey','');
+    if(provider==='nba'||key)syncOnlineGames();
+  },60000);
+}
+
+function ensureLiveGameNow(){
+  normalizeLiveMatches();
+  let live=matches.find(m=>m.status==='Live');
+  if(!live){
+    live=matches.find(m=>m.status==='Upcoming')||matches[0];
+    if(live){
+      live.status='Live';
+      live.quarter='Q2';
+      live.clock='07:24';
+      if(!live.score1&&!live.score2){live.score1=34;live.score2=31;}
+      live.playByPlay=[
+        {time:'Q2 07:24',text:`${live.team1} and ${live.team2} are live now.`},
+        {time:'Q2 07:02',text:`${live.team1} pushes the pace after a defensive rebound.`},
+        {time:'Q2 06:41',text:`${live.team2} calls timeout to adjust the press.`}
+      ];
+    }else{
+      matches.push({
+        id:Date.now(),team1:'Nairobi Thunder',team2:'Kisumu Lakers',score1:42,score2:39,
+        time:new Date().toISOString(),status:'Live',quarter:'Q2',clock:'07:24',venue:'Nyayo Gymnasium, Nairobi',
+        leaders:[
+          {name:'John Mbugua',stat:'16 pts',team:'Nairobi Thunder'},
+          {name:'Kevin Omondi',stat:'7 ast',team:'Kisumu Lakers'},
+          {name:'Peter Wanjala',stat:'6 reb',team:'Nairobi Thunder'}
+        ],
+        playByPlay:[
+          {time:'Q2 07:24',text:'Nairobi Thunder leads in a fast-paced second quarter.'},
+          {time:'Q2 07:02',text:'Kisumu Lakers answer with a corner three.'},
+          {time:'Q2 06:41',text:'Timeout on the floor.'}
+        ]
+      });
+    }
+  }
+  saveAll();
+}
+
+function startLiveEngine(){
+  if(liveTimer)clearInterval(liveTimer);
+  liveTimer=setInterval(()=>{ if(!livePaused)tickLiveGames(); },5000);
+}
+function toggleLiveSimulation(){
+  livePaused=!livePaused;
+  const btn=document.getElementById('livePauseBtn');
+  if(btn)btn.innerHTML=livePaused?'<i class="fas fa-play"></i> Resume Updates':'<i class="fas fa-pause"></i> Pause Updates';
+  showToast(livePaused?'Live updates paused':'Live updates resumed');
+}
+function tickLiveGames(){
+  let changed=false;
+  matches.filter(m=>m.status==='Live').forEach(m=>{
+    changed=true;
+    advanceClock(m);
+    if(Math.random()>.28){
+      const home=Math.random()>.48;
+      const pts=Math.random()>.72?3:(Math.random()>.45?2:1);
+      if(home)m.score1=(parseInt(m.score1)||0)+pts; else m.score2=(parseInt(m.score2)||0)+pts;
+      const team=home?m.team1:m.team2;
+      const player=pickPlayerName(team);
+      const text=`${player} ${PLAY_VERBS[Math.floor(Math.random()*PLAY_VERBS.length)]} for ${pts}.`;
+      m.playByPlay=[{time:`${m.quarter} ${m.clock}`,text},...(m.playByPlay||[])].slice(0,5);
+      m.leaders=makeLeaders(m);
+    }
+  });
+  if(changed){saveAll();renderMatches();renderLiveHub();renderStats();updateLivePill();renderOpenPreds();}
+}
+function pickPlayerName(team){
+  const list=players.filter(p=>p.team===team);
+  if(list.length)return list[Math.floor(Math.random()*list.length)].name;
+  const fallback=['Captain','Point Guard','Wing','Center','Sixth Man'];
+  return `${team.split(' ')[0]} ${fallback[Math.floor(Math.random()*fallback.length)]}`;
+}
+function advanceClock(m){
+  let q=parseInt(String(m.quarter||'Q1').replace(/\D/g,''))||1;
+  let [min,sec]=String(m.clock||'10:00').split(':').map(x=>parseInt(x)||0);
+  let total=min*60+sec-(18+Math.floor(Math.random()*35));
+  if(total<=0){
+    q+=1;
+    if(q>4){m.status='Final';m.quarter='FT';m.clock='00:00';resolveMatchPredictions(m);m.playByPlay=[{time:'FT',text:`Final: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`},...(m.playByPlay||[])].slice(0,5);return;}
+    total=600;
+    m.playByPlay=[{time:`Q${q}`,text:`Start of quarter ${q}.`},...(m.playByPlay||[])].slice(0,5);
+  }
+  m.quarter=`Q${q}`;m.clock=`${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`;
+}
+function resolveMatchPredictions(m){
+  const winner=m.score1===m.score2?'draw':(m.score1>m.score2?m.team1:m.team2);
+  let changed=false;
+  predictions.forEach(p=>{
+    if(p.matchId===m.id&&!p.resolved){p.resolved=true;p.correct=p.pick===winner;changed=true;}
+  });
+  if(changed){
+    const me=predLeaders.find(l=>l.name==='You');
+    if(me){
+      predictions.filter(p=>p.matchId===m.id).forEach(p=>{me.total+=1;if(p.correct){me.correct+=1;me.pts+=10;}});
+    }
+  }
+}
+function setLiveFilter(f){
+  liveFilter=f;
+  document.querySelectorAll('[id^="liveFilter-"]').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('liveFilter-'+f);if(btn)btn.classList.add('active');
+  renderLiveHub();
+}
+function updateLivePill(){
+  const n=matches.filter(m=>m.status==='Live').length;
+  const pill=document.querySelector('.live-pill span');
+  if(pill)pill.textContent=n?`LIVE ${n}`:'LIVE';
+  const hero=document.getElementById('heroLiveCount');
+  if(hero)hero.textContent=n;
+}
+function liveProgress(m){
+  if(m.status==='Final')return 100;if(m.status==='Upcoming')return 0;
+  const q=parseInt(String(m.quarter||'Q1').replace(/\D/g,''))||1;
+  const [min,sec]=String(m.clock||'10:00').split(':').map(x=>parseInt(x)||0);
+  const elapsed=(q-1)*600+(600-(min*60+sec));
+  return Math.max(2,Math.min(99,Math.round(elapsed/2400*100)));
+}
+function renderLiveHub(){
+  const grid=document.getElementById('liveGamesGrid');if(!grid)return;
+  normalizeLiveMatches();
+  let list=[...matches];
+  if(liveFilter==='live')list=list.filter(m=>m.status==='Live');
+  if(liveFilter==='upcoming')list=list.filter(m=>m.status==='Upcoming');
+  if(liveFilter==='final')list=list.filter(m=>m.status==='Final');
+  list.sort((a,b)=>({Live:0,Upcoming:1,Final:2}[a.status]-{Live:0,Upcoming:1,Final:2}[b.status])||new Date(a.time)-new Date(b.time));
+  const sync=document.getElementById('liveSyncText');
+  if(sync)sync.textContent=livePaused?'Updates paused':'Auto-updates every 5s · saved locally';
+  if(!list.length){grid.innerHTML='<div class="empty"><i class="fas fa-basketball-ball"></i>No games match this filter. Add a match and set Status to Live.</div>';return;}
+  grid.innerHTML=list.map(liveGameCard).join('');
+}
+function liveGameCard(m){
+  const st=m.status==='Live'?'':m.status==='Final'?'final':'upcoming';
+  const progress=liveProgress(m);
+  const leaders=(m.leaders||[]).slice(0,3).map(l=>`<div class="live-leader-row"><span><strong>${esc(l.name)}</strong><br><small style="color:var(--txt3)">${esc(l.team||'')}</small></span><span>${esc(l.stat)}</span></div>`).join('')||'<div class="play-row"><span>—</span><span>No leaders yet</span></div>';
+  const plays=(m.playByPlay||[]).slice(0,4).map(p=>`<div class="play-row"><span>${esc(p.time)}</span><span>${esc(p.text)}</span></div>`).join('');
+  return `<div class="live-game-card ${m.status==='Live'?'is-live':''}">
+    <div class="live-game-top"><span class="live-status ${st}">${m.status==='Live'?'<span class="live-dot"></span>':''}${esc(m.status)}</span><span class="live-clock">${esc(m.quarter||'')} ${esc(m.clock||'')}</span></div>
+    <div class="live-arena"><i class="fas fa-location-dot"></i> ${esc(m.venue||'KBF Arena')} · ${fmtDate(m.time)}</div>
+    <div class="live-scoreboard">
+      <div class="live-team"><div class="live-team-logo">🏀</div><div class="live-team-name">${esc(m.team1)}</div><div class="live-team-record">Home</div></div>
+      <div class="live-scorebox"><div class="live-score-main">${m.score1}<span style="color:var(--txt3)">–</span>${m.score2}</div><small>${m.status==='Live'?'In progress':m.status}</small></div>
+      <div class="live-team right"><div class="live-team-logo">🏀</div><div class="live-team-name">${esc(m.team2)}</div><div class="live-team-record">Away</div></div>
+    </div>
+    <div class="live-progress"><span style="width:${progress}%"></span></div>
+    <div class="live-details"><div class="live-panel"><div class="live-panel-title">Game Leaders</div>${leaders}</div><div class="live-panel"><div class="live-panel-title">Play-by-play</div>${plays}</div></div>
+    <div class="live-controls">
+      ${m.status==='Live'?`<button class="live-mini-btn" onclick="manualScore(${m.id},1)">+1 ${esc(m.team1)}</button><button class="live-mini-btn" onclick="manualScore(${m.id},2)">+1 ${esc(m.team2)}</button><button class="live-mini-btn red" onclick="finishGame(${m.id})">Mark Final</button>`:`<button class="live-mini-btn" onclick="makeGameLive(${m.id})">Set Live</button>`}
+    </div>
+  </div>`;
+}
+function manualScore(id,teamNo){
+  const m=matches.find(x=>x.id===id);if(!m)return;
+  if(teamNo===1)m.score1=(parseInt(m.score1)||0)+1;else m.score2=(parseInt(m.score2)||0)+1;
+  m.status='Live'; if(!m.quarter||m.quarter==='Pre-game')m.quarter='Q1'; if(!m.clock||m.clock==='—')m.clock='10:00';
+  m.playByPlay=[{time:`${m.quarter} ${m.clock}`,text:`Manual score update for ${teamNo===1?m.team1:m.team2}.`},...(m.playByPlay||[])].slice(0,5);
+  saveAll();renderMatches();renderLiveHub();updateLivePill();showToast('Score updated');
+}
+function makeGameLive(id){
+  const m=matches.find(x=>x.id===id);if(!m)return;
+  m.status='Live';m.quarter='Q1';m.clock='10:00';m.playByPlay=[{time:'Q1 10:00',text:'Tip-off — game is live!'}];
+  saveAll();renderMatches();renderLiveHub();renderStats();updateLivePill();showToast(`${m.team1} vs ${m.team2} is now live 🔴`);
+}
+function finishGame(id){
+  const m=matches.find(x=>x.id===id);if(!m)return;
+  m.status='Final';m.quarter='FT';m.clock='00:00';
+  m.playByPlay=[{time:'FT',text:`Final: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`},...(m.playByPlay||[])].slice(0,5);
+  resolveMatchPredictions(m);saveAll();renderMatches();renderLiveHub();renderPredictions();updateLivePill();showToast('Game marked final');
 }
 
 // ── RANKINGS ───────────────────────────────────────
@@ -1502,7 +1967,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 function saveMatch(){
   if(!document.getElementById('mT1').value.trim()||!document.getElementById('mT2').value.trim()){showToast('Enter both team names','error');return;}
   matches.push({id:Date.now(),team1:document.getElementById('mT1').value.trim(),team2:document.getElementById('mT2').value.trim(),score1:parseInt(document.getElementById('mS1').value)||0,score2:parseInt(document.getElementById('mS2').value)||0,time:document.getElementById('mTime').value||new Date().toISOString(),status:document.getElementById('mStatus').value});
-  saveAll();renderMatches();renderStats();renderOpenPreds();closeModal('matchModal');
+  normalizeLiveMatches();saveAll();renderMatches();renderStats();renderOpenPreds();renderLiveHub();updateLivePill();closeModal('matchModal');
   ['mT1','mT2','mS1','mS2','mTime'].forEach(id=>document.getElementById(id).value='');
   showToast('Match added!');
 }
@@ -1557,6 +2022,7 @@ function setupTabs(){
       btn.classList.add('active');
       document.getElementById(btn.dataset.tab+'Tab').classList.add('active');
       // refresh sub-feature when tab opened
+      if(btn.dataset.tab==='live')renderLiveHub();
       if(btn.dataset.tab==='fantasy')renderFantasy();
       if(btn.dataset.tab==='predict')renderPredictions();
       if(btn.dataset.tab==='alerts')renderAlerts();
