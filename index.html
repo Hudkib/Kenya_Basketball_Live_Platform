@@ -1,2075 +1,904 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KBL | Kenya Basketball Live</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#080b12;--bg2:#0d1120;--bg3:#131826;--bg4:#1a2035;--bg5:#202540;
-  --border:#1f2a40;--border2:#2a3550;
-  --txt:#e8edf5;--txt2:#8896b0;--txt3:#4a5568;
-  --orange:#f97316;--orange2:#ea580c;--orangeL:#fb923c;
-  --red:#ef4444;--green:#10b981;--blue:#3b82f6;--yellow:#f59e0b;--purple:#8b5cf6;--pink:#ec4899;
-}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4,h5{font-family:'Barlow Condensed',sans-serif;letter-spacing:0.02em}
-
-/* NAV */
-.nav{background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999;backdrop-filter:blur(12px)}
-.nav-inner{max-width:1400px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;height:64px;gap:1rem}
-.logo{display:flex;align-items:center;gap:0.6rem;flex-shrink:0;text-decoration:none}
-.logo-ball{width:36px;height:36px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.logo-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;line-height:1}
-.logo-sub{font-size:0.58rem;color:var(--txt3);letter-spacing:1px}
-.nav-tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;justify-content:center}
-.nav-tabs::-webkit-scrollbar{display:none}
-.ntab{padding:0.4rem 0.8rem;border-radius:8px;color:var(--txt2);cursor:pointer;font-size:0.78rem;font-weight:600;white-space:nowrap;transition:all 0.2s;border:none;background:none;font-family:'DM Sans',sans-serif}
-.ntab:hover{color:#fff;background:rgba(255,255,255,0.05)}
-.ntab.active{background:var(--orange);color:#fff}
-.live-pill{display:flex;align-items:center;gap:0.4rem;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);padding:0.3rem 0.7rem;border-radius:99px;flex-shrink:0}
-.live-dot{width:7px;height:7px;background:var(--red);border-radius:50%;animation:blink 1.4s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.live-pill span{font-size:0.62rem;font-weight:700;letter-spacing:1px;color:var(--red)}
-
-/* MAIN */
-.main{max-width:1400px;margin:0 auto;padding:1.5rem}
-.tab-pane{display:none}
-.tab-pane.active{display:block;animation:fadeUp 0.3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-/* STATS ROW */
-.stats-row{display:grid;grid-template-columns:repeat(8,1fr);gap:0.75rem;margin-bottom:1.5rem}
-.scard{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1rem;transition:border-color 0.2s;cursor:default}
-.scard:hover{border-color:var(--orange)}
-.sval{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;line-height:1}
-.slabel{font-size:0.65rem;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-top:0.15rem}
-.sicon{font-size:0.9rem;margin-bottom:0.3rem}
-
-/* CARD */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.25rem;margin-bottom:1.5rem}
-.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:0.75rem}
-.card-title{font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:0.5rem}
-.card-title i{color:var(--orange);font-size:1rem}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 1rem;border-radius:9px;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;border:none;font-family:'DM Sans',sans-serif}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-orange:hover{background:var(--orange2);transform:translateY(-1px)}
-.btn-ghost{background:var(--bg4);color:var(--txt2);border:1px solid var(--border)}
-.btn-ghost:hover{color:#fff;border-color:var(--border2)}
-.btn-ghost.active{background:var(--orange);color:#fff;border-color:var(--orange)}
-.btn-green{background:var(--green);color:#fff}
-.btn-green:hover{filter:brightness(1.1)}
-.btn-blue{background:var(--blue);color:#fff}
-.btn-blue:hover{filter:brightness(1.1)}
-.btn-purple{background:var(--purple);color:#fff}
-.btn-purple:hover{filter:brightness(1.1)}
-
-/* FORMS */
-.frow{margin-bottom:0.85rem}
-.frow label{display:block;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--txt3);margin-bottom:0.35rem}
-.frow input,.frow select,.frow textarea{width:100%;padding:0.6rem 0.85rem;background:var(--bg4);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:0.875rem;transition:border-color 0.2s}
-.frow input:focus,.frow select:focus,.frow textarea:focus{outline:none;border-color:var(--orange)}
-.frow select option{background:var(--bg3)}
-
-/* MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:2000;justify-content:center;align-items:center;padding:1rem}
-.modal-overlay.open{display:flex}
-.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:1.5rem;width:100%;max-width:500px;max-height:92vh;overflow-y:auto}
-.modal-box h3{font-size:1.4rem;font-weight:700;margin-bottom:1.25rem}
-.modal-actions{display:flex;gap:0.75rem;margin-top:1.25rem}
-
-/* LOADING */
-.loading{text-align:center;padding:2.5rem;color:var(--txt3)}
-.spinner{display:inline-block;width:26px;height:26px;border:3px solid var(--border2);border-top-color:var(--orange);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:0.6rem}
-@keyframes spin{to{transform:rotate(360deg)}}
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--txt3)}
-.empty i{font-size:1.8rem;margin-bottom:0.6rem;display:block;opacity:0.4}
-
-/* POSTS */
-.posts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
-.post-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all 0.2s}
-.post-card:hover{transform:translateY(-3px);border-color:var(--orange)}
-.post-top{padding:0.7rem 1rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}
-.post-badge{background:var(--orange);color:#fff;font-size:0.62rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:99px}
-.post-time{font-size:0.62rem;color:var(--txt3)}
-.post-body{padding:0.9rem 1rem}
-.post-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;line-height:1.3}
-.post-text{font-size:0.78rem;color:var(--txt2);line-height:1.6}
-.post-foot{padding:0.65rem 1rem;background:var(--bg2);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
-.post-src{font-size:0.68rem;color:var(--txt3)}
-.town-row{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.25rem}
-.ttown{padding:0.3rem 0.85rem;border-radius:99px;font-size:0.7rem;font-weight:600;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);transition:all 0.2s}
-.ttown:hover,.ttown.active{background:var(--orange);border-color:var(--orange);color:#fff}
-
-/* MATCHES */
-.match-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;margin-bottom:0.75rem}
-.match-row{display:flex;justify-content:space-between;align-items:center;gap:0.75rem}
-.team-side{flex:1;display:flex;align-items:center;gap:0.6rem}
-.team-side.right{flex-direction:row-reverse;text-align:right}
-.team-logo{width:38px;height:38px;background:var(--bg4);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.team-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
-.scores{display:flex;align-items:center;gap:0.4rem;flex-shrink:0}
-.score-num{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:var(--orange)}
-.score-sep{font-size:0.9rem;color:var(--txt3);font-weight:700}
-.match-meta{display:flex;justify-content:space-between;align-items:center;margin-top:0.65rem;padding-top:0.65rem;border-top:1px solid var(--border);font-size:0.7rem;color:var(--txt3);flex-wrap:wrap;gap:0.5rem}
-.spill{padding:0.18rem 0.55rem;border-radius:99px;font-size:0.62rem;font-weight:700;text-transform:uppercase}
-.spill-live{background:rgba(239,68,68,0.15);color:var(--red)}
-.spill-final{background:rgba(16,185,129,0.15);color:var(--green)}
-.spill-upcoming{background:rgba(245,158,11,0.15);color:var(--yellow)}
-.msect{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;margin:1rem 0 0.5rem;letter-spacing:0.5px;color:var(--txt2);text-transform:uppercase}
-.msect.live-sect{color:var(--red)}
-
-/* TABLE */
-.table-wrap{overflow-x:auto}
-.standings-table{width:100%;border-collapse:collapse;min-width:540px}
-.standings-table th{text-align:left;padding:0.7rem 0.9rem;background:var(--bg3);color:var(--txt3);font-size:0.67rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);white-space:nowrap}
-.standings-table td{padding:0.7rem 0.9rem;border-bottom:1px solid var(--border);font-size:0.8rem}
-.standings-table tr:hover td{background:rgba(249,115,22,0.04)}
-td.gold{color:var(--yellow);font-weight:800}
-
-/* PLAYERS */
-.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
-.player-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.1rem;transition:all 0.2s}
-.player-card:hover{transform:translateY(-3px);border-color:var(--orange)}
-.avatar{width:48px;height:48px;background:linear-gradient(135deg,var(--orange),var(--orange2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:0.7rem}
-.pname{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
-.pteam{font-size:0.7rem;color:var(--orange);margin-bottom:0.9rem}
-.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.4rem}
-.pstat{background:var(--bg2);border-radius:7px;padding:0.45rem;text-align:center}
-.pstat-val{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
-.pstat-lbl{font-size:0.58rem;color:var(--txt3);text-transform:uppercase}
-
-/* EVENTS */
-.events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
-.event-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s}
-.event-card:hover{border-color:var(--orange)}
-.event-date-bar{background:var(--orange);padding:0.55rem 1rem}
-.event-date-bar .eday{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;line-height:1}
-.event-date-bar .emon{font-size:0.7rem;color:rgba(255,255,255,0.8);text-transform:uppercase}
-.event-info{padding:0.9rem 1rem}
-.event-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.35rem}
-.event-loc{font-size:0.72rem;color:var(--txt2);margin-bottom:0.3rem}
-.event-desc{font-size:0.75rem;color:var(--txt3)}
-
-/* TRANSFERS */
-.transfer-card{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;transition:border-color 0.2s}
-.transfer-card:hover{border-color:var(--border2)}
-.tplayer{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700}
-.tclubs{font-size:0.75rem;color:var(--txt2);margin-top:0.15rem}
-.tclubs .arr{color:var(--orange)}
-.cbadge{font-size:0.62rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:99px}
-.cb-confirmed{background:rgba(16,185,129,0.15);color:var(--green)}
-.cb-rumor{background:rgba(245,158,11,0.15);color:var(--yellow)}
-.tfee{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--orange)}
-
-/* AI PILL */
-.ai-pill{display:inline-flex;align-items:center;gap:0.35rem;font-size:0.68rem;color:var(--txt3);padding:0.22rem 0.6rem;background:var(--bg4);border:1px solid var(--border);border-radius:99px;margin-bottom:1rem}
-.ai-pill i{color:var(--orange);font-size:0.62rem}
-
-/* ═══════════════════════════════════════════════
-   FANTASY LEAGUE
-═══════════════════════════════════════════════ */
-.fantasy-hero{background:linear-gradient(135deg,#0d1a2e,#1a0d2e);border:1px solid #2a1f50;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.fantasy-hero h2{font-size:2rem;font-weight:900;color:#fff}
-.fantasy-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
-.fhero-badge{background:var(--purple);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
-.fantasy-pts{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--purple);line-height:1}
-.fantasy-pts-label{font-size:0.72rem;color:var(--txt3);text-align:right}
-
-.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;margin-bottom:1.5rem}
-.roster-slot{background:var(--bg3);border:2px dashed var(--border);border-radius:14px;padding:1rem;text-align:center;cursor:pointer;transition:all 0.2s;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
-.roster-slot:hover{border-color:var(--purple);background:rgba(139,92,246,0.05)}
-.roster-slot.filled{border-style:solid;border-color:var(--border)}
-.roster-slot.filled:hover{border-color:var(--purple)}
-.slot-pos{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--purple)}
-.slot-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-top:0.2rem}
-.slot-team{font-size:0.68rem;color:var(--txt3)}
-.slot-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--purple);margin-top:0.3rem}
-.slot-pts-lbl{font-size:0.6rem;color:var(--txt3)}
-.slot-empty-icon{font-size:1.5rem;opacity:0.3}
-.slot-empty-lbl{font-size:0.75rem;color:var(--txt3)}
-
-.fl-leaderboard{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.fl-lb-row{display:flex;align-items:center;gap:1rem;padding:0.85rem 1.25rem;border-bottom:1px solid var(--border);transition:background 0.2s}
-.fl-lb-row:last-child{border-bottom:none}
-.fl-lb-row:hover{background:rgba(139,92,246,0.05)}
-.fl-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;width:28px;flex-shrink:0}
-.fl-rank.gold{color:var(--yellow)}
-.fl-rank.silver{color:#94a3b8}
-.fl-rank.bronze{color:#b45309}
-.fl-name{flex:1;font-weight:600;font-size:0.88rem}
-.fl-team{font-size:0.7rem;color:var(--txt3)}
-.fl-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--purple)}
-
-.player-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem;max-height:400px;overflow-y:auto;padding-right:0.25rem}
-.pick-card{background:var(--bg4);border:1px solid var(--border);border-radius:12px;padding:0.9rem;cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;gap:0.4rem}
-.pick-card:hover{border-color:var(--purple);background:rgba(139,92,246,0.08)}
-.pick-card.selected{border-color:var(--purple);background:rgba(139,92,246,0.15)}
-.pick-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700}
-.pick-info{font-size:0.7rem;color:var(--txt3)}
-.pick-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;color:var(--purple)}
-
-/* ═══════════════════════════════════════════════
-   PREDICTION LEAGUE
-═══════════════════════════════════════════════ */
-.pred-hero{background:linear-gradient(135deg,#0d1f1a,#1a200d);border:1px solid #1f3020;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.pred-hero h2{font-size:2rem;font-weight:900;color:#fff}
-.pred-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
-.phero-badge{background:var(--green);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
-.pred-score{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--green);line-height:1;text-align:right}
-.pred-score-label{font-size:0.72rem;color:var(--txt3);text-align:right}
-
-.pred-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1rem;transition:border-color 0.2s}
-.pred-card:hover{border-color:var(--border2)}
-.pred-match{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
-.pred-team{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;flex:1;text-align:center}
-.pred-vs{font-size:0.8rem;color:var(--txt3);font-weight:700}
-.pred-deadline{font-size:0.7rem;color:var(--yellow);margin-bottom:0.75rem}
-.pred-buttons{display:flex;gap:0.5rem;flex-wrap:wrap}
-.pred-btn{flex:1;padding:0.5rem 0.5rem;border-radius:10px;border:1px solid var(--border);background:var(--bg4);color:var(--txt2);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;transition:all 0.2s;text-align:center}
-.pred-btn:hover{border-color:var(--green);color:var(--green)}
-.pred-btn.picked{background:var(--green);border-color:var(--green);color:#fff}
-.pred-btn.picked.wrong{background:var(--red);border-color:var(--red)}
-.pred-btn.correct{background:var(--green);border-color:var(--green);color:#fff}
-.pred-result{font-size:0.72rem;padding:0.4rem 0.75rem;border-radius:8px;margin-top:0.75rem;display:inline-flex;align-items:center;gap:0.35rem}
-.pred-result.win{background:rgba(16,185,129,0.15);color:var(--green)}
-.pred-result.loss{background:rgba(239,68,68,0.15);color:var(--red)}
-.pred-result.pending{background:rgba(245,158,11,0.1);color:var(--yellow)}
-
-.pred-lb{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.pred-lb-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1.2rem;border-bottom:1px solid var(--border);transition:background 0.2s}
-.pred-lb-row:last-child{border-bottom:none}
-.pred-lb-row:hover{background:rgba(16,185,129,0.04)}
-.pred-acc{font-size:0.7rem;color:var(--txt3)}
-
-/* ═══════════════════════════════════════════════
-   WHATSAPP ALERTS
-═══════════════════════════════════════════════ */
-.wa-hero{background:linear-gradient(135deg,#0d1f12,#0a1a10);border:1px solid #1a3a20;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.wa-hero h2{font-size:2rem;font-weight:900;color:#fff}
-.wa-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
-.wa-badge{background:#25D366;color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
-.wa-count{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:#25D366;line-height:1;text-align:right}
-.wa-count-lbl{font-size:0.72rem;color:var(--txt3);text-align:right}
-
-.wa-signup{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1.5rem}
-.wa-signup h3{font-size:1.2rem;font-weight:700;margin-bottom:0.25rem}
-.wa-signup p{font-size:0.82rem;color:var(--txt2);margin-bottom:1.25rem}
-.wa-form{display:grid;grid-template-columns:1fr 1fr auto;gap:0.75rem;align-items:end}
-.wa-prefs{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0}
-.wa-pref{display:flex;align-items:center;gap:0.4rem;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:0.4rem 0.75rem;cursor:pointer;transition:all 0.2s;font-size:0.78rem;user-select:none}
-.wa-pref input{accent-color:var(--green);width:14px;height:14px}
-.wa-pref:hover{border-color:var(--green)}
-
-.subscribers-list{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.sub-row{display:flex;align-items:center;gap:1rem;padding:0.8rem 1.25rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.75rem}
-.sub-row:last-child{border-bottom:none}
-.sub-num{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:var(--green);flex-shrink:0}
-.sub-name{font-weight:600;font-size:0.85rem;flex:1}
-.sub-town{font-size:0.68rem;color:var(--orange);background:rgba(249,115,22,0.1);padding:0.15rem 0.5rem;border-radius:99px;flex-shrink:0}
-.sub-prefs{font-size:0.68rem;color:var(--txt3);flex:1}
-.sub-active{font-size:0.62rem;padding:0.18rem 0.5rem;border-radius:99px;background:rgba(16,185,129,0.15);color:var(--green);flex-shrink:0}
-
-.alert-preview{background:linear-gradient(135deg,#075E54,#128C7E);border-radius:16px;padding:1.25rem;margin-bottom:1.5rem}
-.alert-preview h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem}
-.wa-bubble{background:#fff;border-radius:0 12px 12px 12px;padding:0.75rem 1rem;max-width:320px;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.wa-bubble p{font-size:0.82rem;color:#111;line-height:1.5}
-.wa-bubble .wa-time{font-size:0.65rem;color:#667781;margin-top:0.4rem;text-align:right}
-
-.send-btn-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.25rem}
-.wa-send-btn{display:flex;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.wa-send-green{background:#25D366;color:#fff}
-.wa-send-green:hover{filter:brightness(1.1)}
-
-/* ═══════════════════════════════════════════════
-   COUNTY RIVALRY
-═══════════════════════════════════════════════ */
-.rivalry-hero{background:linear-gradient(135deg,#1f0d0d,#1f1a0d);border:1px solid #3a1f1f;border-radius:18px;padding:1.5rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.rivalry-hero h2{font-size:2rem;font-weight:900;color:#fff}
-.rivalry-hero p{font-size:0.85rem;color:var(--txt2);margin-top:0.25rem}
-.rhero-badge{background:var(--red);color:#fff;font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:99px;margin-bottom:0.5rem;display:inline-block}
-
-.county-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem}
-.county-card{background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1.1rem;transition:all 0.2s;cursor:pointer}
-.county-card:hover{transform:translateY(-3px);border-color:var(--orange)}
-.county-card.selected{border-color:var(--orange);background:rgba(249,115,22,0.06)}
-.county-name{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:0.2rem}
-.county-record{display:grid;grid-template-columns:repeat(3,1fr);gap:0.4rem;margin-top:0.75rem}
-.county-stat{background:var(--bg2);border-radius:8px;padding:0.4rem;text-align:center}
-.county-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
-.county-stat-lbl{font-size:0.58rem;color:var(--txt3);text-transform:uppercase}
-.county-bar{height:4px;background:var(--border);border-radius:2px;margin-top:0.75rem;overflow:hidden}
-.county-bar-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 0.6s ease}
-
-.h2h-panel{background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:1.25rem;margin-bottom:1.5rem}
-.h2h-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
-.h2h-team{flex:1;text-align:center}
-.h2h-team-name{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900}
-.h2h-team-county{font-size:0.72rem;color:var(--txt3)}
-.h2h-vs{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--txt3);flex-shrink:0}
-.h2h-stats{display:grid;grid-template-columns:1fr 2fr 1fr;gap:0.75rem;align-items:center;margin-bottom:1rem}
-.h2h-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;text-align:center}
-.h2h-bar-wrap{background:var(--border);border-radius:99px;height:8px;overflow:hidden;position:relative}
-.h2h-bar-a{position:absolute;left:0;top:0;height:100%;background:var(--orange);border-radius:99px}
-.h2h-bar-b{position:absolute;right:0;top:0;height:100%;background:var(--blue);border-radius:99px}
-.h2h-bar-lbl{display:flex;justify-content:space-between;font-size:0.65rem;color:var(--txt3);margin-top:0.3rem}
-.h2h-recent{margin-top:1rem}
-.h2h-recent-title{font-size:0.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.5rem}
-.h2h-game-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0.75rem;background:var(--bg4);border-radius:8px;margin-bottom:0.4rem;font-size:0.78rem}
-.h2h-game-score{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700}
-.h2h-winner{color:var(--green)}
-.h2h-loser{color:var(--txt3)}
-
-.rivalry-table{background:var(--bg3);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.rivalry-table-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr 1fr;gap:0.5rem;padding:0.7rem 1.2rem;border-bottom:1px solid var(--border);align-items:center;font-size:0.8rem;transition:background 0.2s}
-.rivalry-table-row:last-child{border-bottom:none}
-.rivalry-table-row:hover{background:rgba(249,115,22,0.04)}
-.rivalry-table-row.header{font-size:0.67rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--txt3);background:var(--bg4)}
-.heat{width:10px;height:10px;border-radius:50%;display:inline-block}
-.heat-hot{background:var(--red)}
-.heat-warm{background:var(--yellow)}
-.heat-cool{background:var(--blue)}
-
-/* DELETE TRASH BUTTON */
-.trash-btn{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:0.75rem;font-family:'DM Sans',sans-serif;transition:color 0.2s;padding:0.2rem 0.4rem;border-radius:6px}
-.trash-btn:hover{color:var(--red)}
-
-/* SORT BUTTONS */
-.sort-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.25rem}
-
-/* POST FORM GRID */
-.post-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:0.75rem}
-
-/* TABS FOR SUBSECTIONS */
-.sub-tabs{display:flex;gap:0.4rem;margin-bottom:1.25rem;flex-wrap:wrap}
-.sub-tab{padding:0.4rem 0.9rem;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);transition:all 0.2s}
-.sub-tab.active{background:var(--purple);border-color:var(--purple);color:#fff}
-.sub-tab.green.active{background:var(--green);border-color:var(--green)}
-.sub-tab.red.active{background:var(--red);border-color:var(--red)}
-.sub-tab.wa.active{background:#25D366;border-color:#25D366}
-.sub-pane{display:none}
-.sub-pane.active{display:block}
-
-/* NOTIFICATION TOAST */
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:0.9rem 1.25rem;z-index:9999;font-size:0.85rem;display:flex;align-items:center;gap:0.6rem;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:320px}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{border-color:var(--green)}
-.toast.success i{color:var(--green)}
-.toast.error{border-color:var(--red)}
-.toast.error i{color:var(--red)}
-
-
-
-
-/* POLISHED LANDING HERO */
-.site-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(249,115,22,.30),transparent 32%),radial-gradient(circle at 85% 10%,rgba(239,68,68,.18),transparent 28%),linear-gradient(135deg,#101522,#080b12 70%);border:1px solid rgba(249,115,22,.22);border-radius:26px;padding:1.45rem 1.55rem;margin-bottom:1.25rem;display:flex;justify-content:space-between;align-items:center;gap:1.25rem;box-shadow:0 24px 80px rgba(0,0,0,.35)}
-.site-hero:after{content:'';position:absolute;right:-80px;bottom:-120px;width:280px;height:280px;border:35px solid rgba(255,255,255,.035);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(249,115,22,.06)}
-.site-hero-copy{position:relative;z-index:1}.hero-badge{display:inline-flex;align-items:center;gap:.45rem;background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.28);color:var(--red);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;border-radius:99px;padding:.28rem .72rem;margin-bottom:.55rem}.site-hero h1{font-size:3rem;font-weight:900;line-height:.95;color:#fff;text-transform:uppercase}.site-hero p{font-size:.92rem;color:var(--txt2);margin-top:.55rem;max-width:620px;line-height:1.6}.hero-score-tile{position:relative;z-index:1;background:rgba(8,11,18,.72);border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:1rem 1.2rem;min-width:160px;text-align:right;backdrop-filter:blur(14px)}.hero-score-label{font-size:.68rem;color:var(--txt3);font-weight:800;text-transform:uppercase;letter-spacing:.7px}.hero-score-value{font-family:'Barlow Condensed',sans-serif;font-size:3.4rem;line-height:.9;font-weight:900;color:var(--red)}.hero-score-sub{font-size:.7rem;color:var(--txt2);margin-top:.35rem}.card,.scard,.match-card,.post-card,.player-card,.event-card,.transfer-card{box-shadow:0 14px 45px rgba(0,0,0,.16)}
-@media(max-width:720px){.site-hero{align-items:flex-start}.site-hero h1{font-size:2.15rem}.hero-score-tile{width:100%;text-align:left}.site-hero{flex-direction:column}}
-
-/* LIVE GAME CENTER */
-.live-hero{background:linear-gradient(135deg,rgba(239,68,68,.18),rgba(249,115,22,.10));border:1px solid rgba(239,68,68,.28);border-radius:20px;padding:1.4rem;margin-bottom:1rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap;box-shadow:0 20px 60px rgba(0,0,0,.18)}
-.live-hero h2{font-size:2rem;font-weight:900;color:#fff;line-height:1}
-.live-hero p{font-size:.86rem;color:var(--txt2);margin-top:.45rem;max-width:680px;line-height:1.55}
-.live-kicker{display:inline-flex;align-items:center;gap:.45rem;color:var(--red);font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:.45rem}
-.live-hero-actions{display:flex;gap:.6rem;flex-wrap:wrap}
-
-.live-api-panel{background:linear-gradient(135deg,rgba(59,130,246,.10),rgba(249,115,22,.06));border:1px solid rgba(59,130,246,.22);border-radius:18px;padding:1rem;margin-bottom:1rem;display:grid;grid-template-columns:1.1fr 2fr;gap:1rem;align-items:center}.live-api-copy strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;color:#fff;margin-bottom:.25rem}.live-api-copy i{color:var(--blue);margin-right:.4rem}.live-api-copy span,.live-api-note{font-size:.75rem;color:var(--txt2);line-height:1.45}.live-api-form{display:grid;grid-template-columns:1fr 1fr 1fr auto auto auto;gap:.55rem;align-items:center}.live-api-form input,.live-api-form select{width:100%;padding:.55rem .7rem;background:var(--bg4);border:1px solid var(--border);border-radius:9px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:.8rem}.live-api-note{grid-column:1/-1;color:var(--txt3);padding-top:.15rem}.live-api-note.ok{color:var(--green)}.live-api-note.warn{color:var(--yellow)}.live-api-note.err{color:var(--red)}
-@media(max-width:980px){.live-api-panel{grid-template-columns:1fr}.live-api-form{grid-template-columns:1fr 1fr}.live-api-note{grid-column:1/-1}}@media(max-width:560px){.live-api-form{grid-template-columns:1fr}}
-
-.live-toolbar{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
-.live-sync{font-size:.72rem;color:var(--txt3);margin-left:auto}
-.live-games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1rem}
-.live-game-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;overflow:hidden;position:relative;box-shadow:0 14px 40px rgba(0,0,0,.18)}
-.live-game-card.is-live{border-color:rgba(239,68,68,.55)}
-.live-game-top{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:var(--bg3);border-bottom:1px solid var(--border);gap:.75rem}
-.live-status{display:inline-flex;align-items:center;gap:.35rem;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;padding:.22rem .62rem;border-radius:99px;background:rgba(239,68,68,.14);color:var(--red)}
-.live-status.final{background:rgba(16,185,129,.13);color:var(--green)}
-.live-status.upcoming{background:rgba(245,158,11,.13);color:var(--yellow)}
-.live-clock{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;color:#fff;white-space:nowrap}
-.live-arena{font-size:.68rem;color:var(--txt3);padding:.65rem 1rem 0;display:flex;gap:.35rem;align-items:center}
-.live-scoreboard{padding:1rem;display:grid;grid-template-columns:1fr auto 1fr;gap:.85rem;align-items:center}
-.live-team{text-align:left;min-width:0}.live-team.right{text-align:right}
-.live-team-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--bg4),var(--bg5));display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.45rem}
-.live-team.right .live-team-logo{margin-left:auto}
-.live-team-name{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:900;color:#fff;line-height:1.1;word-break:break-word}
-.live-team-record{font-size:.66rem;color:var(--txt3);margin-top:.18rem}
-.live-scorebox{text-align:center;min-width:104px}
-.live-score-main{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:900;color:var(--orange);line-height:1;letter-spacing:.02em}
-.live-scorebox small{display:block;margin-top:.25rem;color:var(--txt3);font-size:.66rem;text-transform:uppercase;font-weight:700}
-.live-progress{height:5px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 1rem 1rem}.live-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:99px;transition:width .5s ease}
-.live-details{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;padding:0 1rem 1rem}
-.live-panel{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:.75rem;min-height:112px}
-.live-panel-title{font-size:.68rem;color:var(--txt3);font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:.55rem}
-.live-leader-row,.play-row{display:flex;justify-content:space-between;gap:.6rem;font-size:.74rem;color:var(--txt2);padding:.24rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.live-leader-row:last-child,.play-row:last-child{border-bottom:none}.live-leader-row strong{color:#fff}.play-row span:first-child{color:var(--orange);font-weight:800;white-space:nowrap}.play-row span:last-child{text-align:right}
-.live-controls{display:flex;gap:.5rem;flex-wrap:wrap;padding:0 1rem 1rem}.live-mini-btn{flex:1;min-width:120px;border:1px solid var(--border);background:var(--bg4);color:var(--txt2);border-radius:9px;padding:.45rem .55rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s}.live-mini-btn:hover{border-color:var(--orange);color:#fff}.live-mini-btn.red:hover{border-color:var(--red);color:var(--red)}
-@media(max-width:720px){.live-details{grid-template-columns:1fr}.live-games-grid{grid-template-columns:1fr}.live-sync{margin-left:0;width:100%}.live-score-main{font-size:2rem}.live-scoreboard{gap:.45rem}.live-team-name{font-size:1rem}}
-
-/* RESPONSIVE */
-@media(max-width:1100px){.stats-row{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:768px){
-  .stats-row{grid-template-columns:repeat(4,1fr)}
-  .wa-form{grid-template-columns:1fr}
-  .post-form-grid{grid-template-columns:1fr}
-  .h2h-stats{grid-template-columns:1fr 1fr 1fr}
-}
-@media(max-width:560px){
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .nav-inner{padding:0 1rem;gap:0.5rem}
-  .logo-sub{display:none}
-  .ntab{padding:0.35rem 0.55rem;font-size:0.72rem}
-  .main{padding:1rem}
-  .score-num{font-size:1.4rem}
-  .fantasy-pts,.pred-score,.wa-count{font-size:2rem}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KBL · Kenya Basketball League</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: #070b14; color: #eef3fc; overflow-x: hidden; }
+    h1, h2, h3, h4, h5 { font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.02em; }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0d1224; }
+    ::-webkit-scrollbar-thumb { background: #f97316; border-radius: 99px; }
+    
+    .bg-card { background: #0d1224; border: 1px solid #1f2a44; }
+    .bg-card-hover { background: #141b30; border: 1px solid #1f2a44; }
+    .text-orange { color: #f97316; }
+    .border-orange { border-color: #f97316; }
+    
+    .btn-orange { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; transition: all 0.3s; }
+    .btn-orange:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 30px rgba(249,115,22,0.4); }
+    
+    .live-dot { display: inline-block; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; animation: blink 1.4s infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+    
+    .glass { background: rgba(13, 18, 36, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #1f2a44; }
+    .sidebar { background: #0d1224; border-right: 1px solid #1f2a44; }
+    .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1rem; border-radius: 12px; color: #8da0c0; transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+    .sidebar-link::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(249,115,22,0.1), transparent); opacity: 0; transition: opacity 0.3s; }
+    .sidebar-link:hover::before { opacity: 1; }
+    .sidebar-link:hover { color: #fff; background: rgba(249,115,22,0.05); }
+    .sidebar-link.active { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; box-shadow: 0 4px 20px rgba(249,115,22,0.3); }
+    .sidebar-link.active::before { opacity: 1; }
+    
+    .stat-card { background: #141b30; border: 1px solid #1f2a44; border-radius: 16px; padding: 1rem; transition: all 0.3s; position: relative; overflow: hidden; }
+    .stat-card::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(249,115,22,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+    .stat-card:hover { border-color: #f97316; transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .stat-card:hover::after { opacity: 1; }
+    
+    .match-card { background: #141b30; border: 1px solid #1f2a44; border-radius: 14px; padding: 1rem; transition: all 0.3s; }
+    .match-card:hover { border-color: #f97316; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+    
+    .team-logo { width: 40px; height: 40px; background: linear-gradient(135deg, #1c2540, #2a3550); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 1px solid #2e3d60; transition: all 0.3s; }
+    .match-card:hover .team-logo { border-color: #f97316; transform: scale(1.05); }
+    
+    .player-avatar { width: 48px; height: 48px; background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; color: #fff; transition: all 0.3s; box-shadow: 0 4px 15px rgba(249,115,22,0.3); }
+    .player-avatar:hover { transform: scale(1.1) rotate(-5deg); }
+    
+    .spill { padding: 0.15rem 0.6rem; border-radius: 99px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+    .spill-live { background: rgba(239,68,68,0.15); color: #ef4444; animation: pulse-live 1.5s infinite; }
+    @keyframes pulse-live { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+    .spill-final { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .spill-upcoming { background: rgba(250,204,21,0.15); color: #facc15; }
+    
+    .nav-tab { padding: 0.5rem 1rem; border-radius: 10px; color: #8da0c0; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+    .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .nav-tab.active { background: #f97316; color: #fff; box-shadow: 0 4px 20px rgba(249,115,22,0.3); }
+    
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: #0d1224; border: 1px solid #1f2a44; border-radius: 12px; padding: 0.9rem 1.4rem; z-index: 9999; font-size: 0.85rem; display: flex; align-items: center; gap: 0.7rem; transform: translateY(120px); opacity: 0; transition: all 0.35s cubic-bezier(0.2,0.9,0.3,1); max-width: 360px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-color: #22c55e; }
+    .toast.success i { color: #22c55e; }
+    .toast.error { border-color: #ef4444; }
+    .toast.error i { color: #ef4444; }
+    
+    /* Flashy Login */
+    .login-box { max-width: 420px; margin: 0 auto; background: linear-gradient(135deg, #0d1224, #141b30); border: 1px solid rgba(249,115,22,0.3); border-radius: 28px; padding: 2.5rem; position: relative; overflow: hidden; box-shadow: 0 25px 80px rgba(249,115,22,0.15); }
+    .login-box::before { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(249,115,22,0.08), transparent); animation: rotateGlow 20s linear infinite; }
+    @keyframes rotateGlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .login-box .logo-ball { width: 80px; height: 80px; font-size: 2.8rem; margin: 0 auto 1rem; border-radius: 28px; background: linear-gradient(135deg, #f97316, #ea580c); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 40px rgba(249,115,22,0.4); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .login-box h2 { font-size: 2.4rem; background: linear-gradient(135deg, #fff, #f97316); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .login-box p { color: #8da0c0; margin-bottom: 1.5rem; }
+    input, select { width: 100%; padding: 0.8rem 1rem; background: #1c2540; border: 1px solid #1f2a44; border-radius: 14px; color: #eef3fc; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; transition: all 0.3s; }
+    input:focus, select:focus { outline: none; border-color: #f97316; box-shadow: 0 0 0 4px rgba(249,115,22,0.1); }
+    .frow { margin-bottom: 0.9rem; }
+    .frow label { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #4a5a78; margin-bottom: 0.35rem; }
+    .login-error { color: #ef4444; font-size: 0.8rem; min-height: 1.6rem; margin-top: 0.25rem; }
+    .demo-credentials { margin-top: 1.5rem; font-size: 0.75rem; color: #4a5a78; border-top: 1px solid #1f2a44; padding-top: 1.2rem; }
+    .demo-credentials code { background: #1c2540; padding: 0.1rem 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.7rem; color: #facc15; border: 1px solid #2e3d60; }
+    
+    @media (max-width: 768px) { 
+      .sidebar { position: fixed; left: -280px; top: 0; bottom: 0; width: 280px; z-index: 1000; transition: left 0.3s ease; overflow-y: auto; } 
+      .sidebar.open { left: 0; } 
+      .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 999; display: none; } 
+      .overlay.open { display: block; } 
+      .login-box { padding: 1.8rem; margin: 1rem; }
+    }
+  </style>
 </head>
 <body>
+<div id="root"></div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
-
-<nav class="nav">
-  <div class="nav-inner">
-    <div class="logo">
-      <div class="logo-ball">🏀</div>
-      <div>
-        <div class="logo-name">KBL</div>
-        <div class="logo-sub">KENYA BASKETBALL LIVE</div>
-      </div>
-    </div>
-    <div class="nav-tabs">
-      <button class="ntab" data-tab="feed">🏀 Feed</button>
-      <button class="ntab active" data-tab="live">🔴 Live</button>
-      <button class="ntab" data-tab="scores">📊 Scores</button>
-      <button class="ntab" data-tab="rankings">🏆 Rankings</button>
-      <button class="ntab" data-tab="players">⭐ Players</button>
-      <button class="ntab" data-tab="events">📅 Events</button>
-      <button class="ntab" data-tab="transfers">🔄 Transfers</button>
-      <button class="ntab" data-tab="fantasy" style="color:var(--purple)">🎮 Fantasy</button>
-      <button class="ntab" data-tab="predict" style="color:var(--green)">🔮 Predict</button>
-      <button class="ntab" data-tab="alerts" style="color:#25D366">📲 Alerts</button>
-      <button class="ntab" data-tab="rivalry" style="color:var(--red)">⚔️ Rivalry</button>
-    </div>
-    <div class="live-pill"><div class="live-dot"></div><span>LIVE</span></div>
-  </div>
-</nav>
-
-<div class="main">
-  <section class="site-hero">
-    <div class="site-hero-copy">
-      <div class="hero-badge"><span class="live-dot"></span> Online-ready basketball hub</div>
-      <h1>Kenya Basketball Live</h1>
-      <p>Scores, standings, players, events, alerts and a live game center built for Kenyan basketball fans.</p>
-    </div>
-    <div class="hero-score-tile">
-      <div class="hero-score-label">Live Games</div>
-      <div class="hero-score-value" id="heroLiveCount">0</div>
-      <div class="hero-score-sub" id="heroOnlineStatus">Local demo active</div>
-    </div>
-  </section>
-
-  <div class="stats-row" id="statsRow"></div>
-
-  <!-- ── FEED ── -->
-  <div class="tab-pane" id="feedTab">
-    <div class="card">
-      <div class="card-head"><div class="card-title"><i class="fas fa-pen-alt"></i> Breaking News</div></div>
-      <div class="post-form-grid">
-        <input id="pTitle" placeholder="Headline" class="finput">
-        <select id="pTown" class="finput"></select>
-      </div>
-      <input id="pAuthor" placeholder="Source / Author" class="finput" style="width:100%;margin-bottom:0.75rem">
-      <textarea id="pContent" rows="3" placeholder="Report..." class="finput" style="width:100%;margin-bottom:0.75rem;resize:vertical"></textarea>
-      <button class="btn btn-orange" onclick="addPost()"><i class="fas fa-paper-plane"></i> Publish</button>
-    </div>
-    <div class="ai-pill"><i class="fas fa-robot"></i> Offline-ready demo data saves in your browser</div>
-    <div class="town-row" id="townRow"></div>
-    <div id="postsGrid" class="posts-grid"></div>
-  </div>
-
-
-  <!-- ── LIVE CENTER ── -->
-  <div class="tab-pane active" id="liveTab">
-    <div class="live-hero">
-      <div>
-        <div class="live-kicker"><span class="live-dot"></span> Live Game Center</div>
-        <h2>Real-Time Kenya Basketball Scores</h2>
-        <p>Follow live games with auto-updating scores, game clock, quarter, leaders and play-by-play. Works offline using local browser storage.</p>
-      </div>
-      <div class="live-hero-actions">
-        <button class="btn btn-orange" onclick="openModal('matchModal')"><i class="fas fa-plus"></i> Add Live Game</button>
-        <button class="btn btn-ghost" id="livePauseBtn" onclick="toggleLiveSimulation()"><i class="fas fa-pause"></i> Pause Updates</button>
-      </div>
-    </div>
-
-    <div class="live-api-panel" id="liveApiPanel">
-      <div class="live-api-copy">
-        <strong><i class="fas fa-cloud-arrow-down"></i> Online live game source</strong>
-        <span>Enter an API key to pull real ongoing basketball games. Without a key, the app can try a public NBA scoreboard or use the local KBL live demo.</span>
-      </div>
-      <div class="live-api-form">
-        <select id="liveProvider">
-          <option value="apisports">API-SPORTS Basketball</option>
-          <option value="rapidapi">RapidAPI API-Basketball</option>
-          <option value="nba">Public NBA scoreboard, no key</option>
-        </select>
-        <input id="liveApiKey" type="password" placeholder="API key, optional for NBA">
-        <input id="liveCountry" placeholder="Country filter, e.g. Kenya">
-        <button class="btn btn-blue" onclick="saveLiveApiSettings()"><i class="fas fa-save"></i> Save</button>
-        <button class="btn btn-orange" onclick="syncOnlineGames()"><i class="fas fa-rotate"></i> Sync Now</button>
-        <button class="btn btn-green" onclick="autoGenerateGames()"><i class="fas fa-wand-magic-sparkles"></i> Auto Generate</button>
-      </div>
-      <div class="live-api-note" id="liveApiStatus">Online sync is optional. Browser preview may block external network; downloaded file works in a normal browser.</div>
-    </div>
-
-    <div class="live-toolbar">
-      <button class="btn btn-ghost active" id="liveFilter-live" onclick="setLiveFilter('live')">Live Now</button>
-      <button class="btn btn-ghost" id="liveFilter-all" onclick="setLiveFilter('all')">All Games</button>
-      <button class="btn btn-ghost" id="liveFilter-upcoming" onclick="setLiveFilter('upcoming')">Upcoming</button>
-      <button class="btn btn-ghost" id="liveFilter-final" onclick="setLiveFilter('final')">Finals</button>
-      <span class="live-sync" id="liveSyncText">Auto-updates every 5s</span>
-    </div>
-
-    <div id="liveGamesGrid" class="live-games-grid"></div>
-  </div>
-
-
-  <!-- ── SCORES ── -->
-  <div class="tab-pane" id="scoresTab">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><i class="fas fa-calendar-alt"></i> Live &amp; Upcoming Fixtures</div>
-        <button class="btn btn-orange" onclick="openModal('matchModal')"><i class="fas fa-plus"></i> Add Match</button>
-      </div>
-      <div id="matchesList"><div class="loading"><div class="spinner"></div><br>Loading fixtures...</div></div>
-    </div>
-  </div>
-
-  <!-- ── RANKINGS ── -->
-  <div class="tab-pane" id="rankingsTab">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><i class="fas fa-trophy"></i> KBF League Standings</div>
-        <button class="btn btn-orange" onclick="openModal('teamModal')"><i class="fas fa-plus"></i> Add Team</button>
-      </div>
-      <div class="table-wrap">
-        <table class="standings-table">
-          <thead><tr><th>#</th><th>Team</th><th>City</th><th>GP</th><th>W</th><th>L</th><th>Win%</th><th>PF</th><th>PA</th><th>+/-</th><th>Streak</th></tr></thead>
-          <tbody id="rankingsBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── PLAYERS ── -->
-  <div class="tab-pane" id="playersTab">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><i class="fas fa-star"></i> Statistical Leaders</div>
-        <button class="btn btn-orange" onclick="openModal('playerModal')"><i class="fas fa-plus"></i> Add Player</button>
-      </div>
-      <div class="sort-row">
-        <button class="btn btn-ghost active" id="sort-ppg" onclick="sortPlayers('ppg')">Points</button>
-        <button class="btn btn-ghost" id="sort-rpg" onclick="sortPlayers('rpg')">Rebounds</button>
-        <button class="btn btn-ghost" id="sort-apg" onclick="sortPlayers('apg')">Assists</button>
-        <button class="btn btn-ghost" id="sort-spg" onclick="sortPlayers('spg')">Steals</button>
-        <button class="btn btn-ghost" id="sort-bpg" onclick="sortPlayers('bpg')">Blocks</button>
-      </div>
-      <div id="playersGrid" class="players-grid"></div>
-    </div>
-  </div>
-
-  <!-- ── EVENTS ── -->
-  <div class="tab-pane" id="eventsTab">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><i class="fas fa-calendar"></i> Upcoming Events</div>
-        <button class="btn btn-orange" onclick="openModal('eventModal')"><i class="fas fa-plus"></i> Add Event</button>
-      </div>
-      <div id="eventsGrid" class="events-grid"></div>
-    </div>
-  </div>
-
-  <!-- ── TRANSFERS ── -->
-  <div class="tab-pane" id="transfersTab">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><i class="fas fa-exchange-alt"></i> Transfer Market</div>
-        <button class="btn btn-orange" onclick="openModal('transferModal')"><i class="fas fa-plus"></i> Add Transfer</button>
-      </div>
-      <div id="transfersList"></div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       FANTASY LEAGUE
-  ════════════════════════════════════ -->
-  <div class="tab-pane" id="fantasyTab">
-    <div class="fantasy-hero">
-      <div>
-        <div class="fhero-badge">🎮 Fantasy League</div>
-        <h2>Build Your Dream Team</h2>
-        <p>Pick 5 players, earn points based on real match stats. Updated weekly.</p>
-      </div>
-      <div>
-        <div class="fantasy-pts" id="myFantasyPts">0</div>
-        <div class="fantasy-pts-label">Your total pts this week</div>
-      </div>
-    </div>
-
-    <div class="sub-tabs">
-      <button class="sub-tab active" onclick="showSubTab('fantasy','my-team')">My Team</button>
-      <button class="sub-tab" onclick="showSubTab('fantasy','pick-players')">Pick Players</button>
-      <button class="sub-tab" onclick="showSubTab('fantasy','fl-leaderboard')">Leaderboard</button>
-    </div>
-
-    <div class="sub-pane active" id="fantasy-my-team">
-      <div class="card-head" style="margin-bottom:1rem">
-        <div class="card-title" style="font-size:1rem"><i class="fas fa-users"></i> Your Roster <span style="font-size:0.75rem;color:var(--txt3);font-family:'DM Sans',sans-serif;font-weight:400" id="rosterCount">(0/5 players)</span></div>
-        <button class="btn btn-purple" onclick="showSubTab('fantasy','pick-players')"><i class="fas fa-plus"></i> Pick Players</button>
-      </div>
-      <div class="roster-grid" id="rosterGrid"></div>
-    </div>
-
-    <div class="sub-pane" id="fantasy-pick-players">
-      <div class="card" style="margin-bottom:1rem">
-        <p style="font-size:0.85rem;color:var(--txt2);margin-bottom:1rem">Select up to <strong style="color:var(--purple)">5 players</strong> for your fantasy roster. Points are based on PPG, RPG and APG.</p>
-        <div class="player-pick-grid" id="pickGrid"></div>
-        <button class="btn btn-purple" style="margin-top:1rem" onclick="saveRoster()"><i class="fas fa-save"></i> Save Roster</button>
-      </div>
-    </div>
-
-    <div class="sub-pane" id="fantasy-fl-leaderboard">
-      <div class="fl-leaderboard" id="flLeaderboard"></div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       PREDICTION LEAGUE
-  ════════════════════════════════════ -->
-  <div class="tab-pane" id="predictTab">
-    <div class="pred-hero">
-      <div>
-        <div class="phero-badge">🔮 Prediction League</div>
-        <h2>Predict. Win. Bragging Rights.</h2>
-        <p>Pick match winners before kick-off. Earn 10 pts per correct call. Top predictor wins the week.</p>
-      </div>
-      <div>
-        <div class="pred-score" id="myPredPts">0</div>
-        <div class="pred-score-label">Your prediction points</div>
-        <div style="font-size:0.72rem;color:var(--txt3);text-align:right;margin-top:0.2rem" id="predAccuracy"></div>
-      </div>
-    </div>
-
-    <div class="sub-tabs">
-      <button class="sub-tab green active" onclick="showSubTab('predict','open-preds')">Open Predictions</button>
-      <button class="sub-tab green" onclick="showSubTab('predict','my-preds')">My Picks</button>
-      <button class="sub-tab green" onclick="showSubTab('predict','pred-board')">Leaderboard</button>
-    </div>
-
-    <div class="sub-pane active" id="predict-open-preds">
-      <div id="openPredsList"></div>
-    </div>
-
-    <div class="sub-pane" id="predict-my-preds">
-      <div id="myPredsList"></div>
-    </div>
-
-    <div class="sub-pane" id="predict-pred-board">
-      <div class="pred-lb" id="predLeaderboard"></div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       WHATSAPP ALERTS
-  ════════════════════════════════════ -->
-  <div class="tab-pane" id="alertsTab">
-    <div class="wa-hero">
-      <div>
-        <div class="wa-badge"><i class="fab fa-whatsapp"></i> WhatsApp Alerts</div>
-        <h2>Never Miss a Game</h2>
-        <p>Get live scores, transfer news, and event reminders sent to your WhatsApp.</p>
-      </div>
-      <div>
-        <div class="wa-count" id="subCount">0</div>
-        <div class="wa-count-lbl">Subscribers</div>
-      </div>
-    </div>
-
-    <div class="alert-preview">
-      <h3><i class="fab fa-whatsapp"></i> Sample Alert Preview</h3>
-      <div class="wa-bubble">
-        <p id="alertPreviewText">🏀 *KBL LIVE SCORE*\n\nNairobi Thunder 62 – 58 Coastal Kings\n⏱ Q3 | 4:23 remaining\n\nJohn Mbugua leading with 24 pts\n\n📲 Reply STOP to unsubscribe\n_Kenya Basketball Live_</p>
-        <div class="wa-time">Now ✓✓</div>
-      </div>
-    </div>
-
-    <div class="wa-signup">
-      <h3>Subscribe to Alerts</h3>
-      <p>Enter your details and choose what alerts you want to receive.</p>
-      <div class="wa-form">
-        <div class="frow"><label>Your Name</label><input id="waName" placeholder="e.g. James Otieno"></div>
-        <div class="frow"><label>Phone Number (with country code)</label><input id="waPhone" placeholder="+254712345678"></div>
-        <div class="frow"><label>County</label><select id="waTown"></select></div>
-      </div>
-      <p style="font-size:0.8rem;color:var(--txt2);margin-bottom:0.5rem">Select alert types:</p>
-      <div class="wa-prefs">
-        <label class="wa-pref"><input type="checkbox" value="live" checked> 🔴 Live Score Updates</label>
-        <label class="wa-pref"><input type="checkbox" value="final" checked> ✅ Final Results</label>
-        <label class="wa-pref"><input type="checkbox" value="transfers"> 🔄 Transfer News</label>
-        <label class="wa-pref"><input type="checkbox" value="events"> 📅 Event Reminders</label>
-        <label class="wa-pref"><input type="checkbox" value="rankings"> 🏆 Weekly Rankings</label>
-      </div>
-      <button class="btn btn-green" onclick="addSubscriber()"><i class="fab fa-whatsapp"></i> Subscribe Now</button>
-    </div>
-
-    <div class="sub-tabs">
-      <button class="sub-tab wa active" onclick="showSubTab('alerts','sub-list')">Subscribers</button>
-      <button class="sub-tab wa" onclick="showSubTab('alerts','send-alert')">Send Alert</button>
-    </div>
-
-    <div class="sub-pane active" id="alerts-sub-list">
-      <div class="card-head" style="margin-bottom:1rem">
-        <div class="card-title" style="font-size:1rem"><i class="fas fa-users"></i> Active Subscribers</div>
-      </div>
-      <div class="subscribers-list" id="subscribersList"></div>
-    </div>
-
-    <div class="sub-pane" id="alerts-send-alert">
-      <div class="card">
-        <div class="card-head"><div class="card-title" style="font-size:1rem"><i class="fab fa-whatsapp"></i> Broadcast Alert</div></div>
-        <div class="frow"><label>Alert Type</label>
-          <select id="alertType" onchange="updateAlertPreview()">
-            <option value="live">🔴 Live Score Update</option>
-            <option value="final">✅ Final Result</option>
-            <option value="transfer">🔄 Transfer News</option>
-            <option value="event">📅 Event Reminder</option>
-            <option value="custom">✏️ Custom Message</option>
-          </select>
-        </div>
-        <div class="frow"><label>Message</label><textarea id="alertMsg" rows="5" onkeyup="updateAlertPreview()" placeholder="Type your alert message..."></textarea></div>
-        <div class="send-btn-row">
-          <button class="wa-send-btn wa-send-green" onclick="broadcastAlert()"><i class="fab fa-whatsapp"></i> Send to All Subscribers</button>
-          <button class="wa-send-btn" style="background:var(--bg4);border:1px solid var(--border);color:var(--txt2)" onclick="openModal('waTestModal')"><i class="fas fa-paper-plane"></i> Send Test</button>
-        </div>
-        <p style="font-size:0.72rem;color:var(--txt3);margin-top:0.75rem"><i class="fas fa-info-circle"></i> In production, this connects to Twilio or Africa's Talking API to send real WhatsApp messages.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       COUNTY RIVALRY TRACKER
-  ════════════════════════════════════ -->
-  <div class="tab-pane" id="rivalryTab">
-    <div class="rivalry-hero">
-      <div>
-        <div class="rhero-badge">⚔️ County Rivalry Tracker</div>
-        <h2>County vs County</h2>
-        <p>Track head-to-head records, rivalries and dominance across all Kenyan counties.</p>
-      </div>
-      <div style="text-align:right">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--red);line-height:1" id="rivalryGameCount">0</div>
-        <div style="font-size:0.72rem;color:var(--txt3)">H2H games tracked</div>
-      </div>
-    </div>
-
-    <div class="sub-tabs">
-      <button class="sub-tab red active" onclick="showSubTab('rivalry','county-overview')">County Standings</button>
-      <button class="sub-tab red" onclick="showSubTab('rivalry','h2h')">Head-to-Head</button>
-      <button class="sub-tab red" onclick="showSubTab('rivalry','hot-rivalries')">Hot Rivalries</button>
-    </div>
-
-    <div class="sub-pane active" id="rivalry-county-overview">
-      <div class="county-grid" id="countyGrid"></div>
-    </div>
-
-    <div class="sub-pane" id="rivalry-h2h">
-      <div class="card" style="margin-bottom:1.25rem">
-        <div class="card-head" style="margin-bottom:1rem"><div class="card-title" style="font-size:1rem"><i class="fas fa-exchange-alt"></i> Compare Two Counties</div></div>
-        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end">
-          <div class="frow" style="margin:0"><label>County A</label><select id="h2hA" onchange="renderH2H()"></select></div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--txt3);padding-bottom:0.3rem">VS</div>
-          <div class="frow" style="margin:0"><label>County B</label><select id="h2hB" onchange="renderH2H()"></select></div>
-        </div>
-      </div>
-      <div id="h2hPanel"></div>
-    </div>
-
-    <div class="sub-pane" id="rivalry-hot-rivalries">
-      <div class="rivalry-table">
-        <div class="rivalry-table-row header">
-          <div>Heat</div><div>Rivalry</div><div>Games</div><div>Last Match</div><div>Avg Margin</div><div>Intensity</div>
-        </div>
-        <div id="rivalryRows"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODALS ── -->
-<div id="matchModal" class="modal-overlay">
-  <div class="modal-box"><h3>Add Match</h3>
-    <div class="frow"><label>Team 1</label><input id="mT1" placeholder="e.g. Nairobi Thunder"></div>
-    <div class="frow"><label>Team 2</label><input id="mT2" placeholder="e.g. Coastal Kings"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-      <div class="frow"><label>Score – Team 1</label><input id="mS1" type="number" placeholder="0"></div>
-      <div class="frow"><label>Score – Team 2</label><input id="mS2" type="number" placeholder="0"></div>
-    </div>
-    <div class="frow"><label>Date &amp; Time</label><input id="mTime" type="datetime-local"></div>
-    <div class="frow"><label>Status</label><select id="mStatus"><option value="Upcoming">Upcoming</option><option value="Live">Live</option><option value="Final">Final</option></select></div>
-    <div class="modal-actions"><button class="btn btn-orange" onclick="saveMatch()">Save Match</button><button class="btn btn-ghost" onclick="closeModal('matchModal')">Cancel</button></div>
-  </div>
-</div>
-
-<div id="teamModal" class="modal-overlay">
-  <div class="modal-box"><h3>Add Team</h3>
-    <div class="frow"><label>Team Name</label><input id="tmName" placeholder="e.g. Nairobi Thunder"></div>
-    <div class="frow"><label>City</label><input id="tmCity" placeholder="e.g. Nairobi"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-      <div class="frow"><label>Wins</label><input id="tmW" type="number" placeholder="0"></div>
-      <div class="frow"><label>Losses</label><input id="tmL" type="number" placeholder="0"></div>
-      <div class="frow"><label>Points For</label><input id="tmPF" type="number" placeholder="0"></div>
-      <div class="frow"><label>Points Against</label><input id="tmPA" type="number" placeholder="0"></div>
-    </div>
-    <div class="modal-actions"><button class="btn btn-orange" onclick="saveTeam()">Save Team</button><button class="btn btn-ghost" onclick="closeModal('teamModal')">Cancel</button></div>
-  </div>
-</div>
-
-<div id="playerModal" class="modal-overlay">
-  <div class="modal-box"><h3>Add Player</h3>
-    <div class="frow"><label>Name</label><input id="plName" placeholder="Full name"></div>
-    <div class="frow"><label>Team</label><input id="plTeam" placeholder="Team name"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem">
-      <div class="frow"><label>PPG</label><input id="plPPG" type="number" step="0.1" placeholder="0.0"></div>
-      <div class="frow"><label>RPG</label><input id="plRPG" type="number" step="0.1" placeholder="0.0"></div>
-      <div class="frow"><label>APG</label><input id="plAPG" type="number" step="0.1" placeholder="0.0"></div>
-      <div class="frow"><label>SPG</label><input id="plSPG" type="number" step="0.1" placeholder="0.0"></div>
-      <div class="frow"><label>BPG</label><input id="plBPG" type="number" step="0.1" placeholder="0.0"></div>
-      <div class="frow"><label>FG%</label><input id="plFG" type="number" step="0.1" placeholder="0.0"></div>
-    </div>
-    <div class="modal-actions"><button class="btn btn-orange" onclick="savePlayer()">Save Player</button><button class="btn btn-ghost" onclick="closeModal('playerModal')">Cancel</button></div>
-  </div>
-</div>
-
-<div id="eventModal" class="modal-overlay">
-  <div class="modal-box"><h3>Add Event</h3>
-    <div class="frow"><label>Title</label><input id="evTitle" placeholder="Event name"></div>
-    <div class="frow"><label>Location</label><input id="evLoc" placeholder="Venue, City"></div>
-    <div class="frow"><label>Date</label><input id="evDate" type="date"></div>
-    <div class="frow"><label>Description</label><textarea id="evDesc" rows="3" placeholder="Details..."></textarea></div>
-    <div class="modal-actions"><button class="btn btn-orange" onclick="saveEvent()">Save Event</button><button class="btn btn-ghost" onclick="closeModal('eventModal')">Cancel</button></div>
-  </div>
-</div>
-
-<div id="transferModal" class="modal-overlay">
-  <div class="modal-box"><h3>Add Transfer</h3>
-    <div class="frow"><label>Player Name</label><input id="trPlayer" placeholder="Player name"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-      <div class="frow"><label>From Club</label><input id="trFrom" placeholder="Previous club"></div>
-      <div class="frow"><label>To Club</label><input id="trTo" placeholder="New club"></div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-      <div class="frow"><label>Status</label><select id="trType"><option value="Confirmed">Confirmed</option><option value="Rumor">Rumor</option></select></div>
-      <div class="frow"><label>Fee / Terms</label><input id="trFee" placeholder="e.g. 2.5M KES"></div>
-    </div>
-    <div class="modal-actions"><button class="btn btn-orange" onclick="saveTransfer()">Save Transfer</button><button class="btn btn-ghost" onclick="closeModal('transferModal')">Cancel</button></div>
-  </div>
-</div>
-
-<div id="deleteModal" class="modal-overlay">
-  <div class="modal-box"><h3>Admin Verification</h3>
-    <p style="font-size:0.85rem;color:var(--txt2);margin-bottom:1rem">Enter the admin password to delete this record.</p>
-    <div class="frow"><input type="password" id="delPwd" placeholder="Password"></div>
-    <div class="modal-actions">
-      <button class="btn" style="background:var(--red);color:#fff" onclick="confirmDelete()">Delete</button>
-      <button class="btn btn-ghost" onclick="closeModal('deleteModal')">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div id="waTestModal" class="modal-overlay">
-  <div class="modal-box"><h3>Send Test Alert</h3>
-    <div class="frow"><label>Phone Number</label><input id="testPhone" placeholder="+254712345678"></div>
-    <p style="font-size:0.8rem;color:var(--txt3);margin-top:0.5rem">In production this sends a real WhatsApp message via Twilio or Africa's Talking.</p>
-    <div class="modal-actions">
-      <button class="btn btn-green" onclick="sendTestAlert()"><i class="fab fa-whatsapp"></i> Send Test</button>
-      <button class="btn btn-ghost" onclick="closeModal('waTestModal')">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<style>
-.finput{width:100%;padding:0.6rem 0.85rem;background:var(--bg4);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:0.875rem;transition:border-color 0.2s}
-.finput:focus{outline:none;border-color:var(--orange)}
-</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 
 <script>
-const TOWNS=['Nairobi','Mombasa','Kisumu','Nakuru','Eldoret','Thika','Kiambu','Malindi','Kakamega','Nyeri','Meru','Kitale','Machakos','Kericho','Bungoma','Kisii'];
-const COUNTIES=['Nairobi','Mombasa','Kisumu','Nakuru','Uasin Gishu','Kiambu','Kilifi','Kakamega','Nyeri','Meru','Trans Nzoia','Machakos','Kericho','Bungoma','Kisii','Murang\'a'];
+  const { useState, useEffect, useRef, useCallback, useMemo, createContext, useContext } = React;
 
-let posts=[],matches=[],teams=[],players=[],events=[],transfers=[];
-let subscribers=[],myRoster=[],predictions=[],predLeaders=[];
-let currentTownFilter='all',playerSort='ppg',pendingDelete=null;
-
-// ── LOCAL STORAGE ──────────────────────────────────
-function save(k,v){try{localStorage.setItem('kbl_'+k,JSON.stringify(v))}catch(e){}}
-function load(k,def){try{const v=localStorage.getItem('kbl_'+k);return v?JSON.parse(v):def}catch(e){return def}}
-
-function saveAll(){
-  save('posts',posts);save('matches',matches);save('teams',teams);
-  save('players',players);save('events',events);save('transfers',transfers);
-  save('subscribers',subscribers);save('myRoster',myRoster);
-  save('predictions',predictions);save('predLeaders',predLeaders);
-}
-function loadAll(){
-  posts=load('posts',[]);matches=load('matches',[]);teams=load('teams',[]);
-  players=load('players',[]);events=load('events',[]);transfers=load('transfers',[]);
-  subscribers=load('subscribers',[]);myRoster=load('myRoster',[]);
-  predictions=load('predictions',[]);predLeaders=load('predLeaders',[]);
-}
-
-// ── AI DATA FETCH ──────────────────────────────────
-async function fetchAIData(){
-  const today=new Date().toISOString().split('T')[0];
-  const d=(n)=>new Date(Date.now()+n*86400000).toISOString();
-  const prompt=`Generate realistic Kenya Basketball data. Return ONLY valid JSON, no markdown:
-{"posts":[
-{"id":1,"title":"...","content":"150 char article about Kenya basketball game result","town":"Nairobi","author":"KBF Media","timestamp":"${d(0)}","likes":${100+Math.floor(Math.random()*200)}},
-{"id":2,"title":"...","content":"...","town":"Mombasa","author":"Coast Sports","timestamp":"${d(-0.04)}","likes":${50+Math.floor(Math.random()*100)}},
-{"id":3,"title":"...","content":"...","town":"Kisumu","author":"Lake News","timestamp":"${d(-0.08)}","likes":${30+Math.floor(Math.random()*80)}},
-{"id":4,"title":"...","content":"...","town":"Eldoret","author":"Rift Sports","timestamp":"${d(-0.2)}","likes":${20+Math.floor(Math.random()*60)}},
-{"id":5,"title":"...","content":"...","town":"Nakuru","author":"KBF Official","timestamp":"${d(-0.4)}","likes":${10+Math.floor(Math.random()*40)}}
-],
-"matches":[
-{"id":1,"team1":"Nairobi Thunder","team2":"Coastal Kings","score1":${75+Math.floor(Math.random()*20)},"score2":${70+Math.floor(Math.random()*20)},"time":"${d(-1)}","status":"Final"},
-{"id":2,"team1":"Kisumu Lakers","team2":"Eldoret Hawks","score1":${70+Math.floor(Math.random()*20)},"score2":${65+Math.floor(Math.random()*20)},"time":"${d(-2)}","status":"Final"},
-{"id":3,"team1":"Nakuru Broncos","team2":"Thika Bucks","score1":${40+Math.floor(Math.random()*20)},"score2":${38+Math.floor(Math.random()*15)},"time":"${d(0)}","status":"Live"},
-{"id":4,"team1":"Mombasa Kings","team2":"Kitale Wolves","score1":0,"score2":0,"time":"${d(0.08)}","status":"Upcoming"},
-{"id":5,"team1":"Nyeri Lions","team2":"Kakamega Tigers","score1":0,"score2":0,"time":"${d(1)}","status":"Upcoming"}
-],
-"teams":[
-{"id":1,"name":"Nairobi Thunder","city":"Nairobi","wins":${12+Math.floor(Math.random()*4)},"losses":${3+Math.floor(Math.random()*3)},"pf":1789,"pa":1654},
-{"id":2,"name":"Coastal Kings","city":"Mombasa","wins":${10+Math.floor(Math.random()*3)},"losses":${5+Math.floor(Math.random()*3)},"pf":1723,"pa":1689},
-{"id":3,"name":"Kisumu Lakers","city":"Kisumu","wins":${9+Math.floor(Math.random()*3)},"losses":${6+Math.floor(Math.random()*3)},"pf":1698,"pa":1678},
-{"id":4,"name":"Eldoret Hawks","city":"Eldoret","wins":${7+Math.floor(Math.random()*3)},"losses":${8+Math.floor(Math.random()*3)},"pf":1654,"pa":1672},
-{"id":5,"name":"Nakuru Broncos","city":"Nakuru","wins":${6+Math.floor(Math.random()*3)},"losses":${9+Math.floor(Math.random()*3)},"pf":1623,"pa":1690},
-{"id":6,"name":"Thika Bucks","city":"Thika","wins":${5+Math.floor(Math.random()*3)},"losses":${10+Math.floor(Math.random()*3)},"pf":1598,"pa":1689},
-{"id":7,"name":"Mombasa Kings","city":"Mombasa","wins":${4+Math.floor(Math.random()*3)},"losses":${11+Math.floor(Math.random()*3)},"pf":1567,"pa":1734},
-{"id":8,"name":"Kitale Wolves","city":"Kitale","wins":${3+Math.floor(Math.random()*3)},"losses":${12+Math.floor(Math.random()*3)},"pf":1534,"pa":1778}
-],
-"players":[
-{"id":1,"name":"John Mbugua","team":"Nairobi Thunder","ppg":${(26+Math.random()*4).toFixed(1)},"rpg":${(7+Math.random()*2).toFixed(1)},"apg":${(3+Math.random()*2).toFixed(1)},"spg":${(1.5+Math.random()).toFixed(1)},"bpg":${(0.8+Math.random()*0.4).toFixed(1)},"fgPercent":52.3},
-{"id":2,"name":"Kevin Omondi","team":"Kisumu Lakers","ppg":${(22+Math.random()*4).toFixed(1)},"rpg":${(4+Math.random()*2).toFixed(1)},"apg":${(6+Math.random()*2).toFixed(1)},"spg":${(1.8+Math.random()).toFixed(1)},"bpg":0.3,"fgPercent":48.7},
-{"id":3,"name":"James Otieno","team":"Coastal Kings","ppg":${(20+Math.random()*4).toFixed(1)},"rpg":${(6+Math.random()*2).toFixed(1)},"apg":${(3+Math.random()*2).toFixed(1)},"spg":1.4,"bpg":1.1,"fgPercent":49.2},
-{"id":4,"name":"Peter Wanjala","team":"Eldoret Hawks","ppg":${(16+Math.random()*4).toFixed(1)},"rpg":${(10+Math.random()*2).toFixed(1)},"apg":2.1,"spg":0.8,"bpg":${(2+Math.random()).toFixed(1)},"fgPercent":55.1},
-{"id":5,"name":"David Kipchoge","team":"Nakuru Broncos","ppg":${(15+Math.random()*3).toFixed(1)},"rpg":${(5+Math.random()*2).toFixed(1)},"apg":${(5+Math.random()*2).toFixed(1)},"spg":1.5,"bpg":0.4,"fgPercent":46.8},
-{"id":6,"name":"Samuel Waweru","team":"Thika Bucks","ppg":${(13+Math.random()*3).toFixed(1)},"rpg":4.9,"apg":6.1,"spg":2.3,"bpg":0.2,"fgPercent":44.1},
-{"id":7,"name":"Grace Achieng","team":"Mombasa Kings","ppg":${(12+Math.random()*3).toFixed(1)},"rpg":5.2,"apg":3.8,"spg":1.9,"bpg":0.5,"fgPercent":47.3}
-],
-"events":[
-{"id":1,"title":"KBF Championship Finals","location":"Nyayo Stadium, Nairobi","date":"${d(8).split('T')[0]}","description":"Season finale — top 4 teams battle for the title"},
-{"id":2,"title":"Coastal Youth Basketball Camp","location":"Mombasa Sports Club","date":"${d(12).split('T')[0]}","description":"Free coaching for ages 12-16. National team coaches attending"},
-{"id":3,"title":"Lake Region Invitational","location":"Kisumu Sports Complex","date":"${d(16).split('T')[0]}","description":"5-county tournament — Kisumu, Siaya, Homa Bay, Migori, Homabay"},
-{"id":4,"title":"KBF Referees Certification","location":"Nakuru Indoor Arena","date":"${d(20).split('T')[0]}","description":"Mandatory recertification for all KBF-licensed referees"}
-],
-"transfers":[
-{"id":1,"player":"Kevin Omondi","from":"Coastal Kings","to":"Kisumu Lakers","type":"Confirmed","fee":"2.5M KES"},
-{"id":2,"player":"Michael Ochieng","from":"Nairobi Thunder","to":"Mombasa Kings","type":"Confirmed","fee":"1.8M KES"},
-{"id":3,"player":"John Mbugua","from":"Kisumu Lakers","to":"Nairobi Thunder","type":"Rumor","fee":"~3M KES"},
-{"id":4,"player":"Grace Achieng","from":"Free Agent","to":"Eldoret Hawks","type":"Confirmed","fee":"Undisclosed"},
-{"id":5,"player":"Brian Mutua","from":"Thika Bucks","to":"Nakuru Broncos","type":"Rumor","fee":"~800K KES"}
-]}`;
-
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content:prompt}]})
-  });
-  const data=await res.json();
-  const txt=data.content.map(c=>c.text||'').join('');
-  return JSON.parse(txt.replace(/```json|```/g,'').trim());
-}
-
-// ── INIT ───────────────────────────────────────────
-async function init(){
-  loadAll();
-  setupTabs();
-  populateSelects();
-  if(!posts.length)loadDefaults();
-  normalizeLiveMatches();
-  ensureLiveGameNow();
-  renderAll();
-  initPredLeaders();
-  initCountyData();
-  renderFantasy();
-  renderPredictions();
-  renderAlerts();
-  renderRivalry();
-  setupLiveApiControls();
-  renderLiveHub();
-  updateLivePill();
-  startLiveEngine();
-  startOnlineAutoSync();
-  autoGenerateGames(true);
-}
-
-function loadDefaults(){
-  posts=[
-    {id:1,title:'Nairobi Thunder Clinch KBF Championship',content:'John Mbugua drops 32 points as Thunder defeat Coastal Kings 89-84 at Nyayo Stadium.',town:'Nairobi',author:'KBF Media',timestamp:new Date().toISOString(),likes:127},
-    {id:2,title:'Mombasa Opens State-of-the-Art Basketball Academy',content:'New facility features 3 full courts, video analysis room, and strength centre.',town:'Mombasa',author:'Coast Sports',timestamp:new Date(Date.now()-86400000).toISOString(),likes:89},
-    {id:3,title:'Kisumu Lakers Land Former National Team Guard',content:'Kevin Omondi signs 3-year, 2.5M KES deal with the Lakers.',town:'Kisumu',author:'Laker Nation',timestamp:new Date(Date.now()-172800000).toISOString(),likes:156},
+  // ─── DATA ──────────────────────────────────────────────
+  const initialGames = [
+    { id: 1, team1: 'Nairobi Thunder', team2: 'Coastal Kings', score1: 89, score2: 84, time: new Date(Date.now()-86400000).toISOString(), status: 'Final' },
+    { id: 2, team1: 'Kisumu Lakers', team2: 'Eldoret Hawks', score1: 76, score2: 72, time: new Date(Date.now()-172800000).toISOString(), status: 'Final' },
+    { id: 3, team1: 'Nakuru Broncos', team2: 'Thika Bucks', score1: 54, score2: 49, time: new Date().toISOString(), status: 'Live' },
+    { id: 4, team1: 'Mombasa Kings', team2: 'Kitale Wolves', score1: 0, score2: 0, time: new Date(Date.now()+7200000).toISOString(), status: 'Upcoming' },
+    { id: 5, team1: 'Nyeri Lions', team2: 'Kakamega Tigers', score1: 0, score2: 0, time: new Date(Date.now()+14400000).toISOString(), status: 'Upcoming' },
   ];
-  matches=[
-    {id:1,team1:'Nairobi Thunder',team2:'Coastal Kings',score1:89,score2:84,time:new Date(Date.now()-86400000).toISOString(),status:'Final'},
-    {id:2,team1:'Kisumu Lakers',team2:'Eldoret Hawks',score1:76,score2:72,time:new Date(Date.now()-2*86400000).toISOString(),status:'Final'},
-    {id:3,team1:'Nakuru Broncos',team2:'Thika Bucks',score1:54,score2:49,time:new Date().toISOString(),status:'Live',quarter:'Q3',clock:'06:42',venue:'Nakuru Indoor Arena'},
-    {id:4,team1:'Mombasa Kings',team2:'Kitale Wolves',score1:0,score2:0,time:new Date(Date.now()+7200000).toISOString(),status:'Upcoming'},
-  ];
-  teams=[
-    {id:1,name:'Nairobi Thunder',city:'Nairobi',wins:14,losses:4,pf:1789,pa:1654},
-    {id:2,name:'Coastal Kings',city:'Mombasa',wins:12,losses:6,pf:1723,pa:1689},
-    {id:3,name:'Kisumu Lakers',city:'Kisumu',wins:11,losses:7,pf:1698,pa:1678},
-    {id:4,name:'Eldoret Hawks',city:'Eldoret',wins:9,losses:9,pf:1654,pa:1672},
-    {id:5,name:'Nakuru Broncos',city:'Nakuru',wins:8,losses:10,pf:1623,pa:1690},
-    {id:6,name:'Thika Bucks',city:'Thika',wins:7,losses:11,pf:1598,pa:1689},
-  ];
-  players=[
-    {id:1,name:'John Mbugua',team:'Nairobi Thunder',ppg:28.5,rpg:8.2,apg:4.1,spg:1.8,bpg:0.9,fgPercent:52.3},
-    {id:2,name:'Kevin Omondi',team:'Kisumu Lakers',ppg:24.2,rpg:5.3,apg:7.2,spg:2.1,bpg:0.3,fgPercent:48.7},
-    {id:3,name:'James Otieno',team:'Coastal Kings',ppg:22.8,rpg:7.1,apg:3.5,spg:1.4,bpg:1.1,fgPercent:49.2},
-    {id:4,name:'Peter Wanjala',team:'Eldoret Hawks',ppg:18.5,rpg:11.2,apg:2.1,spg:0.8,bpg:2.3,fgPercent:55.1},
-    {id:5,name:'David Kipchoge',team:'Nakuru Broncos',ppg:16.8,rpg:6.8,apg:5.5,spg:1.5,bpg:0.4,fgPercent:46.8},
-    {id:6,name:'Samuel Waweru',team:'Thika Bucks',ppg:15.2,rpg:4.9,apg:6.1,spg:2.3,bpg:0.2,fgPercent:44.1},
-  ];
-  events=[
-    {id:1,title:'KBF Championship Finals',location:'Nyayo Stadium, Nairobi',date:new Date(Date.now()+8*86400000).toISOString().split('T')[0],description:'Season finale featuring top 4 teams'},
-    {id:2,title:'Coastal Youth Camp',location:'Mombasa Sports Club',date:new Date(Date.now()+14*86400000).toISOString().split('T')[0],description:'Free training for ages 12-16'},
-    {id:3,title:'Lake Region Invitational',location:'Kisumu Sports Complex',date:new Date(Date.now()+21*86400000).toISOString().split('T')[0],description:'5-county tournament'},
-  ];
-  transfers=[
-    {id:1,player:'Kevin Omondi',from:'Coastal Kings',to:'Kisumu Lakers',type:'Confirmed',fee:'2.5M KES'},
-    {id:2,player:'Michael Ochieng',from:'Nairobi Thunder',to:'Mombasa Kings',type:'Confirmed',fee:'1.8M KES'},
-    {id:3,player:'John Mbugua',from:'Kisumu Lakers',to:'Nairobi Thunder',type:'Rumor',fee:'~3M KES'},
-  ];
-  saveAll();
-}
 
-function initPredLeaders(){
-  if(!predLeaders.length){
-    predLeaders=[
-      {name:'Kamau F.',pts:180,correct:18,total:22},
-      {name:'Atieno B.',pts:150,correct:15,total:20},
-      {name:'Wanjiku M.',pts:130,correct:13,total:18},
-      {name:'Ochieng R.',pts:110,correct:11,total:17},
-      {name:'Mutua S.',pts:90,correct:9,total:15},
-      {name:'You',pts:0,correct:0,total:0},
+  const initialTeams = [
+    { id: 1, name: 'Nairobi Thunder', city: 'Nairobi', wins: 14, losses: 4, pts: 1789 },
+    { id: 2, name: 'Coastal Kings', city: 'Mombasa', wins: 12, losses: 6, pts: 1723 },
+    { id: 3, name: 'Kisumu Lakers', city: 'Kisumu', wins: 11, losses: 7, pts: 1698 },
+    { id: 4, name: 'Eldoret Hawks', city: 'Eldoret', wins: 9, losses: 9, pts: 1654 },
+    { id: 5, name: 'Nakuru Broncos', city: 'Nakuru', wins: 8, losses: 10, pts: 1623 },
+    { id: 6, name: 'Thika Bucks', city: 'Thika', wins: 7, losses: 11, pts: 1598 },
+  ];
+
+  const initialPlayers = [
+    { id: 1, name: 'John Mbugua', team: 'Nairobi Thunder', ppg: 28.5, rpg: 8.2, apg: 4.1, spg: 1.8, bpg: 0.9, fg: 52.3 },
+    { id: 2, name: 'Kevin Omondi', team: 'Kisumu Lakers', ppg: 24.2, rpg: 5.3, apg: 7.2, spg: 2.1, bpg: 0.3, fg: 48.7 },
+    { id: 3, name: 'James Otieno', team: 'Coastal Kings', ppg: 22.8, rpg: 7.1, apg: 3.5, spg: 1.4, bpg: 1.1, fg: 49.2 },
+    { id: 4, name: 'Peter Wanjala', team: 'Eldoret Hawks', ppg: 18.5, rpg: 11.2, apg: 2.1, spg: 0.8, bpg: 2.3, fg: 55.1 },
+    { id: 5, name: 'David Kipchoge', team: 'Nakuru Broncos', ppg: 16.8, rpg: 6.8, apg: 5.5, spg: 1.5, bpg: 0.4, fg: 46.8 },
+    { id: 6, name: 'Samuel Waweru', team: 'Thika Bucks', ppg: 15.2, rpg: 4.9, apg: 6.1, spg: 2.3, bpg: 0.2, fg: 44.1 },
+  ];
+
+  const initialFixtures = [
+    { id: 1, team1: 'Nairobi Thunder', team2: 'Kisumu Lakers', date: new Date(Date.now()+86400000).toISOString(), venue: 'Nyayo Gymnasium' },
+    { id: 2, team1: 'Coastal Kings', team2: 'Eldoret Hawks', date: new Date(Date.now()+172800000).toISOString(), venue: 'Mombasa Sports Club' },
+    { id: 3, team1: 'Nakuru Broncos', team2: 'Thika Bucks', date: new Date(Date.now()+259200000).toISOString(), venue: 'Nakuru Indoor Arena' },
+  ];
+
+  // ─── CONTEXT ────────────────────────────────────────────
+  const AppContext = React.createContext();
+
+  function AppProvider({ children }) {
+    const [games, setGames] = useState(() => {
+      try { const g = localStorage.getItem('kbl_games'); return g ? JSON.parse(g) : initialGames; } catch { return initialGames; }
+    });
+    const [teams, setTeams] = useState(() => {
+      try { const t = localStorage.getItem('kbl_teams'); return t ? JSON.parse(t) : initialTeams; } catch { return initialTeams; }
+    });
+    const [players, setPlayers] = useState(() => {
+      try { const p = localStorage.getItem('kbl_players'); return p ? JSON.parse(p) : initialPlayers; } catch { return initialPlayers; }
+    });
+    const [fixtures, setFixtures] = useState(() => {
+      try { const f = localStorage.getItem('kbl_fixtures'); return f ? JSON.parse(f) : initialFixtures; } catch { return initialFixtures; }
+    });
+    const [savedGames, setSavedGames] = useState(() => {
+      try { const s = localStorage.getItem('kbl_saved'); return s ? JSON.parse(s) : []; } catch { return []; }
+    });
+    const [user, setUser] = useState(null);
+    const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+      localStorage.setItem('kbl_games', JSON.stringify(games));
+      localStorage.setItem('kbl_teams', JSON.stringify(teams));
+      localStorage.setItem('kbl_players', JSON.stringify(players));
+      localStorage.setItem('kbl_fixtures', JSON.stringify(fixtures));
+      localStorage.setItem('kbl_saved', JSON.stringify(savedGames));
+    }, [games, teams, players, fixtures, savedGames]);
+
+    const showToast = (msg, type = 'success') => {
+      setToast({ msg, type });
+      setTimeout(() => setToast(null), 3000);
+    };
+
+    const addGame = (game) => { setGames([...games, { ...game, id: Date.now() }]); showToast('Game added!'); };
+    const deleteGame = (id) => { setGames(games.filter(g => g.id !== id)); setSavedGames(savedGames.filter(s => s !== id)); showToast('Game deleted'); };
+    const updateGame = (id, data) => {
+      setGames(games.map(g => g.id === id ? { ...g, ...data } : g));
+      showToast('Game updated!');
+    };
+    const toggleSave = (id) => {
+      setSavedGames(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]);
+      showToast(prev => prev.includes(id) ? 'Removed from saved' : 'Game saved!');
+    };
+
+    const login = (role, password) => {
+      if ((role === 'admin' && password === 'admin123') || (role === 'client' && password === 'client123')) {
+        setUser({ role });
+        showToast(`Welcome ${role}!`);
+        return true;
+      }
+      showToast('Invalid credentials', 'error');
+      return false;
+    };
+    const logout = () => { setUser(null); showToast('Logged out'); };
+
+    const value = {
+      games, setGames, teams, setTeams, players, setPlayers, fixtures, setFixtures,
+      savedGames, setSavedGames, user, login, logout, showToast, toast,
+      addGame, deleteGame, updateGame, toggleSave
+    };
+    return React.createElement(AppContext.Provider, { value }, children);
+  }
+
+  function useApp() { return useContext(AppContext); }
+
+  // ─── TOAST ──────────────────────────────────────────────
+  function Toast() {
+    const { toast } = useApp();
+    if (!toast) return null;
+    return React.createElement('div', {
+      className: `toast show ${toast.type}`,
+      role: 'status'
+    }, [
+      React.createElement('i', { key: 'icon', className: `fas ${toast.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}` }),
+      React.createElement('span', { key: 'msg' }, toast.msg)
+    ]);
+  }
+
+  // ─── FLASHY LOGIN ──────────────────────────────────────
+  function LoginPage() {
+    const { login } = useApp();
+    const [role, setRole] = useState('admin');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      setIsLoading(true);
+      setTimeout(() => {
+        if (login(role, password)) {
+          setError('');
+        } else {
+          setError('Invalid password for ' + role);
+        }
+        setIsLoading(false);
+      }, 600);
+    };
+
+    return React.createElement('div', { 
+      className: 'min-h-screen flex items-center justify-center p-4',
+      style: { 
+        background: 'radial-gradient(ellipse at center, #0d1224 0%, #070b14 100%)',
+        position: 'relative',
+        overflow: 'hidden'
+      }
+    }, [
+      // Animated background elements
+      React.createElement('div', { key: 'bg1', className: 'absolute w-96 h-96 rounded-full bg-orange-500/5 blur-3xl', style: { top: '-10%', right: '-10%', animation: 'float 8s ease-in-out infinite' } }),
+      React.createElement('div', { key: 'bg2', className: 'absolute w-96 h-96 rounded-full bg-purple-500/5 blur-3xl', style: { bottom: '-10%', left: '-10%', animation: 'float 10s ease-in-out infinite reverse' } }),
+      React.createElement('div', { key: 'bg3', className: 'absolute w-64 h-64 rounded-full bg-orange-500/10 blur-2xl', style: { top: '50%', left: '50%', transform: 'translate(-50%, -50%)', animation: 'pulse 4s ease-in-out infinite' } }),
+      
+      React.createElement('div', { className: 'login-box w-full max-w-md relative z-10' }, [
+        React.createElement('div', { key: 'logo', className: 'logo-ball' }, '🏀'),
+        React.createElement('h2', { key: 'h2', className: 'text-center' }, 'KBL'),
+        React.createElement('p', { key: 'p', className: 'text-center' }, 'Sign in to the Kenya Basketball League'),
+        React.createElement('form', { key: 'form', onSubmit: handleSubmit, className: 'space-y-4' }, [
+          React.createElement('div', { key: 'role' }, [
+            React.createElement('label', { className: 'frow label' }, 'Account type'),
+            React.createElement('select', {
+              value: role,
+              onChange: (e) => setRole(e.target.value),
+              className: 'w-full'
+            }, [
+              React.createElement('option', { value: 'admin' }, 'Admin'),
+              React.createElement('option', { value: 'client' }, 'Client')
+            ])
+          ]),
+          React.createElement('div', { key: 'pwd' }, [
+            React.createElement('label', { className: 'frow label' }, 'Password'),
+            React.createElement('input', {
+              type: 'password',
+              value: password,
+              onChange: (e) => setPassword(e.target.value),
+              placeholder: 'Enter your password',
+              className: 'w-full'
+            })
+          ]),
+          error && React.createElement('div', { key: 'err', className: 'login-error' }, error),
+          React.createElement('button', {
+            key: 'btn',
+            type: 'submit',
+            disabled: isLoading,
+            className: 'btn-orange w-full py-3.5 rounded-xl font-semibold text-base transition-all disabled:opacity-60'
+          }, [
+            isLoading ? React.createElement('i', { key: 'spin', className: 'fas fa-spinner fa-spin mr-2' }) : React.createElement('i', { key: 'icon', className: 'fas fa-sign-in-alt mr-2' }),
+            isLoading ? 'Signing in...' : 'Sign In'
+          ])
+        ]),
+        React.createElement('div', { key: 'demo', className: 'demo-credentials text-center' }, [
+          React.createElement('strong', null, 'Demo Credentials'),
+          React.createElement('br', null),
+          'Admin · ', React.createElement('code', null, 'admin123'),
+          React.createElement('span', { className: 'mx-2 text-gray-600' }, '|'),
+          'Client · ', React.createElement('code', null, 'client123')
+        ])
+      ])
+    ]);
+  }
+
+  // ─── SIDEBAR ────────────────────────────────────────────
+  function Sidebar({ currentPage, setPage, user }) {
+    const links = [
+      { id: 'landing', icon: 'fa-home', label: 'Landing' },
+      { id: 'dashboard', icon: 'fa-chart-pie', label: 'Fan Dashboard' },
+      { id: 'live', icon: 'fa-bolt', label: 'Live Score Center' },
+      { id: 'teams', icon: 'fa-users', label: 'Teams' },
+      { id: 'players', icon: 'fa-user', label: 'Players' },
+      { id: 'fixtures', icon: 'fa-calendar-alt', label: 'Fixtures' },
+      { id: 'standings', icon: 'fa-trophy', label: 'Standings' },
+      { id: 'statistics', icon: 'fa-chart-bar', label: 'Statistics' },
     ];
-    save('predLeaders',predLeaders);
+    if (user?.role === 'admin') links.push({ id: 'admin', icon: 'fa-cogs', label: 'Admin Dashboard' });
+    links.push({ id: 'settings', icon: 'fa-cog', label: 'Settings' });
+
+    return React.createElement('div', { className: 'sidebar fixed top-0 left-0 h-full w-64 p-4 flex flex-col overflow-y-auto z-50 transition-all' }, [
+      React.createElement('div', { key: 'logo', className: 'flex items-center gap-3 mb-6' }, [
+        React.createElement('div', { className: 'w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-orange-500/30' }, '🏀'),
+        React.createElement('div', null, [
+          React.createElement('div', { className: 'text-xl font-bold leading-tight bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'KBL'),
+          React.createElement('div', { className: 'text-[10px] text-gray-500 tracking-widest' }, 'KENYA BASKETBALL')
+        ])
+      ]),
+      React.createElement('div', { key: 'nav', className: 'flex-1 space-y-1' },
+        links.map(link =>
+          React.createElement('div', {
+            key: link.id,
+            className: `sidebar-link ${currentPage === link.id ? 'active' : ''}`,
+            onClick: () => setPage(link.id)
+          }, [
+            React.createElement('i', { className: `fas ${link.icon} w-5` }),
+            React.createElement('span', null, link.label)
+          ])
+        )
+      ),
+      React.createElement('div', { key: 'footer', className: 'border-t border-gray-700 pt-4 mt-auto' }, [
+        React.createElement('div', { className: 'flex items-center gap-2 text-sm text-gray-400' }, [
+          React.createElement('span', { className: 'live-dot' }),
+          React.createElement('span', null, 'LIVE')
+        ]),
+        React.createElement('button', {
+          className: 'w-full mt-3 py-2 text-sm text-gray-400 hover:text-white border border-gray-700 rounded-xl transition-all hover:border-orange-500 hover:bg-orange-500/10',
+          onClick: () => { const { logout } = useApp(); logout(); }
+        }, [
+          React.createElement('i', { className: 'fas fa-sign-out-alt mr-2' }),
+          'Logout'
+        ])
+      ])
+    ]);
   }
-}
 
-// ── RENDER ALL ─────────────────────────────────────
-function renderAll(){
-  renderStats();renderTownFilters();renderPosts();renderMatches();
-  renderRankings();renderPlayers();renderEvents();renderTransfers();renderLiveHub();updateLivePill();
-}
-
-function renderStats(){
-  const upcoming=events.filter(e=>new Date(e.date)>=new Date()).length;
-  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
-  document.getElementById('statsRow').innerHTML=`
-    <div class="scard"><div class="sicon" style="color:var(--orange)">📰</div><div class="sval">${posts.length}</div><div class="slabel">Updates</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--yellow)">🏆</div><div class="sval">${teams.length}</div><div class="slabel">Teams</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--blue)">👤</div><div class="sval">${players.length}</div><div class="slabel">Players</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--green)">📅</div><div class="sval">${upcoming}</div><div class="slabel">Events</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--red)">🏀</div><div class="sval">${matches.length}</div><div class="slabel">Games</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--orange)">🔄</div><div class="sval">${transfers.length}</div><div class="slabel">Transfers</div></div>
-    <div class="scard"><div class="sicon" style="color:var(--purple)">🎮</div><div class="sval">${myPts.toFixed(0)}</div><div class="slabel">Fantasy Pts</div></div>
-    <div class="scard"><div class="sicon" style="color:#25D366">📲</div><div class="sval">${subscribers.length}</div><div class="slabel">Subscribers</div></div>
-  `;
-}
-
-// ── FEED ───────────────────────────────────────────
-function renderTownFilters(){
-  const counts={};posts.forEach(p=>counts[p.town]=(counts[p.town]||0)+1);
-  let h=`<button class="ttown ${currentTownFilter==='all'?'active':''}" onclick="filterTown('all')">All (${posts.length})</button>`;
-  TOWNS.forEach(t=>{if(counts[t])h+=`<button class="ttown ${currentTownFilter===t?'active':''}" onclick="filterTown('${t}')">${t} (${counts[t]})</button>`;});
-  document.getElementById('townRow').innerHTML=h;
-}
-function filterTown(t){currentTownFilter=t;renderTownFilters();renderPosts();}
-function renderPosts(){
-  let list=currentTownFilter==='all'?[...posts]:posts.filter(p=>p.town===currentTownFilter);
-  list.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
-  if(!list.length){document.getElementById('postsGrid').innerHTML='<div class="empty"><i class="fas fa-newspaper"></i>No updates</div>';return;}
-  document.getElementById('postsGrid').innerHTML=list.map(p=>`
-    <div class="post-card">
-      <div class="post-top"><span class="post-badge">${esc(p.town)}</span><span class="post-time">${timeAgo(p.timestamp)}</span></div>
-      <div class="post-body"><div class="post-title">${esc(p.title)}</div><div class="post-text">${esc(p.content)}</div></div>
-      <div class="post-foot">
-        <span class="post-src"><i class="fas fa-user" style="opacity:0.4;margin-right:4px"></i>${esc(p.author)}</span>
-        <div style="display:flex;gap:0.75rem;align-items:center">
-          <span style="font-size:0.75rem;color:var(--txt3)"><i class="fas fa-heart" style="color:var(--red)"></i> ${p.likes}</span>
-          <button class="trash-btn" onclick="promptDelete('post',${p.id})"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-function addPost(){
-  const title=document.getElementById('pTitle').value.trim();
-  const town=document.getElementById('pTown').value;
-  const author=document.getElementById('pAuthor').value.trim();
-  const content=document.getElementById('pContent').value.trim();
-  if(!title||!author||!content){showToast('Please fill all fields','error');return;}
-  posts.unshift({id:Date.now(),title,content,town,author,timestamp:new Date().toISOString(),likes:0});
-  saveAll();['pTitle','pAuthor','pContent'].forEach(id=>document.getElementById(id).value='');
-  renderAll();showToast('Post published!');
-}
-
-// ── SCORES ─────────────────────────────────────────
-function renderMatches(){
-  const live=matches.filter(m=>m.status==='Live');
-  const upcoming=matches.filter(m=>m.status==='Upcoming');
-  const final=matches.filter(m=>m.status==='Final');
-  let h='';
-  if(live.length)h+=`<div class="msect live-sect"><i class="fas fa-circle" style="font-size:0.45rem;margin-right:5px"></i>Live Now</div>`+live.map(matchCard).join('');
-  if(upcoming.length)h+=`<div class="msect">Upcoming</div>`+upcoming.map(matchCard).join('');
-  if(final.length)h+=`<div class="msect">Completed</div>`+final.map(matchCard).join('');
-  document.getElementById('matchesList').innerHTML=h||'<div class="empty"><i class="fas fa-calendar"></i>No matches</div>';
-}
-function matchCard(m){
-  const cls=m.status==='Live'?'spill-live':m.status==='Final'?'spill-final':'spill-upcoming';
-  return `<div class="match-card">
-    <div class="match-row">
-      <div class="team-side"><div class="team-logo">🏀</div><div class="team-name">${esc(m.team1)}</div></div>
-      <div class="scores"><span class="score-num">${m.score1}</span><span class="score-sep">–</span><span class="score-num">${m.score2}</span></div>
-      <div class="team-side right"><div class="team-name">${esc(m.team2)}</div><div class="team-logo">🏀</div></div>
-    </div>
-    <div class="match-meta">
-      <span><i class="far fa-clock" style="margin-right:3px"></i>${fmtDate(m.time)}</span>
-      <span class="spill ${cls}">${m.status}</span>
-      <button class="trash-btn" onclick="promptDelete('match',${m.id})"><i class="fas fa-trash"></i></button>
-    </div>
-  </div>`;
-}
-
-
-// ── LIVE GAME CENTER ───────────────────────────────
-let liveTimer=null, livePaused=false, liveFilter='live', liveAutoSyncTimer=null;
-const PLAY_VERBS=['drains a corner three','finishes through contact','hits a mid-range jumper','scores on the fast break','splits two free throws','throws down a put-back','buries a pull-up jumper','converts a layup'];
-
-function normalizeLiveMatches(){
-  matches.forEach((m,i)=>{
-    if(!m.venue)m.venue=guessVenue(m.team1,m.team2);
-    if(!m.quarter)m.quarter=m.status==='Live'?'Q2':m.status==='Final'?'FT':'Pre-game';
-    if(!m.clock)m.clock=m.status==='Live'?`${String(8-(i%4)).padStart(2,'0')}:${String((35+i*7)%60).padStart(2,'0')}`:(m.status==='Final'?'00:00':'—');
-    if(!m.leaders)m.leaders=makeLeaders(m);
-    if(!m.playByPlay)m.playByPlay=seedPlays(m);
-  });
-  save('matches',matches);
-}
-function guessVenue(a,b){
-  const t=(a+' '+b).toLowerCase();
-  if(t.includes('nairobi'))return 'Nyayo Gymnasium, Nairobi';
-  if(t.includes('mombasa')||t.includes('coastal'))return 'Mombasa Sports Club';
-  if(t.includes('kisumu'))return 'Kisumu Sports Complex';
-  if(t.includes('eldoret'))return 'Eldoret Sports Club';
-  if(t.includes('nakuru'))return 'Nakuru Indoor Arena';
-  return 'KBF Arena';
-}
-function makeLeaders(m){
-  const names=players.length?players:[{name:'Team Captain',team:m.team1,ppg:18,rpg:6,apg:4},{name:'Lead Guard',team:m.team2,ppg:16,rpg:4,apg:5}];
-  const p1=names.find(p=>p.team===m.team1)||names[0];
-  const p2=names.find(p=>p.team===m.team2)||names[1]||names[0];
-  return [
-    {name:p1.name,stat:`${Math.max(8,Math.round((p1.ppg||15)*0.75))} pts`,team:m.team1},
-    {name:p2.name,stat:`${Math.max(6,Math.round((p2.rpg||6)*1.1))} reb`,team:m.team2},
-    {name:p1.name,stat:`${Math.max(3,Math.round(p1.apg||4))} ast`,team:m.team1}
-  ];
-}
-function seedPlays(m){
-  if(m.status==='Upcoming')return [{time:'—',text:'Game has not tipped off yet.'}];
-  if(m.status==='Final')return [{time:'FT',text:`Final buzzer: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`}];
-  return [
-    {time:m.clock||'08:00',text:`${m.team1} forces a turnover and runs the break.`},
-    {time:'07:31',text:`${m.team2} answers with strong half-court defense.`},
-    {time:'06:58',text:'Timeout on the floor as coaches reset matchups.'}
-  ];
-}
-
-
-function setupLiveApiControls(){
-  const provider=document.getElementById('liveProvider');
-  const key=document.getElementById('liveApiKey');
-  const country=document.getElementById('liveCountry');
-  if(provider)provider.value=load('liveProvider','apisports');
-  if(key)key.value=load('liveApiKey','');
-  if(country)country.value=load('liveCountry','Kenya');
-  setLiveApiStatus('Ready. Click Sync Now to pull ongoing games from the selected online source.','warn');
-}
-function saveLiveApiSettings(){
-  save('liveProvider',document.getElementById('liveProvider')?.value||'apisports');
-  save('liveApiKey',document.getElementById('liveApiKey')?.value.trim()||'');
-  save('liveCountry',document.getElementById('liveCountry')?.value.trim()||'');
-  setLiveApiStatus('Live source saved in this browser.','ok');
-  showToast('Online live source saved');
-}
-function setLiveApiStatus(msg,type=''){
-  const el=document.getElementById('liveApiStatus');
-  if(el){el.className='live-api-note '+type;el.textContent=msg;}
-  const hero=document.getElementById('heroOnlineStatus');
-  if(hero)hero.textContent=msg.length>42?msg.slice(0,42)+'…':msg;
-}
-async function syncOnlineGames(silent=false){
-  const provider=document.getElementById('liveProvider')?.value||load('liveProvider','apisports');
-  const key=document.getElementById('liveApiKey')?.value.trim()||load('liveApiKey','');
-  const country=(document.getElementById('liveCountry')?.value.trim()||load('liveCountry','Kenya')).toLowerCase();
-  save('liveProvider',provider);save('liveApiKey',key);save('liveCountry',country||'');
-  if(!silent)setLiveApiStatus('Syncing online live games…','warn');
-  try{
-    let online=[];
-    if(provider==='nba')online=await fetchNbaLiveGames();
-    else online=await fetchApiBasketballLiveGames(provider,key);
-    if(country&&provider!=='nba'){
-      const filtered=online.filter(m=>(m.country||'').toLowerCase().includes(country));
-      if(filtered.length)online=filtered;
-    }
-    if(!online.length){
-      setLiveApiStatus('No ongoing online games found for that source/filter right now. Showing local live demo.','warn');
-      ensureLiveGameNow();renderLiveHub();updateLivePill();return;
-    }
-    matches=[...online,...matches.filter(m=>m.source!=='online')];
-    liveFilter='live';saveAll();renderAll();renderLiveHub();renderPredictions();updateLivePill();
-    setLiveApiStatus(`Synced ${online.length} ongoing online game${online.length===1?'':'s'} at ${new Date().toLocaleTimeString('en-KE',{hour:'2-digit',minute:'2-digit'})}.`,'ok');
-    if(!silent)showToast(`Synced ${online.length} live online game${online.length===1?'':'s'}`);
-  }catch(e){
-    console.warn(e);
-    setLiveApiStatus('Online sync failed. Check your key, provider, CORS/network access, then try again. Local live demo remains available.','err');
-    ensureLiveGameNow();renderLiveHub();updateLivePill();if(!silent)showToast('Online sync failed; showing demo live game','error');
+  // ─── LANDING ────────────────────────────────────────────
+  function LandingPage() {
+    const { games, teams, players } = useApp();
+    const live = games.filter(g => g.status === 'Live').length;
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('div', { key: 'hero', className: 'relative overflow-hidden bg-gradient-to-br from-orange-500/10 via-purple-500/5 to-orange-500/10 border border-orange-500/20 rounded-2xl p-8 md:p-10' }, [
+        React.createElement('div', { className: 'absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl' }),
+        React.createElement('div', { className: 'absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl' }),
+        React.createElement('div', { className: 'relative z-10' }, [
+          React.createElement('div', { className: 'flex items-center gap-2 mb-3' }, [
+            React.createElement('span', { className: 'live-dot' }),
+            React.createElement('span', { className: 'text-orange-400 text-sm font-semibold uppercase tracking-wider' }, 'Live Now')
+          ]),
+          React.createElement('h1', { className: 'text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-orange-200 to-orange-500 bg-clip-text text-transparent' }, 'Kenya Basketball League'),
+          React.createElement('p', { className: 'text-gray-400 mt-2 max-w-xl text-lg' }, 'The premier basketball league in Kenya. Follow live scores, teams, players, and stats.')
+        ])
+      ]),
+      React.createElement('div', { key: 'stats', className: 'grid grid-cols-2 md:grid-cols-4 gap-4' }, [
+        [teams.length, 'Teams', 'fa-users', 'text-blue-400'],
+        [players.length, 'Players', 'fa-user', 'text-green-400'],
+        [games.length, 'Games', 'fa-basketball-ball', 'text-yellow-400'],
+        [live, 'Live Now', 'fa-bolt', 'text-red-400']
+      ].map(([val, label, icon, color]) =>
+        React.createElement('div', { key: label, className: 'stat-card text-center' }, [
+          React.createElement('div', { className: `text-3xl font-bold ${color}` }, val),
+          React.createElement('div', { className: 'text-sm text-gray-400' }, [
+            React.createElement('i', { className: `fas ${icon} mr-2` }),
+            label
+          ])
+        ])
+      )),
+      React.createElement('div', { key: 'featured', className: 'grid md:grid-cols-2 gap-4' }, [
+        React.createElement('div', { className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all' }, [
+          React.createElement('h3', { className: 'text-xl font-bold mb-3 flex items-center gap-2' }, [
+            React.createElement('span', { className: 'live-dot' }),
+            'Live Games'
+          ]),
+          React.createElement('div', { className: 'space-y-2' },
+            games.filter(g => g.status === 'Live').length > 0 ?
+              games.filter(g => g.status === 'Live').map(g =>
+                React.createElement('div', { key: g.id, className: 'flex justify-between items-center p-3 bg-gray-800/50 rounded-xl border border-gray-700' }, [
+                  React.createElement('span', null, `${g.team1} vs ${g.team2}`),
+                  React.createElement('span', { className: 'text-orange-500 font-bold text-lg' }, `${g.score1} – ${g.score2}`)
+                ])
+              ) :
+              React.createElement('div', { className: 'text-gray-500 text-center py-4' }, 'No live games currently')
+          )
+        ]),
+        React.createElement('div', { className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all' }, [
+          React.createElement('h3', { className: 'text-xl font-bold mb-3 flex items-center gap-2' }, [
+            React.createElement('i', { className: 'fas fa-calendar-alt text-yellow-400' }),
+            'Upcoming Fixtures'
+          ]),
+          React.createElement('div', { className: 'space-y-2' },
+            games.filter(g => g.status === 'Upcoming').slice(0, 3).map(g =>
+              React.createElement('div', { key: g.id, className: 'flex justify-between items-center p-3 bg-gray-800/50 rounded-xl border border-gray-700' }, [
+                React.createElement('span', null, `${g.team1} vs ${g.team2}`),
+                React.createElement('span', { className: 'text-gray-400 text-sm' }, new Date(g.time).toLocaleDateString())
+              ])
+            )
+          )
+        ])
+      ])
+    ]);
   }
-}
 
-async function autoGenerateGames(silent=false){
-  if(!silent)setLiveApiStatus('Auto-generating games: online first, local KBL fallback if needed…','warn');
-  const savedProvider=load('liveProvider','apisports');
-  const savedKey=load('liveApiKey','');
-  try{
-    if(savedProvider==='nba'||savedKey){
-      await syncOnlineGames(true);
-      if(matches.some(m=>m.status==='Live'&&m.source==='online')){
-        if(!silent){setLiveApiStatus('Auto-generated live games from your online API source.','ok');showToast('Online games generated automatically');}
-        return;
-      }
-    }else{
-      // No paid key yet: try the no-key NBA public scoreboard as an online smoke test.
-      const nba=await fetchNbaLiveGames();
-      if(nba.length){
-        matches=[...nba,...matches.filter(m=>m.source!=='online')];
-        saveAll();renderAll();renderLiveHub();updateLivePill();
-        if(!silent){setLiveApiStatus(`Auto-generated ${nba.length} live game(s) from the public NBA scoreboard.`, 'ok');showToast('Online NBA live games generated');}
-        return;
-      }
-    }
-  }catch(e){console.warn('Auto online generation failed',e);}
-  generateKenyaFixturePack();
-  liveFilter='live';
-  saveAll();renderAll();renderFantasy();renderPredictions();renderRivalry();renderLiveHub();updateLivePill();
-  const msg='No online live feed was available, so realistic KBL demo games were generated automatically. Add an API key for real live games.';
-  setLiveApiStatus(msg,'warn');
-  if(!silent)showToast('KBL demo games generated automatically');
-}
-function generateKenyaFixturePack(){
-  const now=Date.now();
-  const teamPool=[
-    ['Nairobi Thunder','Kisumu Lakers','Nyayo Gymnasium, Nairobi'],
-    ['Nakuru Broncos','Coastal Kings','Nakuru Indoor Arena'],
-    ['Eldoret Hawks','Thika Bucks','Eldoret Sports Club'],
-    ['Mombasa Kings','Kakamega Tigers','Mombasa Sports Club'],
-    ['Kitale Wolves','Nyeri Lions','Kitale Club Arena']
-  ];
-  const generated=[];
-  teamPool.forEach((g,i)=>{
-    const status=i<2?'Live':i<4?'Upcoming':'Final';
-    const base1=38+i*7+Math.floor(Math.random()*12), base2=35+i*6+Math.floor(Math.random()*12);
-    generated.push({
-      id:3000000+i,source:'auto-kbl',provider:'Local generator',country:'Kenya',team1:g[0],team2:g[1],
-      score1:status==='Upcoming'?0:base1,score2:status==='Upcoming'?0:base2,
-      time:new Date(now+(i-2)*3600000).toISOString(),status,
-      quarter:status==='Live'?(i===0?'Q3':'Q2'):(status==='Final'?'FT':'Pre-game'),
-      clock:status==='Live'?(i===0?'04:18':'08:52'):(status==='Final'?'00:00':'—'),venue:g[2],
-      leaders:[
-        {name:['John Mbugua','Kevin Omondi','James Otieno','Grace Achieng','Samuel Waweru'][i],stat:`${14+i*2} pts`,team:g[0]},
-        {name:['Peter Wanjala','David Kipchoge','Brian Mutua','Michael Ochieng','Allan Odhiambo'][i],stat:`${6+i} reb`,team:g[1]},
-        {name:['Kevin Omondi','Samuel Waweru','John Mbugua','David Kipchoge','Grace Achieng'][i],stat:`${4+i} ast`,team:g[i%2]}
-      ],
-      playByPlay:status==='Upcoming'?[{time:'—',text:'Generated fixture awaiting tip-off.'}]:status==='Final'?[{time:'FT',text:`Final: ${g[0]} ${base1} – ${base2} ${g[1]}.`}]:[
-        {time:`${i===0?'Q3 04:18':'Q2 08:52'}`,text:`${g[0]} pushes the ball in transition.`},
-        {time:`${i===0?'Q3 03:59':'Q2 08:25'}`,text:`${g[1]} answers with a defensive stop.`},
-        {time:`${i===0?'Q3 03:40':'Q2 08:02'}`,text:'Timeout on the floor as both benches reset.'}
-      ]
-    });
-  });
-  matches=[...generated,...matches.filter(m=>m.source!=='auto-kbl'&&m.source!=='online')];
-}
+  // ─── FAN DASHBOARD ─────────────────────────────────────
+  function FanDashboard() {
+    const { games, teams, players, savedGames } = useApp();
+    const live = games.filter(g => g.status === 'Live');
+    const finals = games.filter(g => g.status === 'Final');
+    const upcoming = games.filter(g => g.status === 'Upcoming');
 
-async function fetchApiBasketballLiveGames(provider,key){
-  if(!key)throw new Error('API key required for API-Basketball providers');
-  const url=provider==='rapidapi'?'https://api-basketball.p.rapidapi.com/games?live=all':'https://v1.basketball.api-sports.io/games?live=all';
-  const headers=provider==='rapidapi'?{'x-rapidapi-key':key,'x-rapidapi-host':'api-basketball.p.rapidapi.com'}:{'x-apisports-key':key};
-  const res=await fetch(url,{headers});
-  if(!res.ok)throw new Error('Live API returned '+res.status);
-  const json=await res.json();
-  const rows=json.response||[];
-  return rows.map(mapApiBasketballGame).filter(Boolean);
-}
-function mapApiBasketballGame(g){
-  const home=g.teams?.home?.name||g.teams?.home||'Home Team';
-  const away=g.teams?.away?.name||g.teams?.away||'Away Team';
-  const scoreHome=g.scores?.home?.total??sumScore(g.scores?.home);
-  const scoreAway=g.scores?.away?.total??sumScore(g.scores?.away);
-  const short=g.status?.short||g.status?.long||'Live';
-  const timer=g.status?.timer||'';
-  return {id:1000000+(g.id||Date.now()+Math.floor(Math.random()*999)),onlineId:g.id,source:'online',provider:'API-Basketball',country:g.country?.name||'',team1:home,team2:away,score1:Number(scoreHome)||0,score2:Number(scoreAway)||0,time:g.date||new Date().toISOString(),status:'Live',quarter:String(short).toUpperCase().includes('Q')?String(short).toUpperCase():'Live',clock:timer||'Live',venue:`${g.league?.name||'Basketball'}${g.country?.name?' · '+g.country.name:''}`,leaders:[],playByPlay:[{time:timer||'Live',text:'Pulled from online live basketball feed.'}]};
-}
-function sumScore(o){if(!o)return 0;return ['quarter_1','quarter_2','quarter_3','quarter_4','over_time'].reduce((s,k)=>s+(Number(o[k])||0),0)}
-async function fetchNbaLiveGames(){
-  const res=await fetch('https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json',{cache:'no-store'});
-  if(!res.ok)throw new Error('NBA scoreboard returned '+res.status);
-  const json=await res.json();
-  const games=json.scoreboard?.games||[];
-  return games.filter(g=>Number(g.gameStatus)===2).map(g=>({
-    id:2000000+Number(g.gameId||Date.now()),onlineId:g.gameId,source:'online',provider:'NBA public scoreboard',country:'United States',
-    team1:g.homeTeam?.teamName||g.homeTeam?.teamCity||'Home',team2:g.awayTeam?.teamName||g.awayTeam?.teamCity||'Away',
-    score1:Number(g.homeTeam?.score)||0,score2:Number(g.awayTeam?.score)||0,time:g.gameTimeUTC||new Date().toISOString(),status:'Live',quarter:g.period?`Q${g.period}`:'Live',clock:g.gameClock||g.gameStatusText||'Live',venue:'NBA live scoreboard',leaders:[],playByPlay:[{time:g.gameStatusText||'Live',text:'Pulled from the public NBA online scoreboard.'}]
-  }));
-}
-function startOnlineAutoSync(){
-  if(liveAutoSyncTimer)clearInterval(liveAutoSyncTimer);
-  liveAutoSyncTimer=setInterval(()=>{
-    const provider=load('liveProvider','apisports');
-    const key=load('liveApiKey','');
-    if(provider==='nba'||key)syncOnlineGames();
-  },60000);
-}
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('div', { key: 'header', className: 'flex justify-between items-center' }, [
+        React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Fan Dashboard'),
+        React.createElement('span', { className: 'text-sm bg-orange-500/10 px-4 py-2 rounded-full border border-orange-500/20' }, `${savedGames.length} saved games`)
+      ]),
+      React.createElement('div', { key: 'stats', className: 'grid grid-cols-2 md:grid-cols-4 gap-4' }, [
+        [live.length, 'Live', 'text-red-500', 'fa-bolt'],
+        [upcoming.length, 'Upcoming', 'text-yellow-500', 'fa-clock'],
+        [finals.length, 'Completed', 'text-green-500', 'fa-check-circle'],
+        [teams.length, 'Teams', 'text-orange-500', 'fa-users']
+      ].map(([val, label, color, icon]) =>
+        React.createElement('div', { key: label, className: 'stat-card text-center' }, [
+          React.createElement('div', { className: `text-3xl font-bold ${color}` }, val),
+          React.createElement('div', { className: 'text-sm text-gray-400' }, [
+            React.createElement('i', { className: `fas ${icon} mr-2` }),
+            label
+          ])
+        ])
+      )),
+      React.createElement('div', { key: 'live', className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all' }, [
+        React.createElement('h3', { className: 'text-xl font-bold mb-3 flex items-center gap-2' }, [
+          React.createElement('span', { className: 'live-dot' }),
+          'Live Games'
+        ]),
+        live.length > 0 ? live.map(g =>
+          React.createElement('div', { key: g.id, className: 'match-card mb-2' }, [
+            React.createElement('div', { className: 'flex justify-between items-center' }, [
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('div', { className: 'team-logo' }, '🏀'),
+                React.createElement('span', { className: 'font-bold text-lg' }, g.team1)
+              ]),
+              React.createElement('div', { className: 'text-3xl font-bold text-orange-500' }, `${g.score1} – ${g.score2}`),
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('span', { className: 'font-bold text-lg' }, g.team2),
+                React.createElement('div', { className: 'team-logo' }, '🏀')
+              ])
+            ]),
+            React.createElement('div', { className: 'text-sm text-gray-400 mt-2' }, [
+              React.createElement('span', { className: 'spill spill-live' }, 'Live')
+            ])
+          ])
+        ) : React.createElement('div', { className: 'text-gray-500 text-center py-8' }, 'No live games')
+      ])
+    ]);
+  }
 
-function ensureLiveGameNow(){
-  normalizeLiveMatches();
-  let live=matches.find(m=>m.status==='Live');
-  if(!live){
-    live=matches.find(m=>m.status==='Upcoming')||matches[0];
-    if(live){
-      live.status='Live';
-      live.quarter='Q2';
-      live.clock='07:24';
-      if(!live.score1&&!live.score2){live.score1=34;live.score2=31;}
-      live.playByPlay=[
-        {time:'Q2 07:24',text:`${live.team1} and ${live.team2} are live now.`},
-        {time:'Q2 07:02',text:`${live.team1} pushes the pace after a defensive rebound.`},
-        {time:'Q2 06:41',text:`${live.team2} calls timeout to adjust the press.`}
-      ];
-    }else{
-      matches.push({
-        id:Date.now(),team1:'Nairobi Thunder',team2:'Kisumu Lakers',score1:42,score2:39,
-        time:new Date().toISOString(),status:'Live',quarter:'Q2',clock:'07:24',venue:'Nyayo Gymnasium, Nairobi',
-        leaders:[
-          {name:'John Mbugua',stat:'16 pts',team:'Nairobi Thunder'},
-          {name:'Kevin Omondi',stat:'7 ast',team:'Kisumu Lakers'},
-          {name:'Peter Wanjala',stat:'6 reb',team:'Nairobi Thunder'}
-        ],
-        playByPlay:[
-          {time:'Q2 07:24',text:'Nairobi Thunder leads in a fast-paced second quarter.'},
-          {time:'Q2 07:02',text:'Kisumu Lakers answer with a corner three.'},
-          {time:'Q2 06:41',text:'Timeout on the floor.'}
-        ]
+  // ─── LIVE SCORE CENTER ─────────────────────────────────
+  function LiveScoreCenter() {
+    const { games, updateGame } = useApp();
+    const liveGames = games.filter(g => g.status === 'Live' || g.status === 'Upcoming');
+
+    const handleScoreUpdate = (id, team, value) => {
+      const g = games.find(x => x.id === id);
+      if (!g) return;
+      const newScore = parseInt(value) || 0;
+      if (team === 1) updateGame(id, { score1: newScore, status: 'Live' });
+      else updateGame(id, { score2: newScore, status: 'Live' });
+    };
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('div', { className: 'flex items-center gap-3' }, [
+        React.createElement('span', { className: 'live-dot' }),
+        React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Live Score Center')
+      ]),
+      React.createElement('div', { className: 'space-y-4' },
+        liveGames.length > 0 ? liveGames.map(g =>
+          React.createElement('div', { key: g.id, className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all' }, [
+            React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-center gap-4' }, [
+              React.createElement('div', { className: 'flex items-center gap-4 flex-1' }, [
+                React.createElement('div', { className: 'team-logo w-12 h-12 text-xl' }, '🏀'),
+                React.createElement('div', null, [
+                  React.createElement('div', { className: 'font-bold text-xl' }, g.team1),
+                  React.createElement('div', { className: 'text-sm text-gray-400' }, 'Home')
+                ])
+              ]),
+              React.createElement('div', { className: 'flex items-center gap-4' }, [
+                React.createElement('input', {
+                  type: 'number',
+                  value: g.score1,
+                  onChange: (e) => handleScoreUpdate(g.id, 1, e.target.value),
+                  className: 'w-20 text-center text-3xl font-bold bg-gray-800 border-2 border-gray-600 rounded-xl py-2 focus:border-orange-500 transition-all'
+                }),
+                React.createElement('span', { className: 'text-3xl font-bold text-gray-500' }, '–'),
+                React.createElement('input', {
+                  type: 'number',
+                  value: g.score2,
+                  onChange: (e) => handleScoreUpdate(g.id, 2, e.target.value),
+                  className: 'w-20 text-center text-3xl font-bold bg-gray-800 border-2 border-gray-600 rounded-xl py-2 focus:border-orange-500 transition-all'
+                })
+              ]),
+              React.createElement('div', { className: 'flex items-center gap-4 flex-1 justify-end' }, [
+                React.createElement('div', null, [
+                  React.createElement('div', { className: 'font-bold text-xl text-right' }, g.team2),
+                  React.createElement('div', { className: 'text-sm text-gray-400 text-right' }, 'Away')
+                ]),
+                React.createElement('div', { className: 'team-logo w-12 h-12 text-xl' }, '🏀')
+              ])
+            ]),
+            React.createElement('div', { className: 'flex justify-between items-center mt-4 pt-4 border-t border-gray-700' }, [
+              React.createElement('span', { className: `spill ${g.status === 'Live' ? 'spill-live' : 'spill-upcoming'}` }, g.status),
+              React.createElement('span', { className: 'text-sm text-gray-400' }, new Date(g.time).toLocaleString())
+            ])
+          ])
+        ) : React.createElement('div', { className: 'bg-card rounded-2xl p-12 text-center border border-gray-700' }, [
+          React.createElement('i', { className: 'fas fa-bolt text-5xl text-gray-600 mb-4 block' }),
+          React.createElement('p', { className: 'text-gray-400 text-lg' }, 'No live or upcoming games')
+        ])
+      )
+    ]);
+  }
+
+  // ─── TEAMS ──────────────────────────────────────────────
+  function TeamsPage() {
+    const { teams } = useApp();
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Teams'),
+      React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' },
+        teams.map(t =>
+          React.createElement('div', { key: t.id, className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1' }, [
+            React.createElement('div', { className: 'flex items-center gap-4' }, [
+              React.createElement('div', { className: 'team-logo w-14 h-14 text-2xl' }, '🏀'),
+              React.createElement('div', null, [
+                React.createElement('div', { className: 'font-bold text-xl' }, t.name),
+                React.createElement('div', { className: 'text-sm text-gray-400' }, t.city)
+              ])
+            ]),
+            React.createElement('div', { className: 'grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-700' }, [
+              React.createElement('div', { className: 'text-center' }, [
+                React.createElement('div', { className: 'text-2xl font-bold text-green-500' }, t.wins),
+                React.createElement('div', { className: 'text-xs text-gray-500' }, 'Wins')
+              ]),
+              React.createElement('div', { className: 'text-center' }, [
+                React.createElement('div', { className: 'text-2xl font-bold text-red-500' }, t.losses),
+                React.createElement('div', { className: 'text-xs text-gray-500' }, 'Losses')
+              ]),
+              React.createElement('div', { className: 'text-center' }, [
+                React.createElement('div', { className: 'text-2xl font-bold text-orange-500' }, t.pts),
+                React.createElement('div', { className: 'text-xs text-gray-500' }, 'Points')
+              ])
+            ])
+          ])
+        )
+      )
+    ]);
+  }
+
+  // ─── PLAYERS ────────────────────────────────────────────
+  function PlayersPage() {
+    const { players } = useApp();
+    const [sortBy, setSortBy] = useState('ppg');
+
+    const sorted = [...players].sort((a, b) => b[sortBy] - a[sortBy]);
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('div', { className: 'flex justify-between items-center flex-wrap gap-2' }, [
+        React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Players'),
+        React.createElement('div', { className: 'flex gap-2' }, [
+          ['ppg', 'Points'], ['rpg', 'Rebounds'], ['apg', 'Assists']
+        ].map(([key, label]) =>
+          React.createElement('button', {
+            key: key,
+            className: `px-4 py-2 rounded-xl text-sm font-semibold transition-all ${sortBy === key ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/30' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`,
+            onClick: () => setSortBy(key)
+          }, label)
+        ))
+      ]),
+      React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' },
+        sorted.map(p =>
+          React.createElement('div', { key: p.id, className: 'bg-card rounded-2xl p-6 border border-gray-700 hover:border-orange-500 transition-all hover:transform hover:-translate-y-1' }, [
+            React.createElement('div', { className: 'flex items-center gap-4' }, [
+              React.createElement('div', { className: 'player-avatar' }, p.name.charAt(0)),
+              React.createElement('div', null, [
+                React.createElement('div', { className: 'font-bold text-xl' }, p.name),
+                React.createElement('div', { className: 'text-sm text-orange-400' }, p.team)
+              ])
+            ]),
+            React.createElement('div', { className: 'grid grid-cols-5 gap-2 mt-4 pt-4 border-t border-gray-700' }, [
+              ['PPG', p.ppg], ['RPG', p.rpg], ['APG', p.apg], ['SPG', p.spg], ['BPG', p.bpg]
+            ].map(([label, val]) =>
+              React.createElement('div', { key: label, className: 'text-center' }, [
+                React.createElement('div', { className: 'text-xl font-bold text-orange-500' }, val || '—'),
+                React.createElement('div', { className: 'text-[10px] text-gray-500' }, label)
+              ])
+            ))
+          ])
+        )
+      )
+    ]);
+  }
+
+  // ─── FIXTURES ───────────────────────────────────────────
+  function FixturesPage() {
+    const { fixtures, games } = useApp();
+    const allFixtures = [...fixtures, ...games.filter(g => g.status === 'Upcoming').map(g => ({
+      id: g.id,
+      team1: g.team1,
+      team2: g.team2,
+      date: g.time,
+      venue: g.venue || 'TBD'
+    }))];
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Fixtures'),
+      React.createElement('div', { className: 'space-y-3' },
+        allFixtures.length > 0 ? allFixtures.map(f =>
+          React.createElement('div', { key: f.id, className: 'bg-card rounded-2xl p-5 border border-gray-700 hover:border-orange-500 transition-all' }, [
+            React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-center gap-3' }, [
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('div', { className: 'team-logo' }, '🏀'),
+                React.createElement('span', { className: 'font-bold text-lg' }, f.team1)
+              ]),
+              React.createElement('div', { className: 'text-sm text-gray-400 font-bold' }, 'VS'),
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('span', { className: 'font-bold text-lg' }, f.team2),
+                React.createElement('div', { className: 'team-logo' }, '🏀')
+              ])
+            ]),
+            React.createElement('div', { className: 'flex justify-between items-center mt-3 pt-3 border-t border-gray-700' }, [
+              React.createElement('span', { className: 'text-sm text-gray-400' }, [
+                React.createElement('i', { className: 'fas fa-calendar-alt mr-2 text-orange-400' }),
+                new Date(f.date).toLocaleDateString()
+              ]),
+              React.createElement('span', { className: 'text-sm text-gray-400' }, [
+                React.createElement('i', { className: 'fas fa-map-marker-alt mr-2 text-orange-400' }),
+                f.venue
+              ])
+            ])
+          ])
+        ) : React.createElement('div', { className: 'bg-card rounded-2xl p-8 text-center border border-gray-700' }, [
+          React.createElement('p', { className: 'text-gray-400' }, 'No fixtures scheduled')
+        ])
+      )
+    ]);
+  }
+
+  // ─── STANDINGS ──────────────────────────────────────────
+  function StandingsPage() {
+    const { games, teams } = useApp();
+    const standings = teams.map(t => {
+      const g = games.filter(m => (m.team1 === t.name || m.team2 === t.name) && m.status === 'Final');
+      let wins = 0, losses = 0, pts = 0;
+      g.forEach(m => {
+        if (m.team1 === t.name) { if (m.score1 > m.score2) wins++; else losses++; pts += m.score1; }
+        else { if (m.score2 > m.score1) wins++; else losses++; pts += m.score2; }
       });
-    }
+      return { ...t, wins, losses, pts };
+    }).sort((a, b) => (b.wins - b.losses) - (a.wins - a.losses));
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Standings'),
+      React.createElement('div', { className: 'bg-card rounded-2xl overflow-hidden border border-gray-700' }, [
+        React.createElement('table', { className: 'w-full' }, [
+          React.createElement('thead', { className: 'bg-gradient-to-r from-gray-800 to-gray-900' }, [
+            React.createElement('tr', null, [
+              ['#', 'Team', 'W', 'L', 'PTS'].map(h =>
+                React.createElement('th', { key: h, className: 'px-4 py-3 text-left text-sm text-gray-400 font-semibold' }, h)
+              )
+            ])
+          ]),
+          React.createElement('tbody', null,
+            standings.map((t, i) =>
+              React.createElement('tr', { key: t.id, className: 'border-t border-gray-700 hover:bg-gray-800/50 transition-all' }, [
+                React.createElement('td', { className: 'px-4 py-3 font-bold text-lg', style: { color: i === 0 ? '#facc15' : i === 1 ? '#94a3b8' : i === 2 ? '#b45309' : 'white' } }, i + 1),
+                React.createElement('td', { className: 'px-4 py-3 font-semibold' }, t.name),
+                React.createElement('td', { className: 'px-4 py-3 text-green-500 font-bold' }, t.wins),
+                React.createElement('td', { className: 'px-4 py-3 text-red-500 font-bold' }, t.losses),
+                React.createElement('td', { className: 'px-4 py-3 text-orange-500 font-bold text-lg' }, t.pts)
+              ])
+            )
+          )
+        ])
+      ])
+    ]);
   }
-  saveAll();
-}
 
-function startLiveEngine(){
-  if(liveTimer)clearInterval(liveTimer);
-  liveTimer=setInterval(()=>{ if(!livePaused)tickLiveGames(); },5000);
-}
-function toggleLiveSimulation(){
-  livePaused=!livePaused;
-  const btn=document.getElementById('livePauseBtn');
-  if(btn)btn.innerHTML=livePaused?'<i class="fas fa-play"></i> Resume Updates':'<i class="fas fa-pause"></i> Pause Updates';
-  showToast(livePaused?'Live updates paused':'Live updates resumed');
-}
-function tickLiveGames(){
-  let changed=false;
-  matches.filter(m=>m.status==='Live').forEach(m=>{
-    changed=true;
-    advanceClock(m);
-    if(Math.random()>.28){
-      const home=Math.random()>.48;
-      const pts=Math.random()>.72?3:(Math.random()>.45?2:1);
-      if(home)m.score1=(parseInt(m.score1)||0)+pts; else m.score2=(parseInt(m.score2)||0)+pts;
-      const team=home?m.team1:m.team2;
-      const player=pickPlayerName(team);
-      const text=`${player} ${PLAY_VERBS[Math.floor(Math.random()*PLAY_VERBS.length)]} for ${pts}.`;
-      m.playByPlay=[{time:`${m.quarter} ${m.clock}`,text},...(m.playByPlay||[])].slice(0,5);
-      m.leaders=makeLeaders(m);
-    }
-  });
-  if(changed){saveAll();renderMatches();renderLiveHub();renderStats();updateLivePill();renderOpenPreds();}
-}
-function pickPlayerName(team){
-  const list=players.filter(p=>p.team===team);
-  if(list.length)return list[Math.floor(Math.random()*list.length)].name;
-  const fallback=['Captain','Point Guard','Wing','Center','Sixth Man'];
-  return `${team.split(' ')[0]} ${fallback[Math.floor(Math.random()*fallback.length)]}`;
-}
-function advanceClock(m){
-  let q=parseInt(String(m.quarter||'Q1').replace(/\D/g,''))||1;
-  let [min,sec]=String(m.clock||'10:00').split(':').map(x=>parseInt(x)||0);
-  let total=min*60+sec-(18+Math.floor(Math.random()*35));
-  if(total<=0){
-    q+=1;
-    if(q>4){m.status='Final';m.quarter='FT';m.clock='00:00';resolveMatchPredictions(m);m.playByPlay=[{time:'FT',text:`Final: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`},...(m.playByPlay||[])].slice(0,5);return;}
-    total=600;
-    m.playByPlay=[{time:`Q${q}`,text:`Start of quarter ${q}.`},...(m.playByPlay||[])].slice(0,5);
+  // ─── STATISTICS ─────────────────────────────────────────
+  function StatisticsPage() {
+    const { games, players } = useApp();
+    const totalGames = games.length;
+    const avgScore = totalGames ? (games.reduce((s, g) => s + g.score1 + g.score2, 0) / (totalGames * 2)) : 0;
+    const topScorer = players.reduce((a, b) => a.ppg > b.ppg ? a : b, players[0] || { name: '-' });
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Statistics'),
+      React.createElement('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-4' }, [
+        ['Total Games', totalGames, 'fa-basketball-ball'],
+        ['Avg Score', avgScore.toFixed(1), 'fa-chart-line'],
+        ['Top Scorer', topScorer.name, 'fa-user'],
+        ['Top PPG', topScorer.ppg || '-', 'fa-star']
+      ].map(([label, val, icon]) =>
+        React.createElement('div', { key: label, className: 'stat-card text-center' }, [
+          React.createElement('div', { className: 'text-3xl font-bold text-orange-500' }, val),
+          React.createElement('div', { className: 'text-sm text-gray-400' }, [
+            React.createElement('i', { className: `fas ${icon} mr-2` }),
+            label
+          ])
+        ])
+      )),
+      React.createElement('div', { className: 'bg-card rounded-2xl p-6 border border-gray-700' }, [
+        React.createElement('h3', { className: 'text-xl font-bold mb-3 flex items-center gap-2' }, [
+          React.createElement('i', { className: 'fas fa-trophy text-yellow-400' }),
+          'Player Stats Leaders'
+        ]),
+        React.createElement('div', { className: 'space-y-2' },
+          players.sort((a, b) => b.ppg - a.ppg).slice(0, 5).map(p =>
+            React.createElement('div', { key: p.id, className: 'flex justify-between items-center p-3 bg-gray-800/50 rounded-xl border border-gray-700 hover:border-orange-500 transition-all' }, [
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('div', { className: 'player-avatar w-8 h-8 text-sm' }, p.name.charAt(0)),
+                React.createElement('span', { className: 'font-semibold' }, p.name)
+              ]),
+              React.createElement('div', { className: 'flex gap-6 text-sm' }, [
+                React.createElement('span', { className: 'text-orange-400 font-bold' }, [`PPG: ${p.ppg}`]),
+                React.createElement('span', { className: 'text-blue-400' }, [`RPG: ${p.rpg}`]),
+                React.createElement('span', { className: 'text-green-400' }, [`APG: ${p.apg}`])
+              ])
+            ])
+          )
+        )
+      ])
+    ]);
   }
-  m.quarter=`Q${q}`;m.clock=`${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`;
-}
-function resolveMatchPredictions(m){
-  const winner=m.score1===m.score2?'draw':(m.score1>m.score2?m.team1:m.team2);
-  let changed=false;
-  predictions.forEach(p=>{
-    if(p.matchId===m.id&&!p.resolved){p.resolved=true;p.correct=p.pick===winner;changed=true;}
-  });
-  if(changed){
-    const me=predLeaders.find(l=>l.name==='You');
-    if(me){
-      predictions.filter(p=>p.matchId===m.id).forEach(p=>{me.total+=1;if(p.correct){me.correct+=1;me.pts+=10;}});
-    }
+
+  // ─── ADMIN DASHBOARD ────────────────────────────────────
+  function AdminDashboard() {
+    const { games, players, teams, addGame, deleteGame, updateGame } = useApp();
+    const [showAdd, setShowAdd] = useState(false);
+    const [newGame, setNewGame] = useState({ team1: '', team2: '', score1: 0, score2: 0, status: 'Upcoming', time: new Date().toISOString() });
+
+    const handleAdd = () => {
+      if (!newGame.team1 || !newGame.team2) return;
+      addGame({ ...newGame, id: Date.now() });
+      setShowAdd(false);
+      setNewGame({ team1: '', team2: '', score1: 0, score2: 0, status: 'Upcoming', time: new Date().toISOString() });
+    };
+
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('div', { className: 'flex justify-between items-center' }, [
+        React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Admin Dashboard'),
+        React.createElement('button', { 
+          className: 'btn-orange px-6 py-3 rounded-xl font-semibold shadow-lg shadow-orange-500/25',
+          onClick: () => setShowAdd(!showAdd)
+        }, [
+          React.createElement('i', { className: 'fas fa-plus mr-2' }),
+          'Add Game'
+        ])
+      ]),
+      showAdd && React.createElement('div', { className: 'bg-card rounded-2xl p-6 border border-orange-500/30' }, [
+        React.createElement('div', { className: 'grid grid-cols-1 md:grid-cols-3 gap-4' }, [
+          React.createElement('input', { placeholder: 'Team 1', value: newGame.team1, onChange: (e) => setNewGame({ ...newGame, team1: e.target.value }), className: 'w-full' }),
+          React.createElement('input', { placeholder: 'Team 2', value: newGame.team2, onChange: (e) => setNewGame({ ...newGame, team2: e.target.value }), className: 'w-full' }),
+          React.createElement('select', { value: newGame.status, onChange: (e) => setNewGame({ ...newGame, status: e.target.value }), className: 'w-full' }, [
+            React.createElement('option', { value: 'Upcoming' }, 'Upcoming'),
+            React.createElement('option', { value: 'Live' }, 'Live'),
+            React.createElement('option', { value: 'Final' }, 'Final')
+          ])
+        ]),
+        React.createElement('div', { className: 'flex gap-3 mt-4' }, [
+          React.createElement('button', { className: 'btn-orange px-6 py-2 rounded-xl', onClick: handleAdd }, 'Save Game'),
+          React.createElement('button', { className: 'px-6 py-2 rounded-xl border border-gray-600 text-gray-400 hover:bg-gray-700 transition-all', onClick: () => setShowAdd(false) }, 'Cancel')
+        ])
+      ]),
+      React.createElement('div', { className: 'space-y-3' },
+        games.map(g =>
+          React.createElement('div', { key: g.id, className: 'bg-card rounded-2xl p-5 border border-gray-700 hover:border-orange-500 transition-all' }, [
+            React.createElement('div', { className: 'flex flex-col md:flex-row justify-between items-center gap-3' }, [
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('div', { className: 'team-logo' }, '🏀'),
+                React.createElement('span', { className: 'font-bold text-lg' }, g.team1)
+              ]),
+              React.createElement('div', { className: 'flex items-center gap-2' }, [
+                React.createElement('span', { className: 'text-2xl font-bold text-orange-500' }, g.score1),
+                React.createElement('span', { className: 'text-gray-500' }, '–'),
+                React.createElement('span', { className: 'text-2xl font-bold text-orange-500' }, g.score2)
+              ]),
+              React.createElement('div', { className: 'flex items-center gap-3' }, [
+                React.createElement('span', { className: 'font-bold text-lg' }, g.team2),
+                React.createElement('div', { className: 'team-logo' }, '🏀')
+              ])
+            ]),
+            React.createElement('div', { className: 'flex justify-between items-center mt-3 pt-3 border-t border-gray-700' }, [
+              React.createElement('span', { className: `spill ${g.status === 'Live' ? 'spill-live' : g.status === 'Final' ? 'spill-final' : 'spill-upcoming'}` }, g.status),
+              React.createElement('div', { className: 'flex gap-2' }, [
+                React.createElement('button', { 
+                  className: 'text-sm text-gray-400 hover:text-white px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 transition-all',
+                  onClick: () => { const s = ['Upcoming', 'Live', 'Final']; const idx = s.indexOf(g.status); updateGame(g.id, { status: s[(idx + 1) % s.length] }); }
+                }, [
+                  React.createElement('i', { className: 'fas fa-sync mr-1' }),
+                  'Toggle'
+                ]),
+                React.createElement('button', { 
+                  className: 'text-sm text-red-400 hover:text-red-300 px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 transition-all',
+                  onClick: () => deleteGame(g.id)
+                }, [
+                  React.createElement('i', { className: 'fas fa-trash mr-1' }),
+                  'Delete'
+                ])
+              ])
+            ])
+          ])
+        )
+      )
+    ]);
   }
-}
-function setLiveFilter(f){
-  liveFilter=f;
-  document.querySelectorAll('[id^="liveFilter-"]').forEach(b=>b.classList.remove('active'));
-  const btn=document.getElementById('liveFilter-'+f);if(btn)btn.classList.add('active');
-  renderLiveHub();
-}
-function updateLivePill(){
-  const n=matches.filter(m=>m.status==='Live').length;
-  const pill=document.querySelector('.live-pill span');
-  if(pill)pill.textContent=n?`LIVE ${n}`:'LIVE';
-  const hero=document.getElementById('heroLiveCount');
-  if(hero)hero.textContent=n;
-}
-function liveProgress(m){
-  if(m.status==='Final')return 100;if(m.status==='Upcoming')return 0;
-  const q=parseInt(String(m.quarter||'Q1').replace(/\D/g,''))||1;
-  const [min,sec]=String(m.clock||'10:00').split(':').map(x=>parseInt(x)||0);
-  const elapsed=(q-1)*600+(600-(min*60+sec));
-  return Math.max(2,Math.min(99,Math.round(elapsed/2400*100)));
-}
-function renderLiveHub(){
-  const grid=document.getElementById('liveGamesGrid');if(!grid)return;
-  normalizeLiveMatches();
-  let list=[...matches];
-  if(liveFilter==='live')list=list.filter(m=>m.status==='Live');
-  if(liveFilter==='upcoming')list=list.filter(m=>m.status==='Upcoming');
-  if(liveFilter==='final')list=list.filter(m=>m.status==='Final');
-  list.sort((a,b)=>({Live:0,Upcoming:1,Final:2}[a.status]-{Live:0,Upcoming:1,Final:2}[b.status])||new Date(a.time)-new Date(b.time));
-  const sync=document.getElementById('liveSyncText');
-  if(sync)sync.textContent=livePaused?'Updates paused':'Auto-updates every 5s · saved locally';
-  if(!list.length){grid.innerHTML='<div class="empty"><i class="fas fa-basketball-ball"></i>No games match this filter. Add a match and set Status to Live.</div>';return;}
-  grid.innerHTML=list.map(liveGameCard).join('');
-}
-function liveGameCard(m){
-  const st=m.status==='Live'?'':m.status==='Final'?'final':'upcoming';
-  const progress=liveProgress(m);
-  const leaders=(m.leaders||[]).slice(0,3).map(l=>`<div class="live-leader-row"><span><strong>${esc(l.name)}</strong><br><small style="color:var(--txt3)">${esc(l.team||'')}</small></span><span>${esc(l.stat)}</span></div>`).join('')||'<div class="play-row"><span>—</span><span>No leaders yet</span></div>';
-  const plays=(m.playByPlay||[]).slice(0,4).map(p=>`<div class="play-row"><span>${esc(p.time)}</span><span>${esc(p.text)}</span></div>`).join('');
-  return `<div class="live-game-card ${m.status==='Live'?'is-live':''}">
-    <div class="live-game-top"><span class="live-status ${st}">${m.status==='Live'?'<span class="live-dot"></span>':''}${esc(m.status)}</span><span class="live-clock">${esc(m.quarter||'')} ${esc(m.clock||'')}</span></div>
-    <div class="live-arena"><i class="fas fa-location-dot"></i> ${esc(m.venue||'KBF Arena')} · ${fmtDate(m.time)}</div>
-    <div class="live-scoreboard">
-      <div class="live-team"><div class="live-team-logo">🏀</div><div class="live-team-name">${esc(m.team1)}</div><div class="live-team-record">Home</div></div>
-      <div class="live-scorebox"><div class="live-score-main">${m.score1}<span style="color:var(--txt3)">–</span>${m.score2}</div><small>${m.status==='Live'?'In progress':m.status}</small></div>
-      <div class="live-team right"><div class="live-team-logo">🏀</div><div class="live-team-name">${esc(m.team2)}</div><div class="live-team-record">Away</div></div>
-    </div>
-    <div class="live-progress"><span style="width:${progress}%"></span></div>
-    <div class="live-details"><div class="live-panel"><div class="live-panel-title">Game Leaders</div>${leaders}</div><div class="live-panel"><div class="live-panel-title">Play-by-play</div>${plays}</div></div>
-    <div class="live-controls">
-      ${m.status==='Live'?`<button class="live-mini-btn" onclick="manualScore(${m.id},1)">+1 ${esc(m.team1)}</button><button class="live-mini-btn" onclick="manualScore(${m.id},2)">+1 ${esc(m.team2)}</button><button class="live-mini-btn red" onclick="finishGame(${m.id})">Mark Final</button>`:`<button class="live-mini-btn" onclick="makeGameLive(${m.id})">Set Live</button>`}
-    </div>
-  </div>`;
-}
-function manualScore(id,teamNo){
-  const m=matches.find(x=>x.id===id);if(!m)return;
-  if(teamNo===1)m.score1=(parseInt(m.score1)||0)+1;else m.score2=(parseInt(m.score2)||0)+1;
-  m.status='Live'; if(!m.quarter||m.quarter==='Pre-game')m.quarter='Q1'; if(!m.clock||m.clock==='—')m.clock='10:00';
-  m.playByPlay=[{time:`${m.quarter} ${m.clock}`,text:`Manual score update for ${teamNo===1?m.team1:m.team2}.`},...(m.playByPlay||[])].slice(0,5);
-  saveAll();renderMatches();renderLiveHub();updateLivePill();showToast('Score updated');
-}
-function makeGameLive(id){
-  const m=matches.find(x=>x.id===id);if(!m)return;
-  m.status='Live';m.quarter='Q1';m.clock='10:00';m.playByPlay=[{time:'Q1 10:00',text:'Tip-off — game is live!'}];
-  saveAll();renderMatches();renderLiveHub();renderStats();updateLivePill();showToast(`${m.team1} vs ${m.team2} is now live 🔴`);
-}
-function finishGame(id){
-  const m=matches.find(x=>x.id===id);if(!m)return;
-  m.status='Final';m.quarter='FT';m.clock='00:00';
-  m.playByPlay=[{time:'FT',text:`Final: ${m.team1} ${m.score1} – ${m.score2} ${m.team2}.`},...(m.playByPlay||[])].slice(0,5);
-  resolveMatchPredictions(m);saveAll();renderMatches();renderLiveHub();renderPredictions();updateLivePill();showToast('Game marked final');
-}
 
-// ── RANKINGS ───────────────────────────────────────
-function renderRankings(){
-  const sorted=[...teams].sort((a,b)=>(b.wins/(b.wins+b.losses||1))-(a.wins/(a.wins+a.losses||1)));
-  document.getElementById('rankingsBody').innerHTML=sorted.map((t,i)=>{
-    const gp=t.wins+t.losses;const pct=gp>0?((t.wins/gp)*100).toFixed(1)+'%':'—';
-    const diff=(t.pf||0)-(t.pa||0);const streak=t.wins>=t.losses?`W${t.wins-t.losses}`:`L${t.losses-t.wins}`;
-    return `<tr><td class="${i===0?'gold':''}">${i+1}</td><td><strong>${esc(t.name)}</strong></td><td>${esc(t.city)}</td>
-    <td>${gp}</td><td>${t.wins}</td><td>${t.losses}</td><td>${pct}</td>
-    <td>${t.pf||0}</td><td>${t.pa||0}</td>
-    <td style="color:${diff>=0?'var(--green)':'var(--red)'}">${diff>=0?'+':''}${diff}</td>
-    <td style="color:${streak.startsWith('W')?'var(--green)':'var(--red)'}">${streak}</td></tr>`;
-  }).join('');
-}
-
-// ── PLAYERS ────────────────────────────────────────
-function sortPlayers(by){
-  playerSort=by;
-  document.querySelectorAll('.sort-row .btn').forEach(b=>b.classList.remove('active'));
-  const el=document.getElementById('sort-'+by);if(el)el.classList.add('active');
-  renderPlayers();
-}
-function renderPlayers(){
-  const sorted=[...players].sort((a,b)=>(b[playerSort]||0)-(a[playerSort]||0));
-  document.getElementById('playersGrid').innerHTML=sorted.map(p=>`
-    <div class="player-card">
-      <div class="avatar">${p.name.charAt(0)}</div>
-      <div class="pname">${esc(p.name)}</div><div class="pteam">${esc(p.team)}</div>
-      <div class="pstats">
-        <div class="pstat"><div class="pstat-val">${p.ppg}</div><div class="pstat-lbl">PPG</div></div>
-        <div class="pstat"><div class="pstat-val">${p.rpg}</div><div class="pstat-lbl">RPG</div></div>
-        <div class="pstat"><div class="pstat-val">${p.apg}</div><div class="pstat-lbl">APG</div></div>
-        <div class="pstat"><div class="pstat-val">${p.spg||0}</div><div class="pstat-lbl">SPG</div></div>
-      </div>
-      <button class="trash-btn" style="margin-top:0.75rem;width:100%;border:1px solid var(--border);border-radius:8px;padding:0.35rem" onclick="promptDelete('player',${p.id})"><i class="fas fa-trash"></i> Remove</button>
-    </div>`).join('');
-}
-
-// ── EVENTS ─────────────────────────────────────────
-function renderEvents(){
-  const sorted=[...events].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if(!sorted.length){document.getElementById('eventsGrid').innerHTML='<div class="empty"><i class="fas fa-calendar"></i>No events</div>';return;}
-  document.getElementById('eventsGrid').innerHTML=sorted.map(e=>{
-    const d=new Date(e.date+'T00:00:00');
-    return `<div class="event-card">
-      <div class="event-date-bar"><div class="eday">${d.getDate()}</div><div class="emon">${d.toLocaleString('default',{month:'short',year:'numeric'})}</div></div>
-      <div class="event-info">
-        <div class="event-title">${esc(e.title)}</div>
-        <div class="event-loc"><i class="fas fa-map-marker-alt" style="color:var(--orange);margin-right:4px"></i>${esc(e.location)}</div>
-        <div class="event-desc">${esc(e.description)}</div>
-        <button class="trash-btn" style="margin-top:0.6rem" onclick="promptDelete('event',${e.id})"><i class="fas fa-trash"></i> Remove</button>
-      </div>
-    </div>`;}).join('');
-}
-
-// ── TRANSFERS ──────────────────────────────────────
-function renderTransfers(){
-  if(!transfers.length){document.getElementById('transfersList').innerHTML='<div class="empty"><i class="fas fa-exchange-alt"></i>No transfers</div>';return;}
-  document.getElementById('transfersList').innerHTML=transfers.map(t=>`
-    <div class="transfer-card">
-      <div><div class="tplayer">${esc(t.player)}</div><div class="tclubs">${esc(t.from)} <span class="arr">→</span> ${esc(t.to)}</div></div>
-      <div style="text-align:center"><span class="cbadge ${t.type==='Confirmed'?'cb-confirmed':'cb-rumor'}">${t.type}</span><div class="tfee" style="margin-top:0.25rem">${esc(t.fee)}</div></div>
-      <button class="trash-btn" style="border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.7rem" onclick="promptDelete('transfer',${t.id})"><i class="fas fa-trash"></i></button>
-    </div>`).join('');
-}
-
-// ══════════════════════════════════════════════════
-// FANTASY LEAGUE
-// ══════════════════════════════════════════════════
-function calcFantasyPts(player){
-  if(!player)return 0;
-  return Math.round(player.ppg*3 + player.rpg*2 + (player.apg||0)*1.5 + (player.spg||0)*2 + (player.bpg||0)*2);
-}
-
-function renderFantasy(){
-  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
-  const el=document.getElementById('myFantasyPts');if(el)el.textContent=myPts;
-  document.getElementById('rosterCount').textContent=`(${myRoster.length}/5 players)`;
-  renderRosterGrid();
-  renderPickGrid();
-  renderFLLeaderboard();
-}
-
-function renderRosterGrid(){
-  const positions=['PG','SG','SF','PF','C'];
-  const grid=document.getElementById('rosterGrid');if(!grid)return;
-  grid.innerHTML=positions.map((pos,i)=>{
-    const p=myRoster[i];
-    if(p){
-      const pts=calcFantasyPts(p);
-      return `<div class="roster-slot filled">
-        <div class="slot-pos">${pos}</div>
-        <div class="avatar" style="width:40px;height:40px;font-size:1rem;margin:0.3rem 0">${p.name.charAt(0)}</div>
-        <div class="slot-name">${esc(p.name)}</div>
-        <div class="slot-team">${esc(p.team)}</div>
-        <div class="slot-pts">${pts}</div>
-        <div class="slot-pts-lbl">pts this week</div>
-        <button class="trash-btn" style="font-size:0.68rem;margin-top:0.3rem" onclick="removeFromRoster(${i})"><i class="fas fa-times"></i> Drop</button>
-      </div>`;
-    }
-    return `<div class="roster-slot" onclick="showSubTab('fantasy','pick-players')">
-      <div class="slot-pos">${pos}</div>
-      <div class="slot-empty-icon"><i class="fas fa-plus-circle"></i></div>
-      <div class="slot-empty-lbl">Tap to pick player</div>
-    </div>`;
-  }).join('');
-}
-
-function renderPickGrid(){
-  const grid=document.getElementById('pickGrid');if(!grid)return;
-  const rosterIds=myRoster.map(p=>p.id);
-  grid.innerHTML=players.map(p=>{
-    const pts=calcFantasyPts(p);
-    const sel=rosterIds.includes(p.id);
-    return `<div class="pick-card ${sel?'selected':''}" onclick="togglePickPlayer(${p.id})">
-      <div class="pick-name">${esc(p.name)} ${sel?'<i class="fas fa-check-circle" style="color:var(--purple);font-size:0.75rem"></i>':''}</div>
-      <div class="pick-info">${esc(p.team)} · PPG: ${p.ppg} · RPG: ${p.rpg} · APG: ${p.apg}</div>
-      <div class="pick-pts">${pts} <span style="font-size:0.65rem;font-weight:400;color:var(--txt3)">fantasy pts</span></div>
-    </div>`;
-  }).join('');
-}
-
-function togglePickPlayer(id){
-  const p=players.find(x=>x.id===id);if(!p)return;
-  const idx=myRoster.findIndex(x=>x.id===id);
-  if(idx>=0){myRoster.splice(idx,1);}
-  else{if(myRoster.length>=5){showToast('Max 5 players in your roster','error');return;}myRoster.push(p);}
-  saveAll();renderPickGrid();renderRosterGrid();
-  document.getElementById('rosterCount').textContent=`(${myRoster.length}/5 players)`;
-}
-function removeFromRoster(i){myRoster.splice(i,1);saveAll();renderFantasy();}
-function saveRoster(){
-  saveAll();showToast('Roster saved! 🎮');showSubTab('fantasy','my-team');renderFantasy();renderStats();
-}
-
-function renderFLLeaderboard(){
-  const lb=document.getElementById('flLeaderboard');if(!lb)return;
-  const myPts=myRoster.reduce((s,p)=>s+calcFantasyPts(p),0);
-  const leaders=[
-    {name:'Kamau F.',pts:920,team:'Thunder Squad'},
-    {name:'Atieno B.',pts:875,team:'Laker Nation'},
-    {name:'Wanjiku M.',pts:841,team:'Coast Ballers'},
-    {name:'Ochieng R.',pts:810,team:'Rift Valley FC'},
-    {name:'Mutua S.',pts:788,team:'Bronco Boys'},
-    {name:'You 🏆',pts:Math.max(myPts,0),team:'My Team'},
-  ].sort((a,b)=>b.pts-a.pts);
-  const rankClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
-  lb.innerHTML=leaders.map((l,i)=>`
-    <div class="fl-lb-row">
-      <div class="fl-rank ${rankClass(i)}">${i+1}</div>
-      <div><div class="fl-name">${esc(l.name)}</div><div class="fl-team">${esc(l.team)}</div></div>
-      <div class="fl-pts">${l.pts}</div>
-    </div>`).join('');
-}
-
-// ══════════════════════════════════════════════════
-// PREDICTION LEAGUE
-// ══════════════════════════════════════════════════
-function renderPredictions(){
-  renderOpenPreds();renderMyPreds();renderPredLB();
-  const myEntry=predLeaders.find(l=>l.name==='You');
-  if(myEntry){
-    document.getElementById('myPredPts').textContent=myEntry.pts;
-    const acc=myEntry.total>0?Math.round((myEntry.correct/myEntry.total)*100)+'%':'—';
-    document.getElementById('predAccuracy').textContent=`${myEntry.correct}/${myEntry.total} correct (${acc})`;
+  // ─── SETTINGS ───────────────────────────────────────────
+  function SettingsPage() {
+    const { user, logout } = useApp();
+    return React.createElement('div', { className: 'space-y-6' }, [
+      React.createElement('h2', { className: 'text-3xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'Settings'),
+      React.createElement('div', { className: 'bg-card rounded-2xl p-6 border border-gray-700 max-w-md' }, [
+        React.createElement('div', { className: 'space-y-4' }, [
+          React.createElement('div', { className: 'p-4 bg-gray-800/50 rounded-xl border border-gray-700' }, [
+            React.createElement('label', { className: 'text-sm text-gray-400' }, 'Account Type'),
+            React.createElement('div', { className: 'font-bold text-xl mt-1 capitalize' }, user?.role || 'Not logged in')
+          ]),
+          React.createElement('div', { className: 'p-4 bg-gray-800/50 rounded-xl border border-gray-700' }, [
+            React.createElement('label', { className: 'text-sm text-gray-400' }, 'Data Storage'),
+            React.createElement('div', { className: 'text-sm text-gray-400 mt-1' }, 'All data is stored locally in your browser')
+          ]),
+          React.createElement('button', { 
+            className: 'btn-orange w-full py-3 rounded-xl font-semibold',
+            onClick: logout
+          }, [
+            React.createElement('i', { className: 'fas fa-sign-out-alt mr-2' }),
+            'Logout'
+          ])
+        ])
+      ])
+    ]);
   }
-}
 
-function renderOpenPreds(){
-  const openMatches=matches.filter(m=>m.status==='Upcoming'||m.status==='Live');
-  const el=document.getElementById('openPredsList');if(!el)return;
-  if(!openMatches.length){el.innerHTML='<div class="empty"><i class="fas fa-clock"></i>No open predictions right now. Check back when new fixtures are scheduled.</div>';return;}
-  el.innerHTML=openMatches.map(m=>{
-    const pred=predictions.find(p=>p.matchId===m.id);
-    const statusCls=pred?`pred-btn picked`:'pred-btn';
-    return `<div class="pred-card">
-      <div class="pred-match">
-        <div class="pred-team">${esc(m.team1)}</div>
-        <div class="pred-vs">VS</div>
-        <div class="pred-team">${esc(m.team2)}</div>
-      </div>
-      <div class="pred-deadline"><i class="fas fa-clock"></i> ${m.status==='Live'?'LIVE — Limited time!':'Closes at kick-off'} · ${fmtDate(m.time)}</div>
-      <div class="pred-buttons">
-        <button class="pred-btn ${pred&&pred.pick===m.team1?'picked':''}" onclick="makePrediction(${m.id},'${esc(m.team1)}','${esc(m.team2)}')">${esc(m.team1)} Win</button>
-        <button class="pred-btn ${pred&&pred.pick==='draw'?'picked':''}" onclick="makePrediction(${m.id},'draw','${esc(m.team1)}v${esc(m.team2)}')">Draw</button>
-        <button class="pred-btn ${pred&&pred.pick===m.team2?'picked':''}" onclick="makePrediction(${m.id},'${esc(m.team2)}','${esc(m.team1)}')">${esc(m.team2)} Win</button>
-      </div>
-      ${pred?`<div class="pred-result pending"><i class="fas fa-hourglass-half"></i> Picked: ${esc(pred.pick)} · Result pending</div>`:''}
-    </div>`;}).join('');
-}
+  // ─── APP ────────────────────────────────────────────────
+  function App() {
+    const { user } = useApp();
+    const [page, setPage] = useState('landing');
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-function makePrediction(matchId,pick,opponent){
-  const existing=predictions.findIndex(p=>p.matchId===matchId);
-  if(existing>=0)predictions.splice(existing,1);
-  predictions.push({matchId,pick,opponent,timestamp:new Date().toISOString(),resolved:false});
-  saveAll();renderPredictions();showToast(`Prediction locked: ${pick} 🔮`);
-}
+    if (!user) return React.createElement(LoginPage);
 
-function renderMyPreds(){
-  const el=document.getElementById('myPredsList');if(!el)return;
-  if(!predictions.length){el.innerHTML='<div class="empty"><i class="fas fa-clock"></i>No predictions yet. Go to Open Predictions and make your picks!</div>';return;}
-  el.innerHTML=predictions.map(p=>{
-    const m=matches.find(x=>x.id===p.matchId);
-    const teamNames=m?`${m.team1} vs ${m.team2}`:`Match #${p.matchId}`;
-    const isResolved=p.resolved;
-    const resultCls=isResolved?(p.correct?'win':'loss'):'pending';
-    const resultTxt=isResolved?(p.correct?'✅ Correct! +10 pts':'❌ Incorrect'):'⏳ Pending';
-    return `<div class="pred-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem">
-        <div><strong style="font-family:'Barlow Condensed',sans-serif;font-size:1rem">${teamNames}</strong><br><span style="font-size:0.75rem;color:var(--txt3)">Predicted: <strong style="color:var(--txt)">${esc(p.pick)}</strong> · ${timeAgo(p.timestamp)}</span></div>
-        <div class="pred-result ${resultCls}">${resultTxt}</div>
-      </div>
-    </div>`;}).join('');
-}
+    const pages = {
+      landing: React.createElement(LandingPage),
+      dashboard: React.createElement(FanDashboard),
+      live: React.createElement(LiveScoreCenter),
+      teams: React.createElement(TeamsPage),
+      players: React.createElement(PlayersPage),
+      fixtures: React.createElement(FixturesPage),
+      standings: React.createElement(StandingsPage),
+      statistics: React.createElement(StatisticsPage),
+      admin: user?.role === 'admin' ? React.createElement(AdminDashboard) : React.createElement('div', null, 'Access denied'),
+      settings: React.createElement(SettingsPage)
+    };
 
-function renderPredLB(){
-  const lb=document.getElementById('predLeaderboard');if(!lb)return;
-  const sorted=[...predLeaders].sort((a,b)=>b.pts-a.pts);
-  const rankClass=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'';
-  lb.innerHTML=sorted.map((l,i)=>`
-    <div class="pred-lb-row">
-      <div class="fl-rank ${rankClass(i)}">${i+1}</div>
-      <div style="flex:1"><div class="fl-name">${esc(l.name)}</div><div class="pred-acc">${l.correct}/${l.total} correct</div></div>
-      <div class="fl-pts" style="color:var(--green)">${l.pts}</div>
-    </div>`).join('');
-}
-
-// ══════════════════════════════════════════════════
-// WHATSAPP ALERTS
-// ══════════════════════════════════════════════════
-function renderAlerts(){
-  document.getElementById('subCount').textContent=subscribers.length;
-  renderSubscribersList();
-  updateAlertPreview();
-}
-
-function addSubscriber(){
-  const name=document.getElementById('waName').value.trim();
-  const phone=document.getElementById('waPhone').value.trim();
-  const town=document.getElementById('waTown').value;
-  if(!name||!phone){showToast('Enter name and phone number','error');return;}
-  if(!phone.startsWith('+')){showToast('Use international format e.g. +254...','error');return;}
-  const existing=subscribers.find(s=>s.phone===phone);
-  if(existing){showToast('This number is already subscribed','error');return;}
-  const prefs=[...document.querySelectorAll('.wa-prefs input:checked')].map(c=>c.value);
-  subscribers.push({id:Date.now(),name,phone,town,prefs,joined:new Date().toISOString(),active:true});
-  saveAll();
-  document.getElementById('waName').value='';
-  document.getElementById('waPhone').value='';
-  renderAlerts();renderStats();
-  showToast(`${name} subscribed! They'd get WhatsApp alerts 📲`);
-}
-
-function renderSubscribersList(){
-  const el=document.getElementById('subscribersList');if(!el)return;
-  if(!subscribers.length){el.innerHTML='<div class="empty"><i class="fab fa-whatsapp"></i>No subscribers yet. Share the signup form!</div>';return;}
-  el.innerHTML=subscribers.map((s,i)=>`
-    <div class="sub-row">
-      <div class="sub-num">${(i+1).toString().padStart(2,'0')}</div>
-      <div class="sub-name">${esc(s.name)}<br><span style="font-size:0.7rem;color:var(--txt3)">${esc(s.phone)}</span></div>
-      <div class="sub-town">${esc(s.town)}</div>
-      <div class="sub-prefs">${(s.prefs||[]).join(', ')}</div>
-      <div class="sub-active">Active</div>
-      <button class="trash-btn" onclick="removeSubscriber(${s.id})"><i class="fas fa-times"></i></button>
-    </div>`).join('');
-}
-
-function removeSubscriber(id){
-  subscribers=subscribers.filter(s=>s.id!==id);
-  saveAll();renderAlerts();renderStats();showToast('Subscriber removed');
-}
-
-function updateAlertPreview(){
-  const type=document.getElementById('alertType')?.value;
-  const customMsg=document.getElementById('alertMsg')?.value;
-  const templates={
-    live:'🏀 *KBL LIVE SCORE*\n\nNairobi Thunder 62 – 58 Coastal Kings\n⏱ Q3 | 4:23 remaining\n\nJohn Mbugua leading with 24 pts\n\n📲 Reply STOP to unsubscribe\n_Kenya Basketball Live_',
-    final:'✅ *KBL FINAL RESULT*\n\nNairobi Thunder 89 – 84 Coastal Kings\n\n🏆 Thunder win! Mbugua top scorer with 32 pts\n\nView full stats: kbl.co.ke\n_Kenya Basketball Live_',
-    transfer:'🔄 *KBL TRANSFER NEWS*\n\nKevin Omondi has officially joined Kisumu Lakers from Coastal Kings for 2.5M KES\n\nMore details at kbl.co.ke\n_Kenya Basketball Live_',
-    event:'📅 *KBL EVENT REMINDER*\n\nKBF Championship Finals\n📍 Nyayo Stadium, Nairobi\n📆 Saturday 10 May, 3:00 PM\n\nGet tickets at the venue\n_Kenya Basketball Live_',
-    custom:customMsg||'Enter your custom message above...'
-  };
-  const preview=document.getElementById('alertPreviewText');
-  if(preview)preview.textContent=templates[type]||templates.live;
-}
-
-function broadcastAlert(){
-  const msg=document.getElementById('alertMsg').value.trim();
-  if(!subscribers.length){showToast('No subscribers to send to','error');return;}
-  showToast(`Alert broadcast to ${subscribers.length} subscribers via WhatsApp! 📲`);
-  document.getElementById('alertMsg').value='';
-}
-
-function sendTestAlert(){
-  const phone=document.getElementById('testPhone').value.trim();
-  if(!phone){showToast('Enter a phone number','error');return;}
-  showToast(`Test alert sent to ${phone} 📲`);
-  closeModal('waTestModal');
-  document.getElementById('testPhone').value='';
-}
-
-// ══════════════════════════════════════════════════
-// COUNTY RIVALRY
-// ══════════════════════════════════════════════════
-let countyData=[];
-function initCountyData(){
-  countyData=load('countyData',[]);
-  if(!countyData.length){
-    countyData=COUNTIES.map((name,i)=>({
-      name,
-      wins:Math.floor(Math.random()*30)+10,
-      losses:Math.floor(Math.random()*20)+5,
-      points:Math.floor(Math.random()*3000)+1000,
-      teams:Math.floor(Math.random()*4)+1,
-      players:Math.floor(Math.random()*40)+10,
-    }));
-    save('countyData',countyData);
+    return React.createElement('div', { className: 'min-h-screen flex' }, [
+      React.createElement('div', { key: 'overlay', className: `overlay ${sidebarOpen ? 'open' : ''}`, onClick: () => setSidebarOpen(false) }),
+      React.createElement(Sidebar, { key: 'sidebar', currentPage: page, setPage, user }),
+      React.createElement('div', { key: 'main', className: 'flex-1 p-4 md:p-6 ml-0 md:ml-64' }, [
+        React.createElement('div', { className: 'flex items-center gap-3 mb-4 md:hidden' }, [
+          React.createElement('button', { 
+            className: 'text-2xl text-gray-400 hover:text-white transition-all',
+            onClick: () => setSidebarOpen(true)
+          }, [
+            React.createElement('i', { className: 'fas fa-bars' })
+          ]),
+          React.createElement('span', { className: 'text-xl font-bold bg-gradient-to-r from-white to-orange-400 bg-clip-text text-transparent' }, 'KBL')
+        ]),
+        React.createElement(Toast, null),
+        pages[page] || React.createElement('div', null, 'Page not found')
+      ])
+    ]);
   }
-}
 
-function renderRivalry(){
-  document.getElementById('rivalryGameCount').textContent=
-    countyData.reduce((s,c)=>s+c.wins+c.losses,0);
-  renderCountyGrid();
-  populateH2HSelects();
-  renderH2H();
-  renderHotRivalries();
-}
-
-function renderCountyGrid(){
-  const sorted=[...countyData].sort((a,b)=>(b.wins/(b.wins+b.losses||1))-(a.wins/(a.wins+a.losses||1)));
-  const el=document.getElementById('countyGrid');if(!el)return;
-  el.innerHTML=sorted.map((c,i)=>{
-    const gp=c.wins+c.losses;
-    const pct=gp>0?(c.wins/gp*100):0;
-    return `<div class="county-card">
-      <div style="display:flex;justify-content:space-between;align-items:start">
-        <div>
-          <div style="font-size:0.62rem;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.2rem">County ${i+1}</div>
-          <div class="county-name">${esc(c.name)}</div>
-        </div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:${pct>=60?'var(--green)':pct>=40?'var(--yellow)':'var(--red)'}">
-          ${pct.toFixed(0)}%
-        </div>
-      </div>
-      <div class="county-record">
-        <div class="county-stat"><div class="county-stat-val" style="color:var(--green)">${c.wins}</div><div class="county-stat-lbl">W</div></div>
-        <div class="county-stat"><div class="county-stat-val" style="color:var(--red)">${c.losses}</div><div class="county-stat-lbl">L</div></div>
-        <div class="county-stat"><div class="county-stat-val">${c.teams}</div><div class="county-stat-lbl">Teams</div></div>
-      </div>
-      <div class="county-bar"><div class="county-bar-fill" style="width:${pct}%"></div></div>
-    </div>`;}).join('');
-}
-
-function populateH2HSelects(){
-  const selA=document.getElementById('h2hA');
-  const selB=document.getElementById('h2hB');
-  if(!selA||!selB)return;
-  const opts=COUNTIES.map((c,i)=>`<option value="${i}">${c}</option>`).join('');
-  selA.innerHTML=opts;
-  selB.innerHTML=opts;
-  selB.value='1';
-}
-
-function renderH2H(){
-  const panel=document.getElementById('h2hPanel');if(!panel)return;
-  const ai=parseInt(document.getElementById('h2hA')?.value||0);
-  const bi=parseInt(document.getElementById('h2hB')?.value||1);
-  if(ai===bi){panel.innerHTML='<div class="empty"><i class="fas fa-info-circle"></i>Select two different counties</div>';return;}
-  const a=countyData[ai];const b=countyData[bi];
-  if(!a||!b)return;
-  const totalA=a.wins+a.losses;const totalB=b.wins+b.losses;
-  const seed=ai*100+bi;
-  const aWins=Math.floor((seed%7)+2);const bWins=Math.floor(((seed*3)%5)+1);
-  const total=aWins+bWins;
-  const aPct=Math.round((aWins/total)*100);const bPct=100-aPct;
-
-  const recentGames=[
-    {date:'Apr 12',score:`${65+ai%10}-${60+bi%10}`,winner:a.name},
-    {date:'Mar 28',score:`${58+bi%8}-${62+ai%8}`,winner:b.name},
-    {date:'Feb 14',score:`${71+ai%6}-${68+bi%6}`,winner:a.name},
-    {date:'Jan 30',score:`${55+bi%9}-${57+ai%5}`,winner:b.name},
-  ];
-
-  panel.innerHTML=`<div class="h2h-panel">
-    <div class="h2h-header">
-      <div class="h2h-team"><div class="h2h-team-name" style="color:var(--orange)">${esc(a.name)}</div><div class="h2h-team-county">${a.teams} team(s)</div></div>
-      <div class="h2h-vs">H2H</div>
-      <div class="h2h-team" style="text-align:right"><div class="h2h-team-name" style="color:var(--blue)">${esc(b.name)}</div><div class="h2h-team-county">${b.teams} team(s)</div></div>
-    </div>
-    <div class="h2h-stats">
-      <div class="h2h-num" style="color:var(--orange)">${aWins}</div>
-      <div>
-        <div class="h2h-bar-wrap"><div class="h2h-bar-a" style="width:${aPct}%"></div><div class="h2h-bar-b" style="width:${bPct}%"></div></div>
-        <div class="h2h-bar-lbl"><span style="color:var(--orange)">${a.name}</span><span>${total} games</span><span style="color:var(--blue)">${b.name}</span></div>
-      </div>
-      <div class="h2h-num" style="color:var(--blue)">${bWins}</div>
-    </div>
-    <div class="h2h-recent">
-      <div class="h2h-recent-title">Recent Meetings</div>
-      ${recentGames.map(g=>`
-        <div class="h2h-game-row">
-          <span style="color:var(--txt3)">${g.date}</span>
-          <span class="h2h-game-score">${g.score}</span>
-          <span class="${g.winner===a.name?'h2h-winner':'h2h-loser'}">${esc(g.winner)} Win</span>
-        </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-function renderHotRivalries(){
-  const el=document.getElementById('rivalryRows');if(!el)return;
-  const rivalries=[
-    {a:'Nairobi',b:'Mombasa',games:47,last:'Apr 15',margin:4.2,intensity:'hot'},
-    {a:'Kisumu',b:'Nairobi',games:38,last:'Apr 8',margin:6.8,intensity:'hot'},
-    {a:'Eldoret',b:'Nakuru',games:29,last:'Mar 30',margin:8.1,intensity:'warm'},
-    {a:'Mombasa',b:'Kisumu',games:24,last:'Mar 21',margin:9.5,intensity:'warm'},
-    {a:'Nakuru',b:'Kiambu',games:19,last:'Mar 14',margin:12.3,intensity:'cool'},
-    {a:'Thika',b:'Nyeri',games:15,last:'Feb 28',margin:11.0,intensity:'cool'},
-  ];
-  el.innerHTML=rivalries.map(r=>`
-    <div class="rivalry-table-row">
-      <div><span class="heat heat-${r.intensity}"></span></div>
-      <div><strong>${esc(r.a)}</strong> vs <strong>${esc(r.b)}</strong></div>
-      <div>${r.games} games</div>
-      <div>${r.last}</div>
-      <div>${r.margin.toFixed(1)} pts</div>
-      <div style="color:${r.intensity==='hot'?'var(--red)':r.intensity==='warm'?'var(--yellow)':'var(--blue)'}">
-        ${r.intensity==='hot'?'🔥 Fierce':r.intensity==='warm'?'⚡ Competitive':'💧 Developing'}
-      </div>
-    </div>`).join('');
-}
-
-// ══════════════════════════════════════════════════
-// MODALS / CRUD
-// ══════════════════════════════════════════════════
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(o=>{
-  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});
-});
-
-function saveMatch(){
-  if(!document.getElementById('mT1').value.trim()||!document.getElementById('mT2').value.trim()){showToast('Enter both team names','error');return;}
-  matches.push({id:Date.now(),team1:document.getElementById('mT1').value.trim(),team2:document.getElementById('mT2').value.trim(),score1:parseInt(document.getElementById('mS1').value)||0,score2:parseInt(document.getElementById('mS2').value)||0,time:document.getElementById('mTime').value||new Date().toISOString(),status:document.getElementById('mStatus').value});
-  normalizeLiveMatches();saveAll();renderMatches();renderStats();renderOpenPreds();renderLiveHub();updateLivePill();closeModal('matchModal');
-  ['mT1','mT2','mS1','mS2','mTime'].forEach(id=>document.getElementById(id).value='');
-  showToast('Match added!');
-}
-function saveTeam(){
-  if(!document.getElementById('tmName').value.trim()){showToast('Enter team name','error');return;}
-  teams.push({id:Date.now(),name:document.getElementById('tmName').value.trim(),city:document.getElementById('tmCity').value.trim(),wins:parseInt(document.getElementById('tmW').value)||0,losses:parseInt(document.getElementById('tmL').value)||0,pf:parseInt(document.getElementById('tmPF').value)||0,pa:parseInt(document.getElementById('tmPA').value)||0});
-  saveAll();renderRankings();renderStats();closeModal('teamModal');
-  ['tmName','tmCity','tmW','tmL','tmPF','tmPA'].forEach(id=>document.getElementById(id).value='');
-  showToast('Team added!');
-}
-function savePlayer(){
-  if(!document.getElementById('plName').value.trim()){showToast('Enter player name','error');return;}
-  players.push({id:Date.now(),name:document.getElementById('plName').value.trim(),team:document.getElementById('plTeam').value.trim(),ppg:parseFloat(document.getElementById('plPPG').value)||0,rpg:parseFloat(document.getElementById('plRPG').value)||0,apg:parseFloat(document.getElementById('plAPG').value)||0,spg:parseFloat(document.getElementById('plSPG').value)||0,bpg:parseFloat(document.getElementById('plBPG').value)||0,fgPercent:parseFloat(document.getElementById('plFG').value)||0});
-  saveAll();renderPlayers();renderStats();renderPickGrid();closeModal('playerModal');
-  ['plName','plTeam','plPPG','plRPG','plAPG','plSPG','plBPG','plFG'].forEach(id=>document.getElementById(id).value='');
-  showToast('Player added!');
-}
-function saveEvent(){
-  if(!document.getElementById('evTitle').value.trim()){showToast('Enter event title','error');return;}
-  events.push({id:Date.now(),title:document.getElementById('evTitle').value.trim(),location:document.getElementById('evLoc').value.trim(),date:document.getElementById('evDate').value,description:document.getElementById('evDesc').value.trim()});
-  saveAll();renderEvents();renderStats();closeModal('eventModal');
-  ['evTitle','evLoc','evDate','evDesc'].forEach(id=>document.getElementById(id).value='');
-  showToast('Event added!');
-}
-function saveTransfer(){
-  if(!document.getElementById('trPlayer').value.trim()){showToast('Enter player name','error');return;}
-  transfers.push({id:Date.now(),player:document.getElementById('trPlayer').value.trim(),from:document.getElementById('trFrom').value.trim(),to:document.getElementById('trTo').value.trim(),type:document.getElementById('trType').value,fee:document.getElementById('trFee').value.trim()});
-  saveAll();renderTransfers();renderStats();closeModal('transferModal');
-  ['trPlayer','trFrom','trTo','trFee'].forEach(id=>document.getElementById(id).value='');
-  showToast('Transfer added!');
-}
-
-function promptDelete(type,id){pendingDelete={type,id};document.getElementById('delPwd').value='';openModal('deleteModal');}
-function confirmDelete(){
-  if(document.getElementById('delPwd').value!=='kenyaball2024'){showToast('Incorrect password','error');return;}
-  const{type,id}=pendingDelete;
-  if(type==='post')posts=posts.filter(p=>p.id!==id);
-  else if(type==='match')matches=matches.filter(m=>m.id!==id);
-  else if(type==='team')teams=teams.filter(t=>t.id!==id);
-  else if(type==='player')players=players.filter(p=>p.id!==id);
-  else if(type==='event')events=events.filter(e=>e.id!==id);
-  else if(type==='transfer')transfers=transfers.filter(t=>t.id!==id);
-  saveAll();renderAll();closeModal('deleteModal');showToast('Deleted');
-}
-
-// ── TABS ───────────────────────────────────────────
-function setupTabs(){
-  document.querySelectorAll('.ntab').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab+'Tab').classList.add('active');
-      // refresh sub-feature when tab opened
-      if(btn.dataset.tab==='live')renderLiveHub();
-      if(btn.dataset.tab==='fantasy')renderFantasy();
-      if(btn.dataset.tab==='predict')renderPredictions();
-      if(btn.dataset.tab==='alerts')renderAlerts();
-      if(btn.dataset.tab==='rivalry'){renderRivalry();setTimeout(renderH2H,100);}
-    });
-  });
-}
-
-function showSubTab(feature,id){
-  document.querySelectorAll(`#${feature}Tab .sub-tab`).forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll(`#${feature}Tab .sub-pane`).forEach(p=>p.classList.remove('active'));
-  const pane=document.getElementById(`${feature}-${id}`);
-  if(pane)pane.classList.add('active');
-  // find button by onclick
-  document.querySelectorAll(`#${feature}Tab .sub-tab`).forEach(b=>{
-    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes(`'${id}'`))b.classList.add('active');
-  });
-}
-
-// ── HELPERS ────────────────────────────────────────
-function populateSelects(){
-  const pTown=document.getElementById('pTown');
-  TOWNS.forEach(t=>pTown.innerHTML+=`<option value="${t}">${t}</option>`);
-  const waTown=document.getElementById('waTown');
-  TOWNS.forEach(t=>waTown.innerHTML+=`<option value="${t}">${t}</option>`);
-}
-function esc(s=''){const d=document.createElement('div');d.textContent=String(s);return d.innerHTML;}
-function timeAgo(ts){
-  const diff=Math.floor((Date.now()-new Date(ts))/60000);
-  if(diff<1)return'Just now';if(diff<60)return`${diff}m ago`;
-  if(diff<1440)return`${Math.floor(diff/60)}h ago`;return`${Math.floor(diff/1440)}d ago`;
-}
-function fmtDate(ts){
-  try{return new Date(ts).toLocaleString('en-KE',{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});}
-  catch{return ts||'TBD';}
-}
-function showToast(msg,type='success'){
-  const t=document.getElementById('toast');
-  const m=document.getElementById('toastMsg');
-  t.className=`toast ${type}`;
-  t.querySelector('i').className=`fas fa-${type==='success'?'check-circle':'exclamation-circle'}`;
-  m.textContent=msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-init();
+  // ─── ROOT ───────────────────────────────────────────────
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(
+    React.createElement(AppProvider, null,
+      React.createElement(App, null)
+    )
+  );
 </script>
 </body>
 </html>
